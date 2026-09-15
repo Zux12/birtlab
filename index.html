@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIRT Lab — Experimental Concept</title>
+<meta name="description" content="BIRT Lab concept website for Bioengineering and Integrated Regenerative Technologies.">
+<style>
+:root{
+  --paper:#f2f6f4; --ink:#0e1d1f; --muted:#667779; --teal:#0b7771; --aqua:#5cc5bf; --violet:#7759a6; --line:#cfdad7;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+a{text-decoration:none;color:inherit}
+.page-noise{position:fixed;inset:0;z-index:-3;pointer-events:none;background:
+radial-gradient(circle at 15% 20%,rgba(92,197,191,.12),transparent 25%),
+radial-gradient(circle at 80% 15%,rgba(119,89,166,.09),transparent 22%),
+radial-gradient(circle at 75% 85%,rgba(92,197,191,.08),transparent 18%)}
+#bioCanvas{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.45}
+.wrap{width:min(1240px,calc(100% - 40px));margin:auto}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(242,246,244,.86);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.topbar-inner{height:70px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.brand{font-weight:900;letter-spacing:.05em}
+.brand small{display:block;font-size:9px;letter-spacing:.17em;color:var(--muted);margin-top:2px}
+.center-nav{display:flex;gap:28px;font-size:12px;color:#506164}
+.center-nav a{position:relative}
+.center-nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-8px;height:1px;background:var(--ink);transition:.3s}
+.center-nav a:hover:after{right:0}
+.nav-action{justify-self:end;border:0;background:transparent;font-weight:900;cursor:pointer}
+.hero{padding:95px 0 45px;min-height:780px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:55px;align-items:center}
+.micro{font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+.hero h1{font-size:clamp(76px,12vw,168px);line-height:.72;letter-spacing:-.085em;margin:30px 0 0;font-weight:900}
+.hero h1 em{font-style:normal;color:var(--teal)}
+.fullname{margin-top:28px;font-size:clamp(22px,3.2vw,40px);line-height:1.05;max-width:760px;letter-spacing:-.035em}
+.hero-copy{margin-top:28px;max-width:720px;display:grid;grid-template-columns:130px 1fr;gap:18px;border-top:1px solid var(--line);padding-top:18px}
+.hero-copy b{font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.hero-copy p{margin:0;color:var(--muted);font-size:16px;line-height:1.75}
+.launchline{margin-top:32px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.text-btn{border:0;background:none;padding:0;font-weight:900;cursor:pointer;font-size:14px;display:inline-flex;gap:10px;align-items:center}
+.text-btn:after{content:"→";transition:.2s}.text-btn:hover:after{transform:translateX(5px)}
+.hero-visual{position:relative;height:520px}
+.ring{position:absolute;border:1px solid rgba(11,119,113,.22);border-radius:50%;inset:12%;animation:spin 24s linear infinite}
+.ring.r2{inset:24%;border-style:dashed;animation-direction:reverse;animation-duration:18s}
+.ring.r3{inset:36%;animation-duration:13s}
+.nucleus{position:absolute;left:50%;top:50%;width:180px;height:180px;transform:translate(-50%,-50%);border-radius:57% 43% 52% 48%;background:linear-gradient(135deg,rgba(11,119,113,.82),rgba(119,89,166,.72));filter:blur(.2px);animation:morph 7s ease-in-out infinite, drift 6s ease-in-out infinite}
+.cell-dot{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--aqua);box-shadow:0 0 0 8px rgba(92,197,191,.11),0 0 30px rgba(92,197,191,.35)}
+.cd1{left:22%;top:25%;animation:orbit1 8s ease-in-out infinite}.cd2{right:17%;top:31%;animation:orbit2 9s ease-in-out infinite}.cd3{left:31%;bottom:15%;animation:orbit3 7s ease-in-out infinite}.cd4{right:25%;bottom:22%;animation:orbit1 10s ease-in-out infinite reverse}
+.axis-label{position:absolute;font-size:10px;letter-spacing:.13em;color:var(--muted);font-weight:900}
+.al1{left:0;top:12%}.al2{right:0;top:46%}.al3{left:8%;bottom:6%}
+.hero-index{position:absolute;right:0;bottom:0;font-size:12px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.15em}
+
+.band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
+.marquee{white-space:nowrap;padding:15px 0;font-size:11px;letter-spacing:.16em;font-weight:900;color:#4e6264}
+.marquee-track{display:inline-block;animation:marquee 26s linear infinite}
+
+.section{padding:105px 0}
+.section-top{display:grid;grid-template-columns:220px 1fr;gap:30px;margin-bottom:60px}
+.section-top .index{font-size:12px;color:var(--muted);letter-spacing:.12em}
+.section-top h2{margin:0;font-size:clamp(46px,7vw,92px);line-height:.9;letter-spacing:-.06em;max-width:900px}
+.section-top p{max-width:630px;color:var(--muted);line-height:1.7;margin-top:22px}
+
+.research-list{border-top:1px solid var(--line)}
+.research-row{display:grid;grid-template-columns:90px 1fr 1.1fr 120px;gap:22px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line);position:relative;cursor:default}
+.research-row:before{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:var(--teal);transition:.4s}
+.research-row:hover:before{width:100%}
+.research-row .num{font-size:11px;color:var(--muted)}
+.research-row h3{margin:0;font-size:30px;letter-spacing:-.03em}
+.research-row p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+.research-row .tag{text-align:right;font-size:10px;letter-spacing:.12em;font-weight:900;color:var(--teal)}
+
+.flow-shell{position:relative;min-height:560px}
+.flow-line{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+.flow-point{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:var(--paper);border:2px solid var(--teal);cursor:pointer;transition:.25s}
+.flow-point:hover,.flow-point.active{transform:translate(-50%,-50%) scale(1.35);background:var(--teal)}
+.fp1{left:7%}.fp2{left:25%}.fp3{left:46%}.fp4{left:67%}.fp5{left:88%}
+.flow-label{position:absolute;transform:translateX(-50%);width:180px;text-align:center}
+.fl1{left:7%;top:29%}.fl2{left:25%;top:62%}.fl3{left:46%;top:27%}.fl4{left:67%;top:64%}.fl5{left:88%;top:30%}
+.flow-label b{display:block;font-size:12px;letter-spacing:.09em}.flow-label span{display:block;font-size:12px;line-height:1.5;color:var(--muted);margin-top:8px}
+.flow-detail{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);font-size:14px;color:var(--muted);text-align:center;max-width:680px}
+
+.tools-layout{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+.tool-line{position:relative;padding:38px 20px 38px 0;border-bottom:1px solid var(--line);min-height:220px;cursor:pointer}
+.tool-line:nth-child(odd){border-right:1px solid var(--line);padding-right:42px}
+.tool-line:nth-child(even){padding-left:42px}
+.tool-line .tool-no{font-size:10px;color:var(--muted);letter-spacing:.15em}
+.tool-line h3{font-size:35px;letter-spacing:-.04em;margin:18px 0 10px}
+.tool-line p{max-width:480px;color:var(--muted);line-height:1.6;font-size:14px}
+.tool-line .open{position:absolute;right:20px;bottom:32px;font-size:22px;transition:.3s}
+.tool-line:hover .open{transform:translateX(8px)}
+
+.analytics{display:grid;grid-template-columns:1fr 1.25fr;gap:55px;align-items:end}
+.big-number{font-size:clamp(110px,15vw,190px);font-weight:900;line-height:.7;letter-spacing:-.09em}
+.big-number small{display:block;font-size:13px;letter-spacing:.12em;color:var(--muted);margin-top:30px}
+.data-lines{border-top:1px solid var(--line)}
+.data-line{display:grid;grid-template-columns:1fr 90px;gap:20px;padding:17px 0;border-bottom:1px solid var(--line);align-items:center}
+.data-line span{font-size:13px}
+.data-line b{text-align:right;font-size:28px}
+.spark{height:150px;margin-top:35px;position:relative}
+.spark svg{width:100%;height:100%;overflow:visible}
+.spark path{fill:none;stroke:var(--teal);stroke-width:2;stroke-dasharray:700;stroke-dashoffset:700;animation:draw 2.4s ease forwards}
+.spark circle{fill:var(--paper);stroke:var(--teal);stroke-width:2}
+
+.vision-track{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.vision-step{padding:28px 24px;border-right:1px solid var(--line);min-height:250px}
+.vision-step:last-child{border-right:0}
+.vision-step .stepn{font-size:10px;color:var(--muted);letter-spacing:.15em}
+.vision-step h4{font-size:24px;margin:50px 0 12px}
+.vision-step p{color:var(--muted);font-size:13px;line-height:1.55}
+
+.closing{padding:90px 0 110px;border-top:1px solid var(--line)}
+.closing h2{font-size:clamp(64px,11vw,145px);line-height:.78;letter-spacing:-.08em;margin:0}
+.closing h2 span{color:var(--teal)}
+.closing-bottom{display:grid;grid-template-columns:1fr auto;gap:25px;margin-top:45px;align-items:end}
+.closing p{max-width:640px;color:var(--muted);line-height:1.7}
+.circle-btn{width:120px;height:120px;border-radius:50%;border:1px solid var(--ink);background:transparent;font-weight:900;cursor:pointer;transition:.35s}
+.circle-btn:hover{background:var(--ink);color:white;transform:rotate(-6deg) scale(1.04)}
+
+footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line)}
+.reveal{opacity:0;transform:translateY(24px);transition:.8s}.reveal.show{opacity:1;transform:none}
+
+/* internal app views */
+.appview{display:none;position:fixed;inset:0;z-index:100;background:rgba(242,246,244,.985);overflow:auto}
+.appview.open{display:block;animation:viewin .3s ease}
+.apphead{position:sticky;top:0;background:rgba(242,246,244,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);z-index:2}
+.apphead-inner{height:68px;display:flex;align-items:center;justify-content:space-between}
+.backbtn{border:0;background:none;font-weight:900;cursor:pointer}
+.appbody{padding:42px 0 80px}
+.app-title{display:grid;grid-template-columns:220px 1fr;gap:30px;margin-bottom:40px}
+.app-title h2{font-size:clamp(46px,7vw,84px);line-height:.9;letter-spacing:-.055em;margin:0}
+.app-grid{display:grid;grid-template-columns:340px 1fr;gap:45px}
+.control-group{border-top:1px solid var(--line)}
+.field{padding:16px 0;border-bottom:1px solid var(--line)}
+.field label{display:flex;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:.07em;margin-bottom:10px}
+.field input,.field select,.field textarea{width:100%;background:transparent;border:0;border-bottom:1px solid #9eafac;padding:10px 2px;outline:none}
+.field textarea{min-height:120px}
+.action{margin-top:25px;border:0;background:var(--ink);color:white;padding:13px 18px;font-weight:900;cursor:pointer}
+.demo-note{font-size:10px;line-height:1.5;color:var(--muted);margin-top:17px}
+.output-zone{border-top:1px solid var(--line);padding-top:20px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.metric{padding:22px 18px;border-right:1px solid var(--line)}
+.metric:last-child{border-right:0}
+.metric strong{font-size:36px;display:block}
+.metric span{font-size:11px;color:var(--muted)}
+.printer{height:360px;position:relative;border-bottom:1px solid var(--line);overflow:hidden}
+.bed{position:absolute;bottom:50px;left:15%;right:15%;height:18px;background:#bac8c5;border-radius:50%}
+.printshape{position:absolute;bottom:67px;left:24%;right:24%;height:100px;background:repeating-linear-gradient(0deg,rgba(11,119,113,.7) 0 5px,rgba(119,89,166,.25) 5px 9px);border-radius:50%;transform:scaleY(.1);transform-origin:bottom;transition:2.5s}
+.nozzle{position:absolute;top:35px;left:50%;width:40px;height:90px;transform:translateX(-50%);background:linear-gradient(90deg,#bbc9c7,#fafdfc,#b3c1bf);clip-path:polygon(15% 0,85% 0,70% 70%,55% 100%,45% 100%,30% 70%)}
+.printer.run .printshape{transform:scaleY(1)}
+.printer.run .nozzle{animation:nozzle 2.5s linear infinite}
+.chatlog{min-height:310px;max-height:390px;overflow:auto;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0}
+.msg{padding:13px 0;border-bottom:1px solid rgba(207,218,215,.7);font-size:14px;line-height:1.6}
+.msg b{display:block;font-size:10px;letter-spacing:.12em;margin-bottom:5px}
+.msg.user b{color:var(--violet)}.msg.bot b{color:var(--teal)}
+.chatrow{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:16px}
+.chatrow input{background:transparent;border:0;border-bottom:1px solid #9eafac;padding:12px}
+.chartbars{height:260px;display:flex;gap:18px;align-items:end;border-bottom:1px solid var(--line);padding:20px 10px 0}
+.chartbar{flex:1;background:linear-gradient(180deg,var(--teal),rgba(11,119,113,.18));position:relative;transition:.4s}
+.chartbar span{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);font-size:10px;white-space:nowrap}
+.scoreline{font-size:clamp(100px,15vw,170px);line-height:.8;letter-spacing:-.08em;font-weight:900}
+.scoreline small{font-size:13px;letter-spacing:.1em;color:var(--muted)}
+
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes morph{0%,100%{border-radius:57% 43% 52% 48%}50%{border-radius:40% 60% 45% 55%}}@keyframes drift{50%{transform:translate(-50%,-53%) rotate(8deg)}}@keyframes orbit1{50%{transform:translate(30px,-18px)}}@keyframes orbit2{50%{transform:translate(-35px,22px)}}@keyframes orbit3{50%{transform:translate(18px,25px)}}@keyframes marquee{to{transform:translateX(-50%)}}@keyframes draw{to{stroke-dashoffset:0}}@keyframes viewin{from{opacity:0;transform:scale(.995)}to{opacity:1;transform:none}}@keyframes nozzle{0%{left:25%}25%{left:72%}50%{left:38%}75%{left:65%}100%{left:25%}}
+
+@media(max-width:900px){
+  .center-nav{display:none}.topbar-inner{grid-template-columns:1fr auto}
+  .hero-grid{grid-template-columns:1fr}.hero-visual{height:430px}
+  .section-top,.app-title{grid-template-columns:1fr}.research-row{grid-template-columns:60px 1fr}.research-row p,.research-row .tag{grid-column:2}
+  .tools-layout,.analytics,.app-grid{grid-template-columns:1fr}.tool-line:nth-child(odd){border-right:0;padding-right:0}.tool-line:nth-child(even){padding-left:0}
+  .vision-track{grid-template-columns:1fr 1fr}.vision-step:nth-child(2n){border-right:0}
+}
+@media(max-width:600px){
+  .hero{padding-top:60px}.hero-copy{grid-template-columns:1fr}.hero-visual{height:350px}
+  .section{padding:75px 0}.research-row{grid-template-columns:40px 1fr}.research-row h3{font-size:24px}
+  .flow-shell{min-height:650px}.flow-line{left:50%;right:auto;top:0;bottom:0;width:1px;height:auto}
+  .flow-point{left:50%!important}.fp1{top:10%}.fp2{top:28%}.fp3{top:46%}.fp4{top:64%}.fp5{top:82%}
+  .flow-label{left:auto!important;transform:none;width:42%;text-align:left}.fl1{left:55%!important;top:7%}.fl2{left:4%!important;top:25%}.fl3{left:55%!important;top:43%}.fl4{left:4%!important;top:61%}.fl5{left:55%!important;top:79%}
+  .flow-detail{display:none}.metrics,.vision-track{grid-template-columns:1fr}.metric,.vision-step{border-right:0;border-bottom:1px solid var(--line)}
+  .closing-bottom{grid-template-columns:1fr}.circle-btn{width:100px;height:100px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="page-noise"></div><canvas id="bioCanvas"></canvas>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a href="#top" class="brand">BIRT LAB<small>BIOENGINEERING + INTEGRATED REGENERATIVE TECHNOLOGIES</small></a>
+    <nav class="center-nav"><a href="#research">Research</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="#vision">Vision</a></nav>
+    <button class="nav-action" data-open="collab">COLLABORATE ↗</button>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="micro reveal">Research Group Concept · BIRTLAB.COM</div>
+      <h1 class="reveal">BIRT<em>LAB</em></h1>
+      <div class="fullname reveal">Bioengineering &amp; Integrated Regenerative Technologies</div>
+      <div class="hero-copy reveal"><b>Positioning</b><p>A distinctive digital identity for an interdisciplinary research lab connecting bioprinting, biomaterials, tissue engineering, regenerative medicine and digital intelligence.</p></div>
+      <div class="launchline reveal"><button class="text-btn" data-open="sim">Launch BioPrint Studio</button><a class="text-btn" href="#research">Explore the Lab</a></div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="nucleus"></div>
+      <div class="cell-dot cd1"></div><div class="cell-dot cd2"></div><div class="cell-dot cd3"></div><div class="cell-dot cd4"></div>
+      <div class="axis-label al1">CELL × MATERIAL</div><div class="axis-label al2">PRINT × REGENERATE</div><div class="axis-label al3">DATA × TRANSLATION</div>
+    </div>
+  </div>
+  <div class="hero-index">01 / EXPERIMENTAL RESEARCH IDENTITY</div>
+</section>
+
+<div class="band"><div class="marquee"><span class="marquee-track">BIOENGINEERING — BIOMATERIALS — TISSUE ENGINEERING — REGENERATIVE MEDICINE — DIGITAL INTELLIGENCE — TRANSLATIONAL RESEARCH — BIOPRINTING — BIOMATERIALS — TISSUE ENGINEERING — REGENERATIVE MEDICINE — DIGITAL INTELLIGENCE — TRANSLATIONAL RESEARCH — </span></div></div>
+
+<section id="research" class="section">
+  <div class="wrap">
+    <div class="section-top reveal"><div class="index">02 / RESEARCH DOMAINS</div><div><h2>Research without silos.</h2><p>BIRT Lab is represented as an integrated environment rather than a set of disconnected specialties. Each domain feeds into the next stage of regenerative design, fabrication and translation.</p></div></div>
+
+    <div class="research-list">
+      <div class="research-row reveal"><div class="num">01</div><h3>3D Bioprinting</h3><p>Cell-laden construct fabrication, controlled deposition, geometry design and process optimization.</p><div class="tag">FABRICATION</div></div>
+      <div class="research-row reveal"><div class="num">02</div><h3>Bioinks &amp; Biomaterials</h3><p>Material systems that balance printability, mechanics, biological compatibility and degradation.</p><div class="tag">MATERIALS</div></div>
+      <div class="research-row reveal"><div class="num">03</div><h3>Tissue Engineering</h3><p>Integration of cells, scaffolds, signals and microenvironments toward functional tissue constructs.</p><div class="tag">BIOENGINEERING</div></div>
+      <div class="research-row reveal"><div class="num">04</div><h3>Regenerative Technologies</h3><p>Repair-oriented systems, bioactive strategies and interdisciplinary translational pathways.</p><div class="tag">REGENERATION</div></div>
+      <div class="research-row reveal"><div class="num">05</div><h3>Research Intelligence</h3><p>Data visualization, experiment modelling and future AI-enabled analysis for connected research workflows.</p><div class="tag">DIGITAL LAYER</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-top reveal"><div class="index">03 / CONNECTED SYSTEM</div><div><h2>One research flow.</h2><p>Instead of decorative cards, the lab is visualized as a continuous scientific pathway. Tap any point to change the pathway narrative.</p></div></div>
+    <div class="flow-shell reveal">
+      <div class="flow-line"></div>
+      <button class="flow-point fp1 active" data-flow="A research question begins with a biological need, target tissue and measurable scientific objective."></button>
+      <button class="flow-point fp2" data-flow="Cells, materials and scaffold architecture are selected as an integrated system rather than separate ingredients."></button>
+      <button class="flow-point fp3" data-flow="Bioprinting turns the design into a physical construct through controllable fabrication parameters."></button>
+      <button class="flow-point fp4" data-flow="Validation links viability, mechanics, maturation and biological function to the original research objective."></button>
+      <button class="flow-point fp5" data-flow="Translation connects outcomes to collaboration, scale-up, commercialization and future clinical relevance."></button>
+
+      <div class="flow-label fl1"><b>DISCOVER</b><span>Biological question &amp; unmet need</span></div>
+      <div class="flow-label fl2"><b>DESIGN</b><span>Cells, bioink &amp; architecture</span></div>
+      <div class="flow-label fl3"><b>BIOPRINT</b><span>Fabrication &amp; process control</span></div>
+      <div class="flow-label fl4"><b>VALIDATE</b><span>Function, mechanics &amp; viability</span></div>
+      <div class="flow-label fl5"><b>TRANSLATE</b><span>Collaboration &amp; impact</span></div>
+      <div class="flow-detail" id="flowDetail">A research question begins with a biological need, target tissue and measurable scientific objective.</div>
+    </div>
+  </div>
+</section>
+
+<section id="tools" class="section">
+  <div class="wrap">
+    <div class="section-top reveal"><div class="index">04 / DIGITAL LAB</div><div><h2>Functions that feel like research software.</h2><p>Each tool opens as a full-page internal workspace while remaining inside one HTML file.</p></div></div>
+
+    <div class="tools-layout">
+      <div class="tool-line reveal" data-open="sim"><div class="tool-no">01 / INTERACTIVE</div><h3>BioPrint Studio</h3><p>Configure a construct, simulate printing and generate demonstration metrics.</p><div class="open">→</div></div>
+      <div class="tool-line reveal" data-open="regen"><div class="tool-no">02 / MODELLING</div><h3>Regeneration Predictor</h3><p>Adjust viability, porosity, bioactivity and culture duration to change a mock regeneration score.</p><div class="open">→</div></div>
+      <div class="tool-line reveal" data-open="bioink"><div class="tool-no">03 / MATERIALS</div><h3>Bioink Explorer</h3><p>Shift composition and visualize how the material profile changes across four research dimensions.</p><div class="open">→</div></div>
+      <div class="tool-line reveal" data-open="ask"><div class="tool-no">04 / INTELLIGENCE</div><h3>Ask BIRT</h3><p>A local scripted research assistant demonstrating how lab knowledge could eventually be queried.</p><div class="open">→</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="intelligence" class="section">
+  <div class="wrap">
+    <div class="section-top reveal"><div class="index">05 / INTELLIGENCE LAYER</div><div><h2>Research activity as a living signal.</h2><p>Illustrative analytics show how management could view research breadth, collaboration potential, maturity and translation pathways once real BIRT Lab data is connected.</p></div></div>
+
+    <div class="analytics">
+      <div class="reveal">
+        <div class="big-number">31<small>POTENTIAL COLLABORATION CONNECTIONS*</small></div>
+      </div>
+      <div class="reveal">
+        <div class="data-lines">
+          <div class="data-line"><span>Bioprinting workstreams*</span><b>12</b></div>
+          <div class="data-line"><span>Core technology themes*</span><b>08</b></div>
+          <div class="data-line"><span>Translation stages visualized*</span><b>05</b></div>
+          <div class="data-line"><span>Research intelligence views*</span><b>14</b></div>
+        </div>
+        <div class="spark">
+          <svg viewBox="0 0 700 150" preserveAspectRatio="none" aria-label="Illustrative research trajectory">
+            <path d="M10,130 C90,110 105,118 160,90 S240,108 310,70 S410,86 470,48 S560,60 690,18"/>
+            <circle cx="10" cy="130" r="4"/><circle cx="160" cy="90" r="4"/><circle cx="310" cy="70" r="4"/><circle cx="470" cy="48" r="4"/><circle cx="690" cy="18" r="4"/>
+          </svg>
+        </div>
+        <div class="demo-note">*Illustrative mock analytics only. Replace with validated BIRT Lab data when available.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vision" class="section">
+  <div class="wrap">
+    <div class="section-top reveal"><div class="index">06 / FUTURE PATHWAY</div><div><h2>From science to impact.</h2><p>The lab identity can later connect every real project to a common translational pathway.</p></div></div>
+    <div class="vision-track reveal">
+      <div class="vision-step"><div class="stepn">01</div><h4>Discover</h4><p>Scientific question, unmet need, biological target.</p></div>
+      <div class="vision-step"><div class="stepn">02</div><h4>Design</h4><p>Cells, materials, construct architecture and experimental plan.</p></div>
+      <div class="vision-step"><div class="stepn">03</div><h4>Bioprint</h4><p>Fabrication strategy, process parameters and construct creation.</p></div>
+      <div class="vision-step"><div class="stepn">04</div><h4>Validate</h4><p>Biological, functional and mechanical characterization.</p></div>
+      <div class="vision-step"><div class="stepn">05</div><h4>Translate</h4><p>Collaboration, scale-up, commercialization and clinical relevance.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <div class="micro reveal">BIRTLAB.COM</div>
+    <h2 class="reveal">ENGINEER<br><span>LIVING</span> SYSTEMS.</h2>
+    <div class="closing-bottom reveal">
+      <p>A research identity that can grow from a showcase website into a digital research environment for projects, people, facilities, data, collaborations and intelligent tools.</p>
+      <button class="circle-btn" data-open="collab">COLLABORATE ↗</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap"><div>© BIRT Lab concept mock-up.</div><div>Interactive outputs are simulated for demonstration only.</div></footer>
+
+<!-- BIOPRINT -->
+<section class="appview" id="sim">
+<div class="apphead"><div class="wrap apphead-inner"><strong>BIRT LAB / BIOPRINT STUDIO</strong><button class="backbtn closeview">← BACK</button></div></div>
+<div class="wrap appbody">
+  <div class="app-title"><div class="index">DIGITAL TOOL / 01</div><div><h2>Configure a construct.</h2></div></div>
+  <div class="app-grid">
+    <form class="control-group" id="simForm">
+      <div class="field"><label>TARGET TISSUE</label><select id="tissue"><option>Cartilage</option><option>Skin</option><option>Bone-like construct</option><option>Vascular model</option></select></div>
+      <div class="field"><label>BIOINK</label><select id="ink"><option>GelMA + Alginate</option><option>Collagen blend</option><option>Alginate composite</option><option>Fibrin-based matrix</option></select></div>
+      <div class="field"><label>CELL DENSITY <span id="densityVal">8.0 M/mL</span></label><input id="density" type="range" min="1" max="20" step=".5" value="8"></div>
+      <div class="field"><label>LAYER THICKNESS <span id="layerVal">200 µm</span></label><input id="layer" type="range" min="100" max="500" step="10" value="200"></div>
+      <div class="field"><label>CULTURE DURATION <span id="daysVal">21 days</span></label><input id="days" type="range" min="3" max="42" value="21"></div>
+      <button class="action">RUN SIMULATED PRINT</button>
+      <div class="demo-note">Demonstration only. Not experimentally validated and not for scientific or clinical decision-making.</div>
+    </form>
+    <div class="output-zone">
+      <div class="printer" id="printer"><div class="nozzle"></div><div class="printshape"></div><div class="bed"></div></div>
+      <div class="metrics">
+        <div class="metric"><strong id="viab">89%</strong><span>Cell viability estimate*</span></div>
+        <div class="metric"><strong id="integrity">84%</strong><span>Structural integrity*</span></div>
+        <div class="metric"><strong id="potential">HIGH</strong><span>Regeneration potential*</span></div>
+      </div>
+      <p id="recommend" style="color:var(--muted);line-height:1.6">Mock optimization: maintain moderate layer thickness and evaluate print speed against the selected bioink.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- REGEN -->
+<section class="appview" id="regen">
+<div class="apphead"><div class="wrap apphead-inner"><strong>BIRT LAB / REGENERATION PREDICTOR</strong><button class="backbtn closeview">← BACK</button></div></div>
+<div class="wrap appbody">
+  <div class="app-title"><div class="index">DIGITAL TOOL / 02</div><div><h2>Model regenerative potential.</h2></div></div>
+  <div class="app-grid">
+    <div class="control-group">
+      <div class="field"><label>INITIAL VIABILITY <span id="rv1">85%</span></label><input id="r1" type="range" min="40" max="100" value="85"></div>
+      <div class="field"><label>SCAFFOLD POROSITY <span id="rv2">70%</span></label><input id="r2" type="range" min="20" max="95" value="70"></div>
+      <div class="field"><label>BIOACTIVITY FACTOR <span id="rv3">7 / 10</span></label><input id="r3" type="range" min="1" max="10" value="7"></div>
+      <div class="field"><label>CULTURE DURATION <span id="rv4">21 days</span></label><input id="r4" type="range" min="3" max="42" value="21"></div>
+      <div class="demo-note">Conceptual scoring model only — not a scientific prediction engine.</div>
+    </div>
+    <div class="output-zone">
+      <div class="scoreline"><span id="regenScore">82</span><small>/ 100 MOCK SCORE</small></div>
+      <div class="metrics" style="margin-top:35px">
+        <div class="metric"><strong id="rViab">88%</strong><span>Projected viability*</span></div>
+        <div class="metric"><strong id="rMatrix">76%</strong><span>Matrix formation*</span></div>
+        <div class="metric"><strong id="rConf">MOD</strong><span>Model confidence*</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- BIOINK -->
+<section class="appview" id="bioink">
+<div class="apphead"><div class="wrap apphead-inner"><strong>BIRT LAB / BIOINK EXPLORER</strong><button class="backbtn closeview">← BACK</button></div></div>
+<div class="wrap appbody">
+  <div class="app-title"><div class="index">DIGITAL TOOL / 03</div><div><h2>Explore a formulation profile.</h2></div></div>
+  <div class="app-grid">
+    <div class="control-group">
+      <div class="field"><label>GELMA <span id="gv">50%</span></label><input class="bioRange" id="gelma" type="range" min="0" max="100" value="50"></div>
+      <div class="field"><label>ALGINATE <span id="av">30%</span></label><input class="bioRange" id="alg" type="range" min="0" max="100" value="30"></div>
+      <div class="field"><label>COLLAGEN CONTRIBUTION <span id="cv">20%</span></label><input class="bioRange" id="col" type="range" min="0" max="100" value="20"></div>
+      <button class="action" type="button" id="normalize">NORMALIZE BLEND</button>
+      <div class="demo-note">Visual demonstration only. Not a validated formulation model.</div>
+    </div>
+    <div class="output-zone">
+      <div class="chartbars">
+        <div class="chartbar" id="bPrint" style="height:82%"><span>Printability</span></div>
+        <div class="chartbar" id="bCell" style="height:88%"><span>Cell compatibility</span></div>
+        <div class="chartbar" id="bMech" style="height:69%"><span>Strength</span></div>
+        <div class="chartbar" id="bDeg" style="height:61%"><span>Degradation</span></div>
+      </div>
+      <p id="bioSummary" style="color:var(--muted);line-height:1.7">Balanced mock profile with strong cell compatibility and moderate mechanical reinforcement.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ASK -->
+<section class="appview" id="ask">
+<div class="apphead"><div class="wrap apphead-inner"><strong>BIRT LAB / ASK BIRT</strong><button class="backbtn closeview">← BACK</button></div></div>
+<div class="wrap appbody">
+  <div class="app-title"><div class="index">DIGITAL TOOL / 04</div><div><h2>Query the lab.</h2></div></div>
+  <div class="output-zone" style="max-width:900px;margin-left:auto">
+    <div class="chatlog" id="chat"><div class="msg bot"><b>BIRT</b>Ask about bioprinting, bioinks, tissue engineering, collaborations, facilities or research projects.</div></div>
+    <form class="chatrow" id="chatForm"><input id="chatInput" placeholder="e.g. What could BIRT Lab do in cartilage bioprinting?"><button class="action" style="margin:0">ASK</button></form>
+    <div class="demo-note">Scripted local demonstration, not an AI model or scientific advisory system.</div>
+  </div>
+</div>
+</section>
+
+<!-- COLLAB -->
+<section class="appview" id="collab">
+<div class="apphead"><div class="wrap apphead-inner"><strong>BIRT LAB / COLLABORATION</strong><button class="backbtn closeview">← BACK</button></div></div>
+<div class="wrap appbody">
+  <div class="app-title"><div class="index">COLLABORATION / 01</div><div><h2>What could we build together?</h2></div></div>
+  <form id="collabForm" class="control-group" style="max-width:780px;margin-left:auto">
+    <div class="field"><label>COLLABORATION PATHWAY</label><select><option>Joint Research Project</option><option>Postgraduate Research</option><option>Industry Collaboration</option><option>Technology / Facility Access</option><option>Grant Consortium</option></select></div>
+    <div class="field"><label>RESEARCH INTEREST</label><textarea placeholder="Describe the challenge, idea or area of interest..."></textarea></div>
+    <div class="field"><label>NAME / ORGANIZATION</label><input placeholder="Your name or organization"></div>
+    <button class="action">GENERATE COLLABORATION BRIEF</button>
+    <div id="collabResult" style="display:none;margin-top:25px;padding-top:20px;border-top:1px solid var(--line)"><strong>Collaboration brief created.</strong><p style="color:var(--muted)">In a live system this could route the enquiry to the BIRT Lab team, CRM, email or research management workflow.</p></div>
+  </form>
+</div>
+</section>
+
+<script>
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.12});
+  $$('.reveal').forEach(x=>io.observe(x));
+
+  $$('[data-open]').forEach(el=>el.addEventListener('click',()=>{const v=document.getElementById(el.dataset.open);if(v){v.classList.add('open');document.body.style.overflow='hidden'}}));
+  $$('.closeview').forEach(b=>b.addEventListener('click',()=>{b.closest('.appview').classList.remove('open');document.body.style.overflow=''}));
+
+  $$('.flow-point').forEach(p=>p.addEventListener('click',()=>{$$('.flow-point').forEach(x=>x.classList.remove('active'));p.classList.add('active');$('#flowDetail').textContent=p.dataset.flow}));
+
+  const canvas=$('#bioCanvas'),ctx=canvas.getContext('2d');let pts=[];
+  function size(){canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);pts=Array.from({length:Math.min(65,Math.floor(innerWidth/20))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:.8+Math.random()*1.8,vx:(Math.random()-.5)*.13,vy:(Math.random()-.5)*.13}))}
+  function anim(){ctx.clearRect(0,0,innerWidth,innerHeight);ctx.fillStyle='rgba(11,119,113,.14)';pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>innerWidth)p.vx*=-1;if(p.y<0||p.y>innerHeight)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()});requestAnimationFrame(anim)}
+  size();if(!matchMedia('(prefers-reduced-motion: reduce)').matches)anim();addEventListener('resize',size);
+
+  function bindRange(id,out,format){const i=$(id),o=$(out);const f=()=>o.textContent=format(i.value);i.addEventListener('input',f);f()}
+  bindRange('#density','#densityVal',v=>(+v).toFixed(1)+' M/mL');bindRange('#layer','#layerVal',v=>v+' µm');bindRange('#days','#daysVal',v=>v+' days');
+  $('#simForm').addEventListener('submit',e=>{e.preventDefault();const d=+$('#density').value,l=+$('#layer').value,days=+$('#days').value;const v=Math.max(55,Math.min(96,94-(d-8)*.7-Math.abs(l-190)/45+days/25));const integ=Math.max(50,Math.min(95,90-Math.abs(l-220)/18+d/9));const pot=(v+integ+Math.min(95,60+days))/3;$('#viab').textContent=Math.round(v)+'%';$('#integrity').textContent=Math.round(integ)+'%';$('#potential').textContent=pot>82?'HIGH':pot>70?'MOD-HIGH':'MODERATE';$('#recommend').textContent=l>280?'Mock optimization: consider reducing layer thickness to improve structural fidelity.':'Mock optimization: current settings show a balanced profile; evaluate print speed and crosslinking next.';const p=$('#printer');p.classList.remove('run');void p.offsetWidth;p.classList.add('run')});
+
+  ['1','2','3','4'].forEach(n=>$('#r'+n).addEventListener('input',updateRegen));
+  function updateRegen(){const a=+$('#r1').value,b=+$('#r2').value,c=+$('#r3').value,d=+$('#r4').value;$('#rv1').textContent=a+'%';$('#rv2').textContent=b+'%';$('#rv3').textContent=c+' / 10';$('#rv4').textContent=d+' days';let score=Math.round(a*.4+(100-Math.abs(68-b)*.6)*.18+c*4.2+Math.min(15,d*.36));score=Math.max(35,Math.min(98,score));$('#regenScore').textContent=score;$('#rViab').textContent=Math.min(97,Math.round(a+d*.16))+'%';$('#rMatrix').textContent=Math.min(96,Math.round(b*.55+c*3+d*.8))+'%';$('#rConf').textContent=score>85?'HIGH':score>65?'MOD':'LOW'}updateRegen();
+
+  $$('.bioRange').forEach(x=>x.addEventListener('input',updateBio));
+  function updateBio(){let g=+$('#gelma').value,a=+$('#alg').value,c=+$('#col').value;$('#gv').textContent=g+'%';$('#av').textContent=a+'%';$('#cv').textContent=c+'%';let pr=Math.min(96,45+g*.28+a*.22),cell=Math.min(96,50+c*.32+g*.16),mech=Math.min(96,40+a*.38+g*.2),deg=Math.min(96,35+c*.35+(100-a)*.12);$('#bPrint').style.height=pr+'%';$('#bCell').style.height=cell+'%';$('#bMech').style.height=mech+'%';$('#bDeg').style.height=deg+'%';$('#bioSummary').textContent=cell>mech?'Mock profile emphasizes biological compatibility; mechanical reinforcement may be the next optimization target.':'Mock profile emphasizes printability and mechanical support; review degradation and cell compatibility balance.'}
+  $('#normalize').addEventListener('click',()=>{let vals=[+$('#gelma').value,+$('#alg').value,+$('#col').value],sum=vals.reduce((a,b)=>a+b,0)||1;let out=vals.map(v=>Math.round(v/sum*100));out[0]+=100-out.reduce((a,b)=>a+b,0);$('#gelma').value=out[0];$('#alg').value=out[1];$('#col').value=out[2];updateBio()});updateBio();
+
+  const replies=[
+    ['cartilage','A BIRT Lab cartilage programme could combine chondrocyte-compatible bioinks, construct architecture, mechanical conditioning and longitudinal viability / matrix analysis.'],
+    ['bioink','BIRT Lab could structure bioink research around printability, cell compatibility, mechanical behaviour and degradation — then connect validated data to project records.'],
+    ['collab','A collaboration workflow could begin with research-fit screening, capability mapping, project scoping, IP / data requirements and milestone planning.'],
+    ['facility','The final site could expose facilities through capability, equipment limits, availability, technical contact and related research programmes.'],
+    ['project','Projects could become living records showing objectives, team, stage, methods, outputs, publications, grants, collaborators and translation readiness.']
+  ];
+  $('#chatForm').addEventListener('submit',e=>{e.preventDefault();const inp=$('#chatInput'),q=inp.value.trim();if(!q)return;const chat=$('#chat');const u=document.createElement('div');u.className='msg user';u.innerHTML='<b>YOU</b>'+q;chat.appendChild(u);inp.value='';let ans='BIRT Lab could connect that topic to its integrated research model: define the biological objective, select materials and fabrication strategy, capture experimental data and identify the next translational step.';for(const [k,r] of replies)if(q.toLowerCase().includes(k)){ans=r;break}setTimeout(()=>{const m=document.createElement('div');m.className='msg bot';m.innerHTML='<b>BIRT</b>'+ans;chat.appendChild(m);chat.scrollTop=chat.scrollHeight},300)});
+  $('#collabForm').addEventListener('submit',e=>{e.preventDefault();$('#collabResult').style.display='block'});
+})();
+</script>
+</body>
+</html>
