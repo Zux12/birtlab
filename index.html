@@ -119,8 +119,10 @@ radial-gradient(circle at 75% 85%,rgba(92,197,191,.08),transparent 18%)}
 .circle-btn:hover{background:var(--ink);color:white;transform:rotate(-6deg) scale(1.04)}
 
 footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line)}
-.reveal{opacity:0;transform:translateY(24px);transition:.8s}.reveal.show{opacity:1;transform:none}
-
+.reveal{opacity:1;transform:none;transition:.8s}
+.reveal.animate-ready{opacity:0;transform:translateY(24px)}
+.reveal.animate-ready.show{opacity:1;transform:none}
+  
 /* internal app views */
 .appview{display:none;position:fixed;inset:0;z-index:100;background:rgba(242,246,244,.985);overflow:auto}
 .appview.open{display:block;animation:viewin .3s ease}
@@ -428,8 +430,18 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 (function(){
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.12});
-  $$('.reveal').forEach(x=>io.observe(x));
+if ('IntersectionObserver' in window) {
+  $$('.reveal').forEach(x => x.classList.add('animate-ready'));
+
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('show');
+      io.unobserve(e.target);
+    }
+  }), { threshold: .12 });
+
+  $$('.reveal').forEach(x => io.observe(x));
+}
 
   $$('[data-open]').forEach(el=>el.addEventListener('click',()=>{const v=document.getElementById(el.dataset.open);if(v){v.classList.add('open');document.body.style.overflow='hidden'}}));
   $$('.closeview').forEach(b=>b.addEventListener('click',()=>{b.closest('.appview').classList.remove('open');document.body.style.overflow=''}));
