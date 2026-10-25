@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIRT Lab | Expert & Collaboration Registry</title>
+<meta name="description" content="Register as a panel member, reviewer or research collaborator with BIRT Lab.">
+
+<style>
+:root {
+  --paper:#f2f6f4;
+  --ink:#0e1d1f;
+  --teal:#0b7771;
+  --muted:#667779;
+  --line:#cfdad7;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Inter,Arial,sans-serif;
+}
+a { color:inherit;text-decoration:none; }
+.wrap { width:min(1050px,calc(100% - 40px));margin:auto; }
+header {
+  border-bottom:1px solid var(--line);
+  background:rgba(242,246,244,.95);
+}
+.top {
+  min-height:76px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+.brand { font-weight:900;letter-spacing:.06em; }
+.brand small {
+  display:block;
+  font-size:9px;
+  letter-spacing:.1em;
+  color:var(--muted);
+  margin-top:5px;
+}
+.back { font-size:13px;font-weight:700;color:var(--teal); }
+main { padding:75px 0 100px; }
+.micro {
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.18em;
+  color:var(--teal);
+}
+h1 {
+  font-size:clamp(50px,9vw,100px);
+  line-height:.94;
+  letter-spacing:-.065em;
+  margin:25px 0;
+}
+h1 span { color:var(--teal); }
+.lead {
+  max-width:750px;
+  font-size:18px;
+  line-height:1.75;
+  color:var(--muted);
+}
+.line { border-top:1px solid var(--line);margin:45px 0 30px; }
+h2 { font-size:26px;letter-spacing:-.035em;margin-bottom:25px; }
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px 30px;
+}
+.field { display:flex;flex-direction:column;gap:10px; }
+.full { grid-column:1/-1; }
+.field label,.group-label {
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+input,select,textarea {
+  font:inherit;
+  width:100%;
+  padding:14px;
+  border:1px solid #b8c9c5;
+  border-radius:5px;
+  background:white;
+  color:var(--ink);
+}
+input:focus,select:focus,textarea:focus {
+  outline:2px solid var(--teal);
+  outline-offset:1px;
+}
+textarea { min-height:115px;resize:vertical; }
+.checks { display:flex;gap:12px;flex-wrap:wrap; }
+.checks label {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 18px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:5px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+.checks input,.consent input {
+  width:auto;
+  accent-color:var(--teal);
+}
+.note {
+  font-size:13px;
+  line-height:1.7;
+  color:var(--muted);
+}
+.consent {
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  cursor:pointer;
+}
+.consent input { margin-top:5px; }
+button.submit {
+  margin-top:20px;
+  background:var(--ink);
+  color:white;
+  border:0;
+  border-radius:4px;
+  padding:17px 28px;
+  font-weight:900;
+  font-size:13px;
+  cursor:pointer;
+}
+button.submit:hover { background:var(--teal); }
+button.submit:disabled { opacity:.5;cursor:not-allowed; }
+.status { margin-top:20px;font-size:14px;line-height:1.6; }
+footer {
+  border-top:1px solid var(--line);
+  padding:25px 0 45px;
+  color:var(--muted);
+  font-size:12px;
+}
+@media(max-width:650px) {
+  main { padding-top:45px; }
+  .grid { grid-template-columns:1fr; }
+  .full { grid-column:auto; }
+  .brand small { max-width:220px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap top">
+    <a href="index.html" class="brand">
+      BIRT LAB
+      <small>BIOENGINEERING & INTEGRATED REGENERATIVE TECHNOLOGIES</small>
+    </a>
+    <a href="index.html" class="back">MAIN WEBSITE ↗</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="micro">BIRT LAB / PROFESSIONAL NETWORK</div>
+  <h1>Connect with<br><span>BIRT Lab.</span></h1>
+  <p class="lead">
+    BIRT Lab welcomes academics, researchers, industry professionals
+    and subject-matter experts interested in contributing as panel
+    members, reviewers or research collaborators.
+    Register your professional interest to be considered for future
+    research activities, academic engagements and collaborative opportunities.
+  </p>
+
+  <form id="registry">
+
+    <div class="line"></div>
+    <h2>01 / Professional Details</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label for="name">FULL NAME *</label>
+        <input id="name" name="name" required maxlength="160" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="title">PROFESSIONAL TITLE</label>
+        <input id="title" name="title" placeholder="Prof., Dr., Ir., etc.">
+      </div>
+
+      <div class="field">
+        <label for="email">EMAIL ADDRESS *</label>
+        <input id="email" name="email" type="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="phone">CONTACT NUMBER (OPTIONAL)</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel">
+      </div>
+
+      <div class="field">
+        <label for="organisation">INSTITUTION / ORGANISATION *</label>
+        <input id="organisation" name="organisation" required>
+      </div>
+
+      <div class="field">
+        <label for="designation">POSITION / DESIGNATION *</label>
+        <input id="designation" name="designation" required>
+      </div>
+
+      <div class="field">
+        <label for="department">DEPARTMENT / FACULTY</label>
+        <input id="department" name="department">
+      </div>
+
+      <div class="field">
+        <label for="country">COUNTRY *</label>
+        <input id="country" name="country" required>
+      </div>
+    </div>
+
+    <div class="line"></div>
+    <h2>02 / Areas of Participation</h2>
+
+    <p class="group-label">I AM INTERESTED IN (SELECT ONE OR MORE) *</p>
+
+    <div class="checks">
+      <label>
+        <input type="checkbox" name="roles" value="Panel member">
+        Panel Member
+      </label>
+      <label>
+        <input type="checkbox" name="roles" value="Reviewer">
+        Reviewer
+      </label>
+      <label>
+        <input type="checkbox" name="roles" value="Research collaborator">
+        Research Collaborator
+      </label>
+    </div>
+
+    <div class="grid" style="margin-top:30px">
+      <div class="field full">
+        <label for="expertise">AREAS OF EXPERTISE / RESEARCH INTERESTS *</label>
+        <textarea id="expertise" name="expertise" required
+          placeholder="e.g. Bioprinting, biomaterials, tissue engineering, regenerative medicine"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="profile">ORCID / GOOGLE SCHOLAR / PROFESSIONAL PROFILE</label>
+        <input id="profile" name="profile" type="url" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label for="availability">AVAILABILITY FOR FUTURE ENGAGEMENT</label>
+        <select id="availability" name="availability">
+          <option>To be discussed</option>
+          <option>Available for online engagement</option>
+          <option>Available for in-person engagement</option>
+          <option>Available for both</option>
+        </select>
+      </div>
+
+      <div class="field full">
+        <label for="notes">ADDITIONAL INFORMATION (OPTIONAL)</label>
+        <textarea id="notes" name="notes"
+          placeholder="Relevant experience, collaboration interests or other information"></textarea>
+      </div>
+    </div>
+
+    <div class="line"></div>
+    <h2>03 / Declaration & Consent</h2>
+
+    <label class="consent note">
+      <input id="consent" name="consent" type="checkbox" required>
+      <span>
+        I consent to BIRT Lab collecting and processing the information
+        submitted for its professional registry and contacting me
+        regarding relevant panel, reviewer and research collaboration
+        opportunities.
+      </span>
+    </label>
+
+    <p class="note">
+      Registration expresses professional interest and does not guarantee
+      appointment or engagement. Please do not submit confidential
+      or sensitive research information.
+    </p>
+
+    <button class="submit" id="send" type="submit">
+      SUBMIT REGISTRATION →
+    </button>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+  </form>
+</main>
+
+<footer>
+  <div class="wrap">
+    © BIRT Lab · Expert & Collaboration Registry
+  </div>
+</footer>
+
+<script>
+/*
+  GOOGLE SHEETS CONNECTION
+  Replace the blank value with the deployed Google Apps Script URL.
+  Until connected, submissions will not be accepted.
+*/
+const SUBMISSION_ENDPOINT = "";
+
+const form = document.getElementById("registry");
+const statusBox = document.getElementById("status");
+const submitButton = document.getElementById("send");
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  if (!form.reportValidity()) return;
+
+  const roles = [...form.querySelectorAll('input[name="roles"]:checked')]
+    .map(input => input.value);
+
+  if (!roles.length) {
+    statusBox.textContent = "Please select at least one participation role.";
+    return;
+  }
+
+  if (!SUBMISSION_ENDPOINT) {
+    statusBox.textContent =
+      "Registration is not open yet. The submission service must be connected before data can be collected.";
+    return;
+  }
+
+  submitButton.disabled = true;
+  statusBox.textContent = "Submitting registration...";
+
+  const data = Object.fromEntries(new FormData(form).entries());
+  data.roles = roles.join(", ");
+  data.consent = true;
+  data.submittedAt = new Date().toISOString();
+
+  try {
+    const response = await fetch(SUBMISSION_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) throw new Error("Submission failed");
+
+    const result = await response.json();
+
+    if (result.status !== "success") {
+      throw new Error(result.message || "Submission failed");
+    }
+
+    statusBox.textContent =
+      "Thank you. Your registration has been received.";
+
+    form.reset();
+
+  } catch (error) {
+    statusBox.textContent =
+      "Submission could not be confirmed. Please try again later.";
+  } finally {
+    submitButton.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>
