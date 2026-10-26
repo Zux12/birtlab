@@ -338,10 +338,10 @@ footer {
 
 <script>
 /*
-  MTerms backend connection will be configured in the next stage.
-  Until connected, submissions are disabled.
+  TERMIS-AP 2028 expression-of-interest submission endpoint.
 */
-const SUBMISSION_ENDPOINT = "";
+const SUBMISSION_ENDPOINT =
+  "https://mterm2026-559f9bf571b5.herokuapp.com/api/birt/experts";
 
 const form = document.getElementById("registry");
 const otherCheckbox = form.querySelector('input[name="roles"][value="Other"]');
@@ -357,57 +357,59 @@ const submitButton = document.getElementById("send");
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
-
   if (!form.reportValidity()) return;
 
+  const roleMap = {
+    "Scientific Panel Member": "Panel Member",
+    "Abstract / Scientific Reviewer": "Scientific Reviewer",
+    "Invited Speaker": "Scientific Speaker",
+    "Session Chair / Moderator": "Session Chair / Moderator",
+    "Workshop Facilitator": "Workshop Facilitator",
+    "Scientific / Research Collaborator": "Research Collaborator",
+    "Industry / Technology Partner": "Industry / Technology Partner",
+    "Other": "Other"
+  };
   const roles = [...form.querySelectorAll('input[name="roles"]:checked')]
-    .map(input => input.value);
+    .map(input => roleMap[input.value]);
 
   if (!roles.length) {
     statusBox.textContent = "Please select at least one participation role.";
     return;
   }
-
-  if (!SUBMISSION_ENDPOINT) {
-    statusBox.textContent =
-      "Registration is not open yet. The submission service must be connected before data can be collected.";
+  if (roles.includes("Other") && !otherInput.value.trim()) {
+    statusBox.textContent = "Please specify your other participation interest.";
+    otherInput.focus();
     return;
   }
 
-  submitButton.disabled = true;
-  statusBox.textContent = "Submitting registration...";
-
   const data = Object.fromEntries(new FormData(form).entries());
-  data.roles = roles.join(", ");
-  data.consent = true;
-  data.event = "TERMIS-AP 2028";
-  data.registrationType = "expression_of_interest";
-  data.submittedAt = new Date().toISOString();
+  data.roles = roles;
+  data.consent = document.getElementById("consent").checked;
+  delete data.event;
+  delete data.registrationType;
+  delete data.submittedAt;
 
+  submitButton.disabled = true;
+  statusBox.textContent = "Submitting your expression of interest...";
   try {
     const response = await fetch(SUBMISSION_ENDPOINT, {
       method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
-
-    if (!response.ok) throw new Error("Submission failed");
-
     const result = await response.json();
-
-    if (result.status !== "success") {
-      throw new Error(result.message || "Submission failed");
+    if (!response.ok || result.status !== "success") {
+      throw new Error(result.message || "Submission could not be completed.");
     }
-
     statusBox.textContent =
-      "Thank you. Your registration has been received.";
-
+      "Thank you. Your expression of interest has been received. " +
+      "Your registration reference is: " + result.reference;
     form.reset();
-
+    otherField.style.display = "none";
+    otherInput.required = false;
+    statusBox.scrollIntoView({ behavior: "smooth", block: "center" });
   } catch (error) {
-    statusBox.textContent =
+    statusBox.textContent = error.message ||
       "Submission could not be confirmed. Please try again later.";
   } finally {
     submitButton.disabled = false;
