@@ -1,296 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BIRT Lab | Expert Network</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f2f6f4">
-
+<title>BIRT Lab | TERMIS Asia-Pacific 2028</title>
+<meta name="description" content="Express your interest in TERMIS Asia-Pacific 2028 as a speaker, reviewer, panel member or collaborator.">
 <style>
-:root {
-  --ink:#0e1d1f;
-  --teal:#0b7771;
-  --aqua:#5cc5bf;
-  --violet:#7759a6;
-  --paper:#f2f6f4;
-}
-* { box-sizing:border-box; }
-html,body {
-  width:100%;
-  height:100%;
-  margin:0;
-  overflow:hidden;
-}
-body {
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--paper);
-  color:var(--ink);
-}
-canvas {
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-}
-.flash {
-  position:fixed;
-  inset:0;
-  z-index:4;
-  background:white;
-  pointer-events:none;
-  animation:flashOut .55s ease-out forwards;
-}
-@keyframes flashOut {
-  0% { opacity:1; }
-  100% { opacity:0; }
-}
-.center {
-  position:absolute;
-  z-index:5;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:24px;
-}
-.logo {
-  font-size:clamp(75px,16vw,180px);
-  font-weight:900;
-  letter-spacing:-.095em;
-  line-height:1;
-  opacity:0;
-  transform:scale(2.2);
-  animation:logoIn .55s cubic-bezier(.15,1.5,.35,1)
-    .12s forwards;
-}
-.logo span { color:var(--teal); }
-@keyframes logoIn {
-  0% {
-    opacity:0;
-    transform:scale(2.2);
-    filter:blur(12px);
-  }
-  70% {
-    opacity:1;
-    filter:blur(0);
-  }
-  100% {
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0);
-  }
-}
-.slogan {
-  font-size:clamp(14px,2.5vw,24px);
-  color:var(--teal);
-  font-weight:700;
-  letter-spacing:.07em;
-  margin-top:22px;
-  opacity:0;
-  transform:translateY(30px);
-  animation:rise .35s ease-out .55s forwards;
-}
-.sub {
-  margin-top:18px;
-  font-size:clamp(12px,1.5vw,16px);
-  color:#667779;
-  letter-spacing:.12em;
-  opacity:0;
-  animation:rise .35s ease-out .8s forwards;
-}
-@keyframes rise {
-  to { opacity:1;transform:translateY(0); }
-}
-.ring {
-  position:absolute;
-  width:min(72vw,650px);
-  height:min(72vw,650px);
-  border:2px solid rgba(11,119,113,.18);
-  border-radius:50%;
-  opacity:0;
-  animation:ringBlast 1.5s ease-out .2s forwards;
-  pointer-events:none;
-}
-.ring.two {
-  animation-delay:.38s;
-  border-color:rgba(119,89,166,.2);
-}
-.ring.three {
-  animation-delay:.55s;
-  border-style:dashed;
-}
-@keyframes ringBlast {
-  0% { transform:scale(.15) rotate(0);opacity:1; }
-  65% { opacity:.8; }
-  100% { transform:scale(1.6) rotate(160deg);opacity:0; }
-}
-.progress {
-  position:absolute;
-  bottom:85px;
-  width:min(320px,75vw);
-  height:4px;
-  background:#d9e5e1;
-  border-radius:5px;
-  overflow:hidden;
-}
-.progress div {
-  height:100%;
-  width:0;
-  background:var(--teal);
-  animation:load 2.5s linear forwards;
-}
-@keyframes load {
-  to { width:100%; }
-}
-.status {
-  position:absolute;
-  bottom:110px;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.15em;
-  color:#667779;
-}
-.skip {
-  position:absolute;
-  z-index:10;
-  bottom:28px;
-  background:none;
-  border:1px solid #9fb9b3;
-  padding:11px 24px;
-  border-radius:30px;
-  color:var(--teal);
-  font-size:12px;
-  font-weight:800;
-  cursor:pointer;
-}
-.skip:hover {
-  background:var(--teal);
-  color:white;
-}
-.exit {
-  animation:exit .28s ease-in forwards;
-}
-@keyframes exit {
-  to { opacity:0;transform:scale(.92);filter:blur(8px); }
-}
-@media(prefers-reduced-motion:reduce) {
-  .logo,.slogan,.sub {
-    animation:none;
-    opacity:1;
-    transform:none;
-  }
-  .ring { display:none; }
-}
+:root{--teal:#0b7771;--ink:#0e1d1f;--orange:#ff8200;--paper:#f2f6f4}
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;overflow:hidden}body{font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink)}
+#particles{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}.scene{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 95px;text-align:center;gap:12px}
+.logos{display:flex;align-items:center;justify-content:center;gap:clamp(22px,5vw,80px);width:min(1060px,100%)}.brand{flex:1.3;min-width:0;animation:enterLeft .48s cubic-bezier(.2,1.3,.3,1) both}.birt{font-size:clamp(54px,10vw,135px);font-weight:900;letter-spacing:-.095em;line-height:.95;white-space:nowrap}.birt span{color:var(--teal)}.tagline{font-size:clamp(9px,1.35vw,17px);font-weight:700;letter-spacing:.1em;color:var(--teal);margin-top:13px}
+.separator{height:130px;width:2px;background:linear-gradient(transparent,#9ebdb6,transparent);animation:grow .35s .25s both}.termis{flex:1;min-width:0;animation:enterRight .48s cubic-bezier(.2,1.3,.3,1) both}.support{font-size:clamp(10px,1.3vw,14px);font-weight:800;letter-spacing:.24em;color:#697c7c;margin-bottom:12px}.termis img{display:block;width:100%;max-width:380px;height:auto;margin:auto}.year{font-size:clamp(34px,5.8vw,70px);font-weight:900;letter-spacing:.07em;color:var(--orange);line-height:1.05;margin-top:5px}
+.headline{margin:40px 0 0;font-size:clamp(24px,4.3vw,54px);font-weight:900;letter-spacing:-.04em;animation:pop .4s .55s both}.headline em{font-style:normal;color:var(--teal)}.roles{font-size:clamp(12px,1.8vw,18px);color:#516567;font-weight:600;animation:pop .4s .78s both}.bar{position:absolute;bottom:76px;width:min(360px,75vw);height:5px;background:#d7e4e0;border-radius:20px;overflow:hidden}.bar:before{content:"";display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--orange));animation:fill 2.5s linear forwards}.loading{position:absolute;bottom:96px;font-size:10px;font-weight:800;letter-spacing:.2em;color:#657979}.skip{position:absolute;bottom:24px;padding:10px 23px;border:1px solid #93b3ad;border-radius:40px;background:white;color:var(--teal);font-weight:800;cursor:pointer}.skip:focus-visible{outline:3px solid var(--orange)}.scene.exit{animation:leave .28s forwards}
+@keyframes enterLeft{from{opacity:0;transform:translateX(-140px) scale(.65);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}@keyframes enterRight{from{opacity:0;transform:translateX(140px) scale(.65);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes pop{from{opacity:0;transform:translateY(28px) scale(.92)}to{opacity:1;transform:none}}@keyframes fill{to{width:100%}}@keyframes leave{to{opacity:0;transform:scale(.96);filter:blur(5px)}}
+@media(max-width:650px){.scene{padding-top:35px}.logos{flex-direction:column;gap:19px}.brand,.termis{flex:none;width:100%}.birt{font-size:clamp(64px,16vw,110px)}.tagline{font-size:10px}.separator{width:65%;height:1px;background:linear-gradient(90deg,transparent,#9ebdb6,transparent)}.termis img{max-width:235px}.year{font-size:48px}.support{margin-bottom:7px}.headline{margin-top:15px}.roles{max-width:310px;line-height:1.6}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
-
 <body>
-<canvas id="particles"></canvas>
-<div class="flash"></div>
-
-<div class="center" id="scene">
-  <div class="ring"></div>
-  <div class="ring two"></div>
-  <div class="ring three"></div>
-
-  <div class="logo">BIRT<span>LAB</span></div>
-  <div class="slogan">ENGINEERING LIFE THROUGH TECHNOLOGY</div>
-  <div class="sub">EXPERT • REVIEWER • COLLABORATOR NETWORK</div>
-
-  <div class="status">CONNECTING TO BIRT LAB</div>
-  <div class="progress"><div></div></div>
-  <button class="skip" id="skip">SKIP INTRO →</button>
-</div>
-
+<canvas id="particles" aria-hidden="true"></canvas>
+<main class="scene" id="scene">
+  <div class="logos">
+    <section class="brand" aria-label="BIRT Lab">
+      <div class="birt">BIRT<span>LAB</span></div>
+      <div class="tagline">ENGINEERING LIFE THROUGH TECHNOLOGY</div>
+    </section>
+    <div class="separator" aria-hidden="true"></div>
+    <section class="termis" aria-label="TERMIS Asia-Pacific 2028">
+      <div class="support">SUPPORTING</div>
+      <img src="termis-ap.png" alt="TERMIS Asia-Pacific logo">
+      <div class="year">2028</div>
+    </section>
+  </div>
+  <h1 class="headline">Be Part of <em>TERMIS-AP 2028</em></h1>
+  <div class="roles">Speakers · Reviewers · Panels · Collaborators</div>
+  <div class="loading">OPENING REGISTRATION</div>
+  <div class="bar" aria-hidden="true"></div>
+  <button class="skip" id="skip" type="button">SKIP INTRO →</button>
+</main>
 <script>
-(function(){
-  "use strict";
-
-  const DESTINATION = "expert-form.html";
-  const DURATION = 2500;
-  let navigating = false;
-
-  function go() {
-    if(navigating) return;
-    navigating = true;
-    document.getElementById("scene").classList.add("exit");
-    setTimeout(function(){
-      window.location.replace(DESTINATION);
-    },280);
-  }
-
-  document.getElementById("skip")
-    .addEventListener("click",go);
-
-  setTimeout(go,DURATION);
-
-  const canvas = document.getElementById("particles");
-  const ctx = canvas.getContext("2d");
-  let particles = [];
-  let w=0,h=0;
-
-  function resize(){
-    w=window.innerWidth;
-    h=window.innerHeight;
-    canvas.width=w*devicePixelRatio;
-    canvas.height=h*devicePixelRatio;
-    ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-
-    particles=Array.from({length:Math.min(95,Math.floor(w/12))},()=>({
-      x:Math.random()*w,
-      y:Math.random()*h,
-      vx:(Math.random()-.5)*7,
-      vy:(Math.random()-.5)*7,
-      r:1+Math.random()*3,
-      color:Math.random()>.8?"#7759a6":"#0b7771"
-    }));
-  }
-
-  function animate(){
-    ctx.clearRect(0,0,w,h);
-
-    for(const p of particles){
-      p.x+=p.vx;
-      p.y+=p.vy;
-      if(p.x<0||p.x>w) p.vx*=-1;
-      if(p.y<0||p.y>h) p.vy*=-1;
-
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.color;
-      ctx.globalAlpha=.5;
-      ctx.fill();
-    }
-
-    ctx.globalAlpha=.13;
-    ctx.strokeStyle="#0b7771";
-
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        const a=particles[i],b=particles[j];
-        const dx=a.x-b.x,dy=a.y-b.y;
-        if(dx*dx+dy*dy<12000){
-          ctx.beginPath();
-          ctx.moveTo(a.x,a.y);
-          ctx.lineTo(b.x,b.y);
-          ctx.stroke();
-        }
-      }
-    }
-
-    ctx.globalAlpha=1;
-    requestAnimationFrame(animate);
-  }
-
-  resize();
-  window.addEventListener("resize",resize);
-
-  if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-    animate();
-  }
+(()=>{
+  const destination='expert-form.html';let leaving=false;
+  function go(){if(leaving)return;leaving=true;document.getElementById('scene').classList.add('exit');setTimeout(()=>location.replace(destination),280)}
+  document.getElementById('skip').addEventListener('click',go);
+  setTimeout(go,2500);
+  const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');let w,h,pts=[];
+  function resize(){const dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);pts=Array.from({length:Math.min(90,Math.floor(w/13))},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*7,vy:(Math.random()-.5)*7,r:1+Math.random()*2.6,c:Math.random()<.28?'#ff8200':'#0b7771'}))}
+  function frame(){ctx.clearRect(0,0,w,h);for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;ctx.globalAlpha=.45;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=.12;ctx.strokeStyle='#0b7771';for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y;if(dx*dx+dy*dy<10000){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}ctx.globalAlpha=1;requestAnimationFrame(frame)}
+  resize();addEventListener('resize',resize);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)frame();
 })();
 </script>
 </body>
