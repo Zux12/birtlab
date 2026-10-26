@@ -15,7 +15,50 @@
 .headline{margin:40px 0 0;font-size:clamp(24px,4.3vw,54px);font-weight:900;letter-spacing:-.04em;animation:pop .4s .55s both}.headline em{font-style:normal;color:var(--teal)}.roles{font-size:clamp(12px,1.8vw,18px);color:#516567;font-weight:600;animation:pop .4s .78s both}.bar{position:absolute;bottom:76px;width:min(360px,75vw);height:5px;background:#d7e4e0;border-radius:20px;overflow:hidden}.bar:before{content:"";display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--orange));animation:fill 2.5s linear forwards}.loading{position:absolute;bottom:96px;font-size:10px;font-weight:800;letter-spacing:.2em;color:#657979}.skip{position:absolute;bottom:24px;padding:10px 23px;border:1px solid #93b3ad;border-radius:40px;background:white;color:var(--teal);font-weight:800;cursor:pointer}.skip:focus-visible{outline:3px solid var(--orange)}.scene.exit{animation:leave .28s forwards}
 @keyframes enterLeft{from{opacity:0;transform:translateX(-140px) scale(.65);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}@keyframes enterRight{from{opacity:0;transform:translateX(140px) scale(.65);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes pop{from{opacity:0;transform:translateY(28px) scale(.92)}to{opacity:1;transform:none}}@keyframes fill{to{width:100%}}@keyframes leave{to{opacity:0;transform:scale(.96);filter:blur(5px)}}
 @media(max-width:650px){.scene{padding-top:35px}.logos{flex-direction:column;gap:19px}.brand,.termis{flex:none;width:100%}.birt{font-size:clamp(64px,16vw,110px)}.tagline{font-size:10px}.separator{width:65%;height:1px;background:linear-gradient(90deg,transparent,#9ebdb6,transparent)}.termis img{max-width:235px}.year{font-size:48px}.support{margin-bottom:7px}.headline{margin-top:15px}.roles{max-width:310px;line-height:1.6}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* TERMIS logo and 2028 side by side */
+.termis-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.termis-row img {
+  display: block;
+  width: 68%;
+  max-width: 290px;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: normal;
+}
+
+.termis-row .year {
+  font-size: clamp(38px, 5vw, 68px);
+  font-weight: 900;
+  color: #ff8200;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Mobile layout */
+@media (max-width:650px) {
+  .termis-row {
+    gap: 8px;
+  }
+
+  .termis-row img {
+    width: 62%;
+    max-width: 220px;
+  }
+
+  .termis-row .year {
+    font-size: clamp(34px, 9vw, 52px);
+  }
+}
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
@@ -27,11 +70,15 @@
       <div class="tagline">ENGINEERING LIFE THROUGH TECHNOLOGY</div>
     </section>
     <div class="separator" aria-hidden="true"></div>
-    <section class="termis" aria-label="TERMIS Asia-Pacific 2028">
-      <div class="support">SUPPORTING</div>
-      <img src="termis-ap.png" alt="TERMIS Asia-Pacific logo">
-      <div class="year">2028</div>
-    </section>
+<section class="termis" aria-label="TERMIS Asia-Pacific 2028">
+  <div class="support">SUPPORTING</div>
+
+  <div class="termis-row">
+    <img src="termis-ap.png" alt="TERMIS Asia-Pacific logo">
+    <div class="year">2028</div>
+  </div>
+
+</section>
   </div>
   <h1 class="headline">Be Part of <em>TERMIS-AP 2028</em></h1>
   <div class="roles">Speakers · Reviewers · Panels · Collaborators</div>
