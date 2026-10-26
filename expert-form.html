@@ -4,8 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BIRT Lab | Expert & Collaboration Registry</title>
-<meta name="description" content="Register as a panel member, reviewer or research collaborator with BIRT Lab.">
+<title>BIRT Lab | TERMIS-AP 2028 Participation</title>
+<meta name="description" content="Express interest in speaking, reviewing, chairing sessions and collaborating for TERMIS-AP 2028.">
 
 <style>
 :root {
@@ -14,6 +14,7 @@
   --teal:#0b7771;
   --muted:#667779;
   --line:#cfdad7;
+  --orange:#f58220;
 }
 * { box-sizing:border-box; }
 body {
@@ -147,6 +148,28 @@ footer {
   .full { grid-column:auto; }
   .brand small { max-width:220px; }
 }
+ .brand-logo{display:block;width:142px;height:auto;max-height:52px;object-fit:contain}
+ .conference-brand{display:flex;align-items:center;justify-content:center;gap:18px;margin:12px 0 28px}
+ .termis-block{display:flex;align-items:center;justify-content:center;gap:15px}
+ .termis-block img{display:block;width:clamp(190px,37vw,350px);height:auto}
+ .termis-year{color:#ff8200;font-weight:900;font-size:clamp(48px,8vw,92px);letter-spacing:-.07em}
+ .invitation{text-align:center;max-width:840px;margin:0 auto 40px}
+ .invitation h1{font-size:clamp(42px,7vw,80px);margin:18px 0 24px}
+ .invitation .lead{margin:0 auto 18px;max-width:790px}
+ .invitation .lead.secondary{font-size:16px}
+ .participation{margin:40px 0 26px;border-top:1px solid var(--line);padding-top:28px}
+ .participation h2{text-align:center}
+ .opportunities{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+ .opportunity{border:1px solid var(--line);background:#fff;padding:20px 18px;border-radius:5px;min-height:105px}
+ .opportunity strong{display:block;font-size:15px;margin-bottom:9px}
+ .opportunity span{color:var(--muted);font-size:13px;line-height:1.5}
+ .cta-wrap{text-align:center;margin:30px 0 8px}
+ .cta{display:inline-block;background:var(--teal);color:white;padding:16px 25px;border-radius:4px;font-weight:800;font-size:13px}
+ .event-note{border-left:3px solid #ff8200;padding:12px 18px;background:#fff;color:#536365;font-size:13px;line-height:1.6;margin:30px 0}
+ .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+ .footer-inner a{color:var(--teal);font-weight:700}
+ @media(max-width:650px){.opportunities{grid-template-columns:1fr 1fr}.termis-block{gap:8px}.termis-block img{width:min(65vw,250px)}.termis-year{font-size:52px}}
+ @media(max-width:420px){.opportunities{grid-template-columns:1fr}.termis-year{font-size:42px}}
 </style>
 </head>
 
@@ -154,24 +177,42 @@ footer {
 
 <header>
   <div class="wrap top">
-    <a href="index.html" class="brand">
-      BIRT LAB
-      <small>BIOENGINEERING & INTEGRATED REGENERATIVE TECHNOLOGIES</small>
+    <a href="index.html" class="brand" aria-label="BIRT Lab main website">
+      <img src="birtlab-logo.png" alt="BIRT LAB" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span style="display:none;font-size:23px;font-weight:900;letter-spacing:-.04em">BIRT<span style="color:#0b7771">LAB</span></span>
     </a>
     <a href="index.html" class="back">MAIN WEBSITE ↗</a>
   </div>
 </header>
 
 <main class="wrap">
-  <div class="micro">BIRT LAB / PROFESSIONAL NETWORK</div>
-  <h1>Connect with<br><span>BIRT Lab.</span></h1>
-  <p class="lead">
-    BIRT Lab welcomes academics, researchers, industry professionals
-    and subject-matter experts interested in contributing as panel
-    members, reviewers or research collaborators.
-    Register your professional interest to be considered for future
-    research activities, academic engagements and collaborative opportunities.
-  </p>
+  <div class="conference-brand">
+    <div class="termis-block">
+      <img src="termis-ap.png" alt="TERMIS Asia-Pacific logo">
+      <span class="termis-year">2028</span>
+    </div>
+  </div>
+  <section class="invitation">
+    <div class="micro">CALL FOR EXPRESSIONS OF INTEREST</div>
+    <h1>Be Part of<br><span>TERMIS-AP 2028.</span></h1>
+    <p class="lead">Your expertise can help shape scientific dialogue, inspire innovation and advance the future of tissue engineering and regenerative medicine.</p>
+    <p class="lead secondary">We welcome researchers, academics, clinicians, scientists, industry professionals and emerging research leaders from across the Asia-Pacific region and beyond to express interest in contributing to TERMIS-AP 2028. Share your knowledge, support scientific excellence and connect with a community dedicated to advancing regenerative science.</p>
+  </section>
+  <section class="participation" aria-labelledby="opportunities-title">
+    <h2 id="opportunities-title">Where could you contribute?</h2>
+    <div class="opportunities">
+      <div class="opportunity"><strong>Scientific Speaker</strong><span>Share your research, discoveries and perspectives.</span></div>
+      <div class="opportunity"><strong>Scientific Reviewer</strong><span>Support rigorous scientific evaluation and quality.</span></div>
+      <div class="opportunity"><strong>Panel Member</strong><span>Contribute to focused expert discussions.</span></div>
+      <div class="opportunity"><strong>Session Chair / Moderator</strong><span>Guide conversations and scientific exchange.</span></div>
+      <div class="opportunity"><strong>Workshop Facilitator</strong><span>Share practical methods and specialist expertise.</span></div>
+      <div class="opportunity"><strong>Research Collaborator</strong><span>Explore partnerships and future opportunities.</span></div>
+      <div class="opportunity"><strong>Industry / Technology Partner</strong><span>Connect technology and research communities.</span></div>
+      <div class="opportunity"><strong>Other Contributions</strong><span>Tell us how you would like to be involved.</span></div>
+    </div>
+    <div class="cta-wrap"><a class="cta" href="#registry">EXPRESS YOUR INTEREST ↓</a></div>
+  </section>
+  <div class="event-note">This is an expression of interest, not a confirmed invitation, appointment or conference registration. Participation is subject to the relevant conference selection and approval processes.</div>
 
   <form id="registry">
 
@@ -226,19 +267,16 @@ footer {
     <p class="group-label">I AM INTERESTED IN (SELECT ONE OR MORE) *</p>
 
     <div class="checks">
-      <label>
-        <input type="checkbox" name="roles" value="Panel member">
-        Panel Member
-      </label>
-      <label>
-        <input type="checkbox" name="roles" value="Reviewer">
-        Reviewer
-      </label>
-      <label>
-        <input type="checkbox" name="roles" value="Research collaborator">
-        Research Collaborator
-      </label>
+      <label><input type="checkbox" name="roles" value="Scientific Panel Member"> Scientific Panel Member</label>
+      <label><input type="checkbox" name="roles" value="Abstract / Scientific Reviewer"> Abstract / Scientific Reviewer</label>
+      <label><input type="checkbox" name="roles" value="Invited Speaker"> Invited Speaker</label>
+      <label><input type="checkbox" name="roles" value="Session Chair / Moderator"> Session Chair / Moderator</label>
+      <label><input type="checkbox" name="roles" value="Workshop Facilitator"> Workshop Facilitator</label>
+      <label><input type="checkbox" name="roles" value="Scientific / Research Collaborator"> Scientific / Research Collaborator</label>
+      <label><input type="checkbox" name="roles" value="Industry / Technology Partner"> Industry / Technology Partner</label>
+      <label><input type="checkbox" name="roles" value="Other"> Other</label>
     </div>
+    <div class="field" id="otherRoleField" style="display:none;margin-top:18px"><label for="otherRole">OTHER PARTICIPATION INTEREST (REQUIRED IF OTHER IS SELECTED)</label><input id="otherRole" name="otherRole" maxlength="160" placeholder="Please specify"></div>
 
     <div class="grid" style="margin-top:30px">
       <div class="field full">
@@ -248,12 +286,12 @@ footer {
       </div>
 
       <div class="field">
-        <label for="profile">ORCID / GOOGLE SCHOLAR / PROFESSIONAL PROFILE</label>
+        <label for="profile">ORCID / GOOGLE SCHOLAR / PROFESSIONAL PROFILE (OPTIONAL)</label>
         <input id="profile" name="profile" type="url" placeholder="https://...">
       </div>
 
       <div class="field">
-        <label for="availability">AVAILABILITY FOR FUTURE ENGAGEMENT</label>
+        <label for="availability">PREFERRED PARTICIPATION MODE (OPTIONAL)</label>
         <select id="availability" name="availability">
           <option>To be discussed</option>
           <option>Available for online engagement</option>
@@ -275,17 +313,12 @@ footer {
     <label class="consent note">
       <input id="consent" name="consent" type="checkbox" required>
       <span>
-        I consent to BIRT Lab collecting and processing the information
-        submitted for its professional registry and contacting me
-        regarding relevant panel, reviewer and research collaboration
-        opportunities.
+        I consent to BIRT Lab collecting and processing my submitted information to manage expressions of interest relating to TERMIS-AP 2028 and to contact me about relevant participation opportunities. I understand that my information may be shared with authorised conference coordination personnel for this purpose.
       </span>
     </label>
 
     <p class="note">
-      Registration expresses professional interest and does not guarantee
-      appointment or engagement. Please do not submit confidential
-      or sensitive research information.
+      Submitting this form does not confirm selection, appointment, speaking arrangements or attendance. Please do not submit confidential or sensitive research information.
     </p>
 
     <button class="submit" id="send" type="submit">
@@ -297,20 +330,28 @@ footer {
 </main>
 
 <footer>
-  <div class="wrap">
-    © BIRT Lab · Expert & Collaboration Registry
+  <div class="wrap footer-inner">
+    <div>© 2026 BIRT Lab · <strong>Powered by BIRT Lab</strong></div>
+    <a href="https://birtlab.com" title="BIRT Lab contact and website">Contact Us ↗</a>
   </div>
 </footer>
 
 <script>
 /*
-  GOOGLE SHEETS CONNECTION
-  Replace the blank value with the deployed Google Apps Script URL.
-  Until connected, submissions will not be accepted.
+  MTerms backend connection will be configured in the next stage.
+  Until connected, submissions are disabled.
 */
 const SUBMISSION_ENDPOINT = "";
 
 const form = document.getElementById("registry");
+const otherCheckbox = form.querySelector('input[name="roles"][value="Other"]');
+const otherField = document.getElementById("otherRoleField");
+const otherInput = document.getElementById("otherRole");
+otherCheckbox.addEventListener("change", () => {
+  otherField.style.display = otherCheckbox.checked ? "flex" : "none";
+  otherInput.required = otherCheckbox.checked;
+  if (!otherCheckbox.checked) otherInput.value = "";
+});
 const statusBox = document.getElementById("status");
 const submitButton = document.getElementById("send");
 
@@ -339,6 +380,8 @@ form.addEventListener("submit", async function(event) {
   const data = Object.fromEntries(new FormData(form).entries());
   data.roles = roles.join(", ");
   data.consent = true;
+  data.event = "TERMIS-AP 2028";
+  data.registrationType = "expression_of_interest";
   data.submittedAt = new Date().toISOString();
 
   try {
