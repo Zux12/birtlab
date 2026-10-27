@@ -166,6 +166,10 @@ footer {
  .cta-wrap{text-align:center;margin:30px 0 8px}
  .cta{display:inline-block;background:var(--teal);color:white;padding:16px 25px;border-radius:4px;font-weight:800;font-size:13px}
  .event-note{border-left:3px solid #ff8200;padding:12px 18px;background:#fff;color:#536365;font-size:13px;line-height:1.6;margin:30px 0}
+ .membership-choice{display:flex;align-items:flex-start;gap:14px;padding:20px;border:1px solid var(--line);border-left:4px solid var(--teal);background:#fff;border-radius:5px;cursor:pointer;margin-top:15px}
+ .membership-choice input{width:auto;flex:0 0 auto;margin-top:4px;accent-color:var(--teal)}
+ .membership-choice strong{display:block;font-size:15px;margin-bottom:7px}
+ .membership-choice small{display:block;color:var(--muted);font-size:13px;line-height:1.6}
  .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
  .footer-inner a{color:var(--teal);font-weight:700}
  @media(max-width:650px){.opportunities{grid-template-columns:1fr 1fr}.termis-block{gap:8px}.termis-block img{width:min(65vw,250px)}.termis-year{font-size:52px}}
@@ -308,7 +312,15 @@ footer {
     </div>
 
     <div class="line"></div>
-    <h2>03 / Declaration & Consent</h2>
+    <h2>03 / Free BIRT Lab Membership</h2>
+    <p class="note">Connect with the BIRT Lab research community. Membership is free, and you can register for the conference without joining.</p>
+    <label class="membership-choice" for="birtMembership">
+      <input type="checkbox" id="birtMembership" name="birtMembership" checked>
+      <span><strong>Yes, join BIRT Lab as a free member.</strong>
+      <small>Checked by default. Untick if you do not wish to join. Membership becomes active when your registration is successfully submitted. Membership is separate from conference participation and does not guarantee a conference role.</small></span>
+    </label>
+    <div class="line"></div>
+    <h2>04 / Declaration & Consent</h2>
 
     <label class="consent note">
       <input id="consent" name="consent" type="checkbox" required>
@@ -408,7 +420,8 @@ form.addEventListener("submit", async function(event) {
     }
     statusBox.textContent =
       "Thank you. Your expression of interest has been received. " +
-      "Your registration reference is: " + result.reference;
+      "Your registration reference is: " + result.reference +
+      (result.membershipStatus === "Active" ? " Your free BIRT Lab membership is now active." : "");
     form.reset();
     otherField.style.display = "none";
     otherInput.required = false;
