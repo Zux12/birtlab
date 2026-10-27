@@ -31,19 +31,55 @@
 <div class="field"><label for="organisation">INSTITUTION / ORGANISATION *</label><input id="organisation" name="organisation" required maxlength="200"></div>
 <div class="field"><label for="designation">POSITION / DESIGNATION *</label><input id="designation" name="designation" required maxlength="150" placeholder="Student, Researcher, Lecturer, Engineer, etc."></div>
 <div class="field"><label for="country">COUNTRY *</label><input id="country" name="country" required maxlength="100"></div>
-<div class="field"><label for="category">MEMBER CATEGORY *</label><select id="category" name="memberCategory" required><option value="">Select a category</option><option>Academic</option><option>Researcher</option><option>Student</option><option>Clinician</option><option>Industry Professional</option><option>Other</option></select></div>
+<div class="field"><label for="category">MEMBER CATEGORY *</label><select id="category" name="membershipCategory" required><option value="">Select a category</option><option>Academic</option><option>Researcher</option><option>Student</option><option>Clinician</option><option>Industry Professional</option><option>Other</option></select></div>
 <div class="field full"><label for="expertise">RESEARCH INTERESTS / AREAS OF EXPERTISE *</label><textarea id="expertise" name="expertise" required maxlength="3000" placeholder="Tell us what scientific fields interest you"></textarea></div>
 <div class="field full"><label for="profile">PROFESSIONAL PROFILE LINK (OPTIONAL)</label><input id="profile" name="profile" type="url" maxlength="500" placeholder="https://..."></div>
 </div>
 <label class="consent"><input type="checkbox" id="consent" required><span class="note">I agree to BIRT Lab processing my details for membership administration, as explained in the <a href="privacy.html" target="_blank" rel="noopener">Privacy Notice</a>.</span></label>
 <label class="consent"><input type="checkbox" id="updates"><span class="note">I would also like to receive optional research news and community updates by email.</span></label>
-<button id="submitBtn" type="submit" disabled>JOIN BIRT LAB — FREE →</button>
-<div id="status" class="status" role="status" aria-live="polite">Membership registration will open once the standalone membership API is connected. Your information is not being submitted yet.</div>
+<button id="submitBtn" type="submit">JOIN BIRT LAB — FREE →</button>
+<div id="status" class="status" role="status" aria-live="polite"></div>
 </form>
 </main>
 <footer><div class="wrap foot"><span>© 2026 BIRT Lab · Engineering Life Through Technology</span><span><a href="mailto:research@birtlab.com">research@birtlab.com</a> · <a href="privacy.html">Privacy Notice</a></span></div></footer>
 <script>
-// This page intentionally does not call the conference registration API.
-// Enable submission only after a dedicated membership endpoint is deployed and tested.
+const MEMBERSHIP_API = 'https://mterm2026-559f9bf571b5.herokuapp.com/api/birt/membership';
+const membershipForm = document.getElementById('membershipForm');
+const submitBtn = document.getElementById('submitBtn');
+const statusBox = document.getElementById('status');
+
+membershipForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (!membershipForm.reportValidity()) return;
+
+  const fields = Object.fromEntries(new FormData(membershipForm).entries());
+  const payload = {
+    ...fields,
+    membershipCategory: document.getElementById('category').value,
+    consent: document.getElementById('consent').checked,
+    researchUpdatesConsent: document.getElementById('updates').checked
+  };
+
+  submitBtn.disabled = true;
+  statusBox.textContent = 'Submitting your membership registration...';
+  try {
+    const response = await fetch(MEMBERSHIP_API, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+    if (!response.ok || result.status !== 'success') {
+      throw new Error(result.message || 'Membership registration could not be completed.');
+    }
+    statusBox.textContent = 'Welcome to the BIRT Lab Research Community! Your free membership is active. Membership ID: ' + result.memberId + '. Please save this reference.';
+    membershipForm.reset();
+    statusBox.scrollIntoView({behavior:'smooth',block:'center'});
+  } catch (error) {
+    statusBox.textContent = error.message || 'Unable to confirm registration. Please contact research@birtlab.com before submitting again.';
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
 </script>
 </body></html>
