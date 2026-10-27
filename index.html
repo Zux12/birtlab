@@ -260,6 +260,16 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 @media(max-width:700px){.frontier-item summary{grid-template-columns:35px minmax(0,1fr) 28px;gap:12px;padding:22px 0}.frontier-type{grid-column:2;grid-row:2}.frontier-plus{grid-column:3;grid-row:1/3}.frontier-detail{padding:0 8px 27px 47px}}
 @media(prefers-reduced-motion:reduce){.frontier-detail{animation:none}.frontier-plus{transition:none}}
 
+
+/* Standalone BIRT Lab membership invitation */
+.member-invite{padding:46px 0 54px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(110deg,rgba(11,119,113,.065),rgba(92,197,191,.035) 65%,transparent)}
+.member-invite-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center}
+.member-invite h2{font-size:clamp(32px,4.4vw,60px);line-height:1.04;letter-spacing:-.055em;margin:14px 0}
+.member-invite p{max-width:740px;color:var(--muted);line-height:1.75;margin:0}
+.member-join{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:var(--teal);color:white;padding:18px 25px;border-radius:3px;font-size:13px;font-weight:900;white-space:nowrap;transition:transform .2s,background .2s}
+.member-join:hover{transform:translateY(-3px);background:var(--ink)}
+.member-invite-note{font-size:11px;color:var(--teal);font-weight:800;letter-spacing:.1em;margin-top:15px}
+@media(max-width:760px){.member-invite-inner{grid-template-columns:1fr;gap:24px}.member-join{justify-self:start;white-space:normal}}
 </style>
 </head>
 <body>
@@ -269,11 +279,11 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a href="#top" class="brand">BIRT LAB<small>BIOENGINEERING + INTEGRATED REGENERATIVE TECHNOLOGIES</small></a>
-    <nav class="center-nav" aria-label="Main navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a></nav>
+    <nav class="center-nav" aria-label="Main navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="membership.html">Free Membership</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a></nav>
     <a class="nav-action" href="#contact">CONTACT ↗</a>
     <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobileNav">MENU ☰</button>
   </div>
-  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="#vision">Vision</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="experts.html">TERMIS-AP 2028</a><a href="#contact">Contact</a></nav>
+  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="#vision">Vision</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="membership.html">Free Membership</a><a href="experts.html">TERMIS-AP 2028</a><a href="#contact">Contact</a></nav>
 </header>
 
 <main id="top">
@@ -323,6 +333,19 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <details class="served-item"><summary><span class="served-number">06</span><span class="served-name">Researchers &amp; Students</span><span class="served-summary">Learning &amp; scientific networking</span><span class="served-plus" aria-hidden="true">+</span></summary><div class="served-detail"><p>Connect with scientists, lecturers, postgraduate researchers and emerging professionals interested in research development, scientific exchange, mentoring opportunities and future collaborative learning.</p><a href="mailto:research@birtlab.com?subject=Researcher%20or%20Student%20Enquiry">Connect with BIRT Lab ↗</a></div></details>
     </div>
     <p class="served-disclaimer">These categories describe communities BIRT Lab seeks to engage. They do not imply existing contracts, institutional endorsements or confirmed partnerships.</p>
+  </div>
+</section>
+
+<!-- Standalone BIRT Lab membership: independent of conference registration -->
+<section id="membership" class="member-invite" aria-labelledby="membership-heading">
+  <div class="wrap member-invite-inner">
+    <div class="reveal">
+      <div class="micro">BIRT LAB / INTERNATIONAL RESEARCH COMMUNITY</div>
+      <h2 id="membership-heading">Belong to a community of discovery.</h2>
+      <p>Join researchers, academics, students, clinicians and industry professionals exploring bioengineering, biomaterials, tissue engineering and regenerative technologies. Connect with scientific ideas and future opportunities for knowledge exchange.</p>
+      <div class="member-invite-note">FREE MEMBERSHIP · NO MEMBERSHIP FEE</div>
+    </div>
+    <a class="member-join reveal" href="membership.html" aria-label="Join BIRT Lab as a free member">JOIN BIRT LAB — FREE <span aria-hidden="true">↗</span></a>
   </div>
 </section>
 
@@ -446,7 +469,7 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 </section>
 </main>
 
-<footer class="wrap"><div>© 2026 BIRT Lab · Independent Research Laboratory</div><div>Digital research tools and illustrative analytics are demonstrations, not validated scientific outputs.</div><div class="footer-links"><a href="privacy.html">Privacy Notice</a><a href="mailto:research@birtlab.com">Contact Us</a><a class="footer-admin" href="experts-admin.html" aria-label="BIRT Lab administrator login">BIRT Lab Admin ↗</a></div></footer>
+<footer class="wrap"><div>© 2026 BIRT Lab · Independent Research Laboratory</div><div>Digital research tools and illustrative analytics are demonstrations, not validated scientific outputs.</div><div class="footer-links"><a href="membership.html">Free Membership</a><a href="privacy.html">Privacy Notice</a><a href="mailto:research@birtlab.com">Contact Us</a><a class="footer-admin" href="experts-admin.html" aria-label="BIRT Lab administrator login">BIRT Lab Admin ↗</a></div></footer>
 
 <a class="termis-float" href="experts.html" aria-label="Join TERMIS-AP 2028 as a speaker, reviewer, panel member or collaborator">
   <span class="dot" aria-hidden="true"></span>
