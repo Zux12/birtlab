@@ -238,6 +238,28 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 @keyframes servedReveal{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @media(max-width:700px){.served-item summary{grid-template-columns:35px minmax(0,1fr) 28px;gap:12px;padding:22px 0}.served-summary{grid-column:2;grid-row:2}.served-plus{grid-column:3;grid-row:1/3}.served-detail{padding:0 10px 25px 47px}}
 @media(prefers-reduced-motion:reduce){.served-detail{animation:none}.served-plus{transition:none}}
+
+/* Research Frontiers: interactive editorial explorer */
+.frontier-list{border-top:1px solid var(--line)}
+.frontier-item{border-bottom:1px solid var(--line)}
+.frontier-item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:65px minmax(0,1.3fr) minmax(0,.7fr) 35px;gap:22px;align-items:center;padding:27px 0;transition:color .2s}
+.frontier-item summary::-webkit-details-marker{display:none}
+.frontier-item summary:hover,.frontier-item[open] summary{color:var(--teal)}
+.frontier-item summary:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.frontier-num{font-size:12px;color:var(--muted)}
+.frontier-name{font-size:clamp(22px,2.5vw,33px);font-weight:750;letter-spacing:-.035em;line-height:1.2}
+.frontier-type{font-size:13px;color:var(--muted)}
+.frontier-plus{font-size:30px;font-weight:300;text-align:right;transition:transform .25s}
+.frontier-item[open] .frontier-plus{transform:rotate(45deg)}
+.frontier-detail{padding:0 50px 34px 87px;max-width:1020px;animation:servedReveal .25s ease-out}
+.frontier-question{font-size:clamp(19px,2.2vw,27px);font-weight:750;line-height:1.35;letter-spacing:-.025em;max-width:850px;margin-bottom:16px}
+.frontier-detail p{font-size:15px;line-height:1.75;color:var(--muted);max-width:820px}
+.frontier-tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.frontier-tags span{font-size:11px;border:1px solid var(--line);padding:7px 11px;border-radius:30px;color:var(--teal)}
+.frontier-detail a{font-size:13px;font-weight:800;color:var(--teal);text-decoration:underline;text-underline-offset:5px}
+@media(max-width:700px){.frontier-item summary{grid-template-columns:35px minmax(0,1fr) 28px;gap:12px;padding:22px 0}.frontier-type{grid-column:2;grid-row:2}.frontier-plus{grid-column:3;grid-row:1/3}.frontier-detail{padding:0 8px 27px 47px}}
+@media(prefers-reduced-motion:reduce){.frontier-detail{animation:none}.frontier-plus{transition:none}}
+
 </style>
 </head>
 <body>
@@ -247,11 +269,11 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a href="#top" class="brand">BIRT LAB<small>BIOENGINEERING + INTEGRATED REGENERATIVE TECHNOLOGIES</small></a>
-    <nav class="center-nav" aria-label="Main navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a></nav>
+    <nav class="center-nav" aria-label="Main navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a></nav>
     <a class="nav-action" href="#contact">CONTACT ↗</a>
     <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobileNav">MENU ☰</button>
   </div>
-  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="#vision">Vision</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="experts.html">TERMIS-AP 2028</a><a href="#contact">Contact</a></nav>
+  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="#vision">Vision</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="experts.html">TERMIS-AP 2028</a><a href="#contact">Contact</a></nav>
 </header>
 
 <main id="top">
@@ -301,6 +323,23 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <details class="served-item"><summary><span class="served-number">06</span><span class="served-name">Researchers &amp; Students</span><span class="served-summary">Learning &amp; scientific networking</span><span class="served-plus" aria-hidden="true">+</span></summary><div class="served-detail"><p>Connect with scientists, lecturers, postgraduate researchers and emerging professionals interested in research development, scientific exchange, mentoring opportunities and future collaborative learning.</p><a href="mailto:research@birtlab.com?subject=Researcher%20or%20Student%20Enquiry">Connect with BIRT Lab ↗</a></div></details>
     </div>
     <p class="served-disclaimer">These categories describe communities BIRT Lab seeks to engage. They do not imply existing contracts, institutional endorsements or confirmed partnerships.</p>
+  </div>
+</section>
+
+<section id="frontiers" class="section frontier-section">
+  <div class="wrap">
+    <div class="section-top reveal"><div class="index">RESEARCH / EMERGING DIRECTIONS</div><div><h2>Research Frontiers.</h2><p>Exploring the next questions in regenerative science. These eight emerging directions highlight scientific challenges, technologies and possibilities BIRT Lab is interested in investigating—not claims of completed projects or validated findings.</p></div></div>
+    <div class="frontier-list reveal" aria-label="Research frontiers">
+      <details class="frontier-item"><summary><span class="frontier-num">01</span><span class="frontier-name">Advanced 3D &amp; 4D Bioprinting</span><span class="frontier-type">Precision fabrication</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">How might multi-material printing and stimuli-responsive constructs improve the fabrication of complex tissue architectures?</div><p>Explore material compatibility, shape change over time, cell viability and reproducibility in complex fabricated structures.</p><div class="frontier-tags"><span>Multi-material deposition</span><span>4D constructs</span><span>Spatial control</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">02</span><span class="frontier-name">Next-Generation Bioinks</span><span class="frontier-type">Responsive materials</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">How can bioinks balance cell compatibility, printability and changing mechanical requirements?</div><p>Investigate responsive hydrogels, bioactive components, mechanical tuning and the trade-offs between processing and biological performance.</p><div class="frontier-tags"><span>Smart hydrogels</span><span>Crosslinking</span><span>Rheology</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">03</span><span class="frontier-name">Tissue Engineering &amp; Regeneration</span><span class="frontier-type">Living tissue systems</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">What combinations of cells, scaffolds and biological cues could better support tissue maturation and repair?</div><p>Explore vascular support, microenvironment design, matrix formation and measurable indicators of functional regeneration.</p><div class="frontier-tags"><span>Vascularisation</span><span>Tissue maturation</span><span>Cell–matrix interaction</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">04</span><span class="frontier-name">Organ-on-Chip &amp; Microphysiological Systems</span><span class="frontier-type">Experimental models</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">How can microengineered tissue models improve understanding of human biology and disease?</div><p>Consider flow conditions, cell co-culture, physiological relevance and experimental validation of miniature tissue systems.</p><div class="frontier-tags"><span>Microfluidics</span><span>Tissue models</span><span>Disease modelling</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">05</span><span class="frontier-name">AI &amp; Computational Bioengineering</span><span class="frontier-type">Data-informed research</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">Where can computation help researchers design better experiments without replacing experimental validation?</div><p>Explore data quality, explainable models, uncertainty and model-to-experiment feedback loops.</p><div class="frontier-tags"><span>Predictive modelling</span><span>Optimisation</span><span>Digital twins</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">06</span><span class="frontier-name">Smart &amp; Biodegradable Scaffolds</span><span class="frontier-type">Adaptive architectures</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">How might scaffold architecture and degradation be tuned to match the needs of developing tissues?</div><p>Investigate polymer blends, scaffold geometry, mechanical integrity, degradation profiles and controlled bioactivity.</p><div class="frontier-tags"><span>PLGA systems</span><span>Porosity</span><span>Controlled degradation</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">07</span><span class="frontier-name">Cellular Therapies &amp; Regenerative Medicine</span><span class="frontier-type">Biological translation</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">Which cellular environments and signalling strategies merit investigation for regenerative applications?</div><p>Explore cell-supportive matrices, signalling pathways, characterization and evidence required for translational assessment.</p><div class="frontier-tags"><span>Cell microenvironments</span><span>Extracellular vesicles</span><span>Bioactivity</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+      <details class="frontier-item"><summary><span class="frontier-num">08</span><span class="frontier-name">Translational &amp; Clinical Technologies</span><span class="frontier-type">From laboratory to practice</span><span class="frontier-plus" aria-hidden="true">+</span></summary><div class="frontier-detail"><div class="frontier-question">What scientific and engineering evidence is needed to move promising concepts toward responsible use?</div><p>Consider manufacturing repeatability, preclinical evidence, quality controls and interdisciplinary clinical collaboration.</p><div class="frontier-tags"><span>Scale-up</span><span>Quality systems</span><span>Regulatory pathways</span></div><a href="mailto:research@birtlab.com?subject=Research%20Frontier%20Enquiry">Discuss this research direction ↗</a></div></details>
+    </div>
+    <p class="served-disclaimer">Research frontiers are areas for exploration and scientific dialogue. They do not imply active funded programmes, clinical readiness or established experimental results.</p>
   </div>
 </section>
 
