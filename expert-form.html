@@ -399,9 +399,11 @@ form.addEventListener("submit", async function(event) {
     return;
   }
 
-  const data = Object.fromEntries(new FormData(form).entries());
-  data.roles = roles;
-  data.consent = document.getElementById("consent").checked;
+const data = Object.fromEntries(new FormData(form).entries());
+
+data.roles = roles;
+data.consent = document.getElementById("consent").checked;
+data.birtMembership = document.getElementById("birtMembership").checked;
   delete data.event;
   delete data.registrationType;
   delete data.submittedAt;
