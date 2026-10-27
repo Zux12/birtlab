@@ -72,7 +72,7 @@ membershipForm.addEventListener('submit', async (event) => {
     if (!response.ok || result.status !== 'success') {
       throw new Error(result.message || 'Membership registration could not be completed.');
     }
-    statusBox.textContent = 'Welcome to the BIRT Lab Research Community! Your free membership is active. Membership ID: ' + result.memberId + '. Please save this reference.';
+    statusBox.textContent = 'Welcome to the BIRT Lab Research Community! Your free membership is active. Membership ID: ' + result.memberId + '. ';
     membershipForm.reset();
     statusBox.scrollIntoView({behavior:'smooth',block:'center'});
   } catch (error) {
