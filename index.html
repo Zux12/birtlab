@@ -270,6 +270,41 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .member-join:hover{transform:translateY(-3px);background:var(--ink)}
 .member-invite-note{font-size:11px;color:var(--teal);font-weight:800;letter-spacing:.1em;margin-top:15px}
 @media(max-width:760px){.member-invite-inner{grid-template-columns:1fr;gap:24px}.member-join{justify-self:start;white-space:normal}}
+
+/* Stage A — Scientific editorial hero and refined navigation */
+.topbar{transition:background .3s,box-shadow .3s,border-color .3s}
+.topbar.scrolled{background:rgba(249,251,250,.95);box-shadow:0 9px 32px rgba(20,65,61,.07);border-color:rgba(11,119,113,.13)}
+.topbar-inner{transition:height .3s}
+.topbar.scrolled .topbar-inner{height:61px}
+.brand{font-size:17px;letter-spacing:-.045em;white-space:nowrap}
+.brand small{letter-spacing:.09em;font-weight:600}
+.center-nav{gap:clamp(8px,1.2vw,17px);font-size:11px;align-items:center}
+.center-nav a{white-space:nowrap;transition:color .2s}
+.center-nav a:hover{color:var(--teal)}
+.nav-action{border:1px solid rgba(11,119,113,.24);padding:11px 15px;border-radius:30px;transition:background .2s,color .2s}
+.nav-action:hover{background:var(--teal);color:white}
+.hero{min-height:760px;padding:95px 0 65px;overflow:hidden}
+.hero-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(12px,3vw,48px)}
+.hero h1{font-size:clamp(80px,11vw,157px);line-height:.8}
+.hero-visual{height:570px;isolation:isolate}
+.hero-science{height:100%;width:100%;position:relative;display:flex;align-items:center;justify-content:center;transform:translate3d(var(--mouse-x,0px),var(--mouse-y,0px),0);transition:transform .45s cubic-bezier(.2,.7,.3,1)}
+.hero-science:before{content:"";position:absolute;inset:12% 4%;background:radial-gradient(ellipse at 50% 48%,rgba(126,218,202,.17),rgba(147,128,191,.07) 39%,transparent 72%);border-radius:50%}
+.science-illustration{position:relative;width:112%;max-width:690px;height:auto;overflow:visible;filter:drop-shadow(0 25px 25px rgba(17,87,82,.09));animation:scienceFloat 9s ease-in-out infinite}
+.science-orbit{position:absolute;border:1px solid rgba(11,119,113,.12);border-radius:50%;width:86%;aspect-ratio:1;transform:rotateX(64deg) rotate(-22deg);pointer-events:none}
+.science-orbit-b{width:68%;border-style:dashed;border-color:rgba(119,89,166,.18);transform:rotateX(63deg) rotate(28deg)}
+.bio-cell-one{animation:cellBreathe 6s ease-in-out infinite;transform-origin:228px 206px;transform-box:view-box}
+.bio-cell-two{animation:cellBreathe 8s ease-in-out infinite reverse;transform-origin:391px 300px;transform-box:view-box}
+.science-annotation{position:absolute;z-index:2;font-size:10px;font-weight:800;letter-spacing:.12em;color:#3e7673;white-space:nowrap}
+.annotation-top{top:14%;right:0}.annotation-bottom{bottom:14%;left:1%;font-size:9px;color:#697c7b}.annotation-bottom span{color:var(--violet)}
+.annotation-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#25a59a;margin-right:7px;box-shadow:0 0 0 5px rgba(37,165,154,.11)}
+.science-scale{position:absolute;right:2%;bottom:5%;font-size:9px;letter-spacing:.12em;color:#718581}.science-scale span{display:inline-block;width:37px;height:1px;background:#6d9d97;vertical-align:middle;margin-right:8px}
+@keyframes scienceFloat{50%{transform:translateY(-13px)}}
+@keyframes cellBreathe{50%{opacity:.83}}
+@media(max-width:1200px){.center-nav{gap:9px;font-size:10px}.brand small{max-width:230px;white-space:normal;line-height:1.3}.hero-grid{gap:10px}}
+@media(max-width:1050px){.center-nav{display:none}.topbar-inner{grid-template-columns:1fr auto auto;gap:14px}.mobile-menu-toggle{display:block;background:transparent;border:1px solid var(--line);border-radius:4px;padding:10px 12px;font-weight:800;color:var(--ink);cursor:pointer}.mobile-nav{padding:8px 20px 20px;border-top:1px solid var(--line);background:var(--paper)}.mobile-nav.open{display:grid;gap:0}.mobile-nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.hero{padding-top:70px}.hero-visual{height:460px;max-width:650px;margin:auto;width:100%}.science-illustration{width:100%}}
+@media(max-width:600px){.hero{min-height:0;padding:55px 0 50px}.hero h1{font-size:clamp(69px,17vw,105px)}.hero-visual{height:340px}.science-annotation{font-size:8px}.annotation-top{top:8%}.annotation-bottom{bottom:8%}.science-scale{display:none}.brand{font-size:15px}.nav-action{padding:8px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.science-illustration,.bio-cell{animation:none!important}.hero-science{transition:none!important}}
 </style>
 </head>
 <body>
@@ -297,9 +332,27 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <div class="launchline reveal"><a class="text-btn" href="#research">Explore Research</a><a class="text-btn" href="#leadership">Meet Our Leadership</a><button class="text-btn" data-open="sim">Digital Lab Demo</button></div>
     </div>
     <div class="hero-visual reveal">
-      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="nucleus"></div>
-      <div class="cell-dot cd1"></div><div class="cell-dot cd2"></div><div class="cell-dot cd3"></div><div class="cell-dot cd4"></div>
-      <div class="axis-label al1">CELL × MATERIAL</div><div class="axis-label al2">PRINT × REGENERATE</div><div class="axis-label al3">DATA × TRANSLATION</div>
+      <div class="hero-science" id="heroScience" role="img" aria-label="Animated conceptual illustration of a porous bioprinted scaffold with translucent biological cells">
+        <div class="science-orbit science-orbit-a"></div><div class="science-orbit science-orbit-b"></div>
+        <svg class="science-illustration" viewBox="0 0 620 590" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="scaffoldStrand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b6e8dc"/><stop offset=".38" stop-color="#0f978f"/><stop offset=".72" stop-color="#3fbbb3"/><stop offset="1" stop-color="#c4ece3"/></linearGradient>
+            <radialGradient id="cellMembrane" cx="30%" cy="24%" r="78%"><stop offset="0" stop-color="#f7e9ff" stop-opacity=".96"/><stop offset=".36" stop-color="#b6b1e3" stop-opacity=".83"/><stop offset=".72" stop-color="#70c6bf" stop-opacity=".6"/><stop offset="1" stop-color="#278d91" stop-opacity=".9"/></radialGradient>
+            <radialGradient id="cellCore" cx="32%" cy="25%" r="75%"><stop offset="0" stop-color="#e8cafa"/><stop offset=".48" stop-color="#8b67b5"/><stop offset="1" stop-color="#47396c"/></radialGradient>
+            <filter id="cellShadow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="10"/></filter>
+            <filter id="strandShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#1d6e71" flood-opacity=".14"/></filter>
+          </defs>
+          <ellipse cx="310" cy="490" rx="216" ry="38" fill="#4d9c91" opacity=".09" filter="url(#cellShadow)"/>
+          <g class="scaffold-model" id="heroScaffold" filter="url(#strandShadow)"></g>
+          <g class="bio-cell bio-cell-one" transform="translate(228 206)"><ellipse rx="59" ry="53" fill="#267b8d" opacity=".12" filter="url(#cellShadow)"/><ellipse rx="48" ry="45" fill="url(#cellMembrane)" stroke="#b7e6de" stroke-width="2"/><ellipse cx="-5" cy="4" rx="23" ry="20" fill="url(#cellCore)" opacity=".91"/><circle cx="-12" cy="-7" r="7" fill="#efe3fb" opacity=".62"/><ellipse cx="-17" cy="-21" rx="13" ry="6" fill="#fff" opacity=".48"/></g>
+          <g class="bio-cell bio-cell-two" transform="translate(391 300) scale(.72)"><ellipse rx="50" ry="48" fill="url(#cellMembrane)" stroke="#d1f0ea" stroke-width="2"/><ellipse cx="4" cy="3" rx="24" ry="21" fill="url(#cellCore)"/><ellipse cx="-18" cy="-21" rx="13" ry="6" fill="#fff" opacity=".52"/></g>
+          <g class="bio-cell bio-cell-three" transform="translate(293 388) scale(.49)"><ellipse rx="51" ry="49" fill="url(#cellMembrane)" stroke="#d1f0ea" stroke-width="2"/><ellipse cx="3" cy="2" rx="23" ry="20" fill="url(#cellCore)"/></g>
+          <g fill="#0c9991" opacity=".75"><circle cx="160" cy="165" r="4"/><circle cx="459" cy="207" r="3"/><circle cx="466" cy="385" r="5"/><circle cx="175" cy="382" r="3"/></g>
+        </svg>
+        <div class="science-annotation annotation-top"><span class="annotation-dot"></span> CELL–SCAFFOLD INTERACTION</div>
+        <div class="science-annotation annotation-bottom">3D BIOFABRICATION <span> / </span> CONCEPTUAL MODEL</div>
+        <div class="science-scale"><span></span> STRUCTURE / MATERIAL / LIFE</div>
+      </div>
     </div>
   </div>
   <div class="hero-index">01 / RESEARCH & INNOVATION</div>
@@ -405,8 +458,8 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <div class="tool-line reveal" data-open="sim"><div class="tool-no">01 / INTERACTIVE</div><h3>BioPrint Studio</h3><p>Configure a construct, simulate printing and generate demonstration metrics.</p><div class="open">→</div></div>
       <div class="tool-line reveal" data-open="regen"><div class="tool-no">02 / MODELLING</div><h3>Regeneration Predictor</h3><p>Adjust viability, porosity, bioactivity and culture duration to change a mock regeneration score.</p><div class="open">→</div></div>
       <div class="tool-line reveal" data-open="bioink"><div class="tool-no">03 / MATERIALS</div><h3>Bioink Explorer</h3><p>Shift composition and visualize how the material profile changes across four research dimensions.</p><div class="open">→</div></div>
-      <a class="tool-line reveal" href="scientific-studio.html" style="display:block;color:inherit;text-decoration:none"><div class="tool-no">05 / 3D SCIENTIFIC VISUALISATION</div><h3>Scientific Visualisation Studio</h3><p>Explore interactive 3D scaffold geometry, biomaterials, cell–scaffold interaction, microfluidics and regeneration concepts.</p><div class="open">→</div></a>
-       <div class="tool-line reveal" data-open="ask"><div class="tool-no">04 / INTELLIGENCE</div><h3>Ask BIRT</h3><p>A local scripted research assistant demonstrating how lab knowledge could eventually be queried.</p><div class="open">→</div></div>
+      <a class="tool-line reveal" href="scientific-studio.html" style="display:block;color:inherit;text-decoration:none"><div class="tool-no">04 / 3D SCIENTIFIC VISUALISATION</div><h3>Scientific Visualisation Studio</h3><p>Explore interactive 3D scaffold geometry, biomaterials, cell–scaffold interaction, microfluidics and regeneration concepts.</p><div class="open">→</div></a>
+       <div class="tool-line reveal" data-open="ask"><div class="tool-no">05 / INTELLIGENCE</div><h3>Ask BIRT</h3><p>A local scripted research assistant demonstrating how lab knowledge could eventually be queried.</p><div class="open">→</div></div>
     </div>
   </div>
 </section>
@@ -588,6 +641,41 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 <script>
 (function(){
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+  // Stage A hero: procedural isometric scaffold; decorative, not measured geometry.
+  const scaffoldSvg=document.getElementById('heroScaffold');
+  if(scaffoldSvg){
+    const ns='http://www.w3.org/2000/svg';
+    const project=(x,y,z)=>[310+(x-z)*11.8,338+(x+z)*5.15-y*14.8];
+    const addPath=(a,b,layer)=>{
+      const e=document.createElementNS(ns,'path');
+      const p1=project(...a),p2=project(...b);
+      e.setAttribute('d',`M${p1[0].toFixed(1)} ${p1[1].toFixed(1)} L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`);
+      e.setAttribute('stroke','url(#scaffoldStrand)');e.setAttribute('stroke-width',layer%2===0?'9':'8');
+      e.setAttribute('stroke-linecap','round');e.setAttribute('opacity',String(.72+layer*.027));
+      scaffoldSvg.appendChild(e);
+    };
+    for(let layer=0;layer<7;layer++){
+      const y=layer*.74;
+      for(let k=-6;k<=6;k+=2){
+        if(layer%2===0)addPath([-6,y,k],[6,y,k],layer);
+        else addPath([k,y,-6],[k,y,6],layer);
+      }
+    }
+  }
+  const heroScience=document.getElementById('heroScience');
+  if(heroScience&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    heroScience.addEventListener('pointermove',e=>{
+      if(e.pointerType==='touch')return;
+      const r=heroScience.getBoundingClientRect();
+      heroScience.style.setProperty('--mouse-x',((e.clientX-r.left)/r.width-.5)*13+'px');
+      heroScience.style.setProperty('--mouse-y',((e.clientY-r.top)/r.height-.5)*10+'px');
+    });
+    heroScience.addEventListener('pointerleave',()=>{heroScience.style.setProperty('--mouse-x','0px');heroScience.style.setProperty('--mouse-y','0px')});
+  }
+  const siteHeader=document.querySelector('.topbar');
+  if(siteHeader){const syncHeader=()=>siteHeader.classList.toggle('scrolled',scrollY>35);addEventListener('scroll',syncHeader,{passive:true});syncHeader()}
+
   const menuButton=$('.mobile-menu-toggle'), mobileNav=$('#mobileNav');
   if(menuButton&&mobileNav){menuButton.addEventListener('click',()=>{const opened=mobileNav.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(opened));});mobileNav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{mobileNav.classList.remove('open');menuButton.setAttribute('aria-expanded','false');}));}
 
