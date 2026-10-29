@@ -271,18 +271,16 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .member-invite-note{font-size:11px;color:var(--teal);font-weight:800;letter-spacing:.1em;margin-top:15px}
 @media(max-width:760px){.member-invite-inner{grid-template-columns:1fr;gap:24px}.member-join{justify-self:start;white-space:normal}}
 
-/* Living Cell V2: optical realism applied only to the original hero illustration. */
-.hero-visual{isolation:isolate;perspective:950px}
-.hero-visual::before{content:"";position:absolute;inset:11%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 50% 52%,rgba(69,180,169,.13),rgba(142,116,184,.055) 34%,transparent 70%);filter:blur(18px)}
-.hero-visual .ring{border:1px solid rgba(27,131,126,.22);box-shadow:inset 0 0 12px rgba(84,184,177,.035),0 0 10px rgba(84,184,177,.045);background:transparent}
-.hero-visual .ring.r2{border-color:rgba(116,94,162,.25)}
-.hero-visual .ring.r3{border-color:rgba(39,154,146,.26)}
-.hero-visual .nucleus{isolation:isolate;background:radial-gradient(ellipse at 29% 21%,rgba(255,255,255,.95) 0%,rgba(211,249,241,.68) 10%,rgba(118,218,203,.67) 31%,rgba(35,148,149,.76) 61%,rgba(37,100,124,.89) 83%,rgba(37,82,108,.95) 100%);border:1px solid rgba(182,250,235,.74);box-shadow:inset -18px -24px 33px rgba(13,70,93,.32),inset 11px 12px 24px rgba(255,255,255,.56),0 19px 37px rgba(28,99,106,.19),0 0 36px rgba(74,192,183,.16);filter:none;will-change:transform,border-radius}
-.hero-visual .nucleus::before{content:"";position:absolute;inset:24%;border-radius:52% 48% 55% 45%;background:radial-gradient(circle at 30% 24%,#d5c3f3 0%,#ab8acb 22%,#73539e 57%,#3f2c6b 90%);box-shadow:inset -8px -12px 16px rgba(36,21,77,.45),inset 5px 6px 12px rgba(255,255,255,.25),0 0 15px rgba(92,65,146,.20);animation:birtNucleusPulse 8s ease-in-out infinite}
-.hero-visual .nucleus::after{content:"";position:absolute;left:16%;top:11%;width:44%;height:18%;border-radius:50%;background:rgba(255,255,255,.62);filter:blur(8px);transform:rotate(-30deg);pointer-events:none}
-.hero-visual .cell-dot{background:radial-gradient(circle at 28% 24%,#faffff 0%,#d1f6ef 16%,#70cec3 39%,#218f93 75%,#276379 100%);border:1px solid rgba(196,251,240,.8);box-shadow:inset -3px -4px 7px rgba(18,94,110,.28),inset 2px 2px 5px rgba(255,255,255,.66),0 0 0 7px rgba(92,197,191,.075),0 8px 18px rgba(33,115,121,.17)}
-@keyframes birtNucleusPulse{0%,100%{transform:scale(1) rotate(-5deg)}50%{transform:scale(.94) rotate(5deg)}}
-@media(prefers-reduced-motion:reduce){.hero-visual .nucleus::before{animation:none}}
+/* Living Cell V3 — self-contained 3D visual; original rings, particles and layout retained */
+.hero-visual{isolation:isolate}
+.hero-cell-webgl{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}
+.hero-cell-webgl canvas{display:block;width:100%;height:100%;background:transparent}
+.hero-visual .ring{z-index:1}
+.hero-visual .cell-dot{z-index:3}
+.hero-visual .axis-label{z-index:4}
+.hero-visual .nucleus{z-index:2;transition:opacity .5s ease}
+.hero-visual.cell-3d-ready .nucleus{opacity:0;animation:none}
+@media(prefers-reduced-motion:reduce){.hero-visual .nucleus{animation:none}}
 </style>
 </head>
 <body>
@@ -310,7 +308,7 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <div class="launchline reveal"><a class="text-btn" href="#research">Explore Research</a><a class="text-btn" href="#leadership">Meet Our Leadership</a><button class="text-btn" data-open="sim">Digital Lab Demo</button></div>
     </div>
     <div class="hero-visual reveal">
-      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="nucleus"></div>
+      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="nucleus"></div><div class="hero-cell-webgl" id="livingCellV3" aria-hidden="true"></div>
       <div class="cell-dot cd1"></div><div class="cell-dot cd2"></div><div class="cell-dot cd3"></div><div class="cell-dot cd4"></div>
       <div class="axis-label al1">CELL × MATERIAL</div><div class="axis-label al2">PRINT × REGENERATE</div><div class="axis-label al3">DATA × TRANSLATION</div>
     </div>
@@ -648,6 +646,137 @@ if ('IntersectionObserver' in window) {
   $('#chatForm').addEventListener('submit',e=>{e.preventDefault();const inp=$('#chatInput'),q=inp.value.trim();if(!q)return;const chat=$('#chat');const u=document.createElement('div');u.className='msg user';u.innerHTML='<b>YOU</b>'+q;chat.appendChild(u);inp.value='';let ans='BIRT Lab could connect that topic to its integrated research model: define the biological objective, select materials and fabrication strategy, capture experimental data and identify the next translational step.';for(const [k,r] of replies)if(q.toLowerCase().includes(k)){ans=r;break}setTimeout(()=>{const m=document.createElement('div');m.className='msg bot';m.innerHTML='<b>BIRT</b>'+ans;chat.appendChild(m);chat.scrollTop=chat.scrollHeight},300)});
   $('#collabForm').addEventListener('submit',e=>{e.preventDefault();$('#collabResult').style.display='block'});
 })();
+</script>
+<script type="module">
+/* Living Cell V3: conceptual generic mammalian cell with a front-facing membrane cutaway.
+   Rendered biological anatomy is educational illustration, not microscopy. */
+const host=document.getElementById('livingCellV3');
+const hero=host?.closest('.hero-visual');
+if(host&&hero){
+  try{
+    const THREE=await import('https://esm.sh/three@0.160.1');
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});
+    renderer.setClearColor(0xffffff,0);
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.18;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));
+    host.appendChild(renderer.domElement);
+    const scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(32,1,.1,100);
+    camera.position.set(0,0,13.2);
+    const cell=new THREE.Group();scene.add(cell);
+    scene.add(new THREE.HemisphereLight(0xe7ffff,0x8c709d,2.3));
+    const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(-4,6,8);scene.add(key);
+    const rim=new THREE.DirectionalLight(0x5de4d3,2.4);rim.position.set(4,-1,-5);scene.add(rim);
+    const fill=new THREE.DirectionalLight(0xbba9e8,1.2);fill.position.set(4,3,7);scene.add(fill);
+    const mat=(color,opts={})=>new THREE.MeshPhysicalMaterial({color,roughness:.34,metalness:0,clearcoat:.65,clearcoatRoughness:.18,...opts});
+    const membraneMat=mat(0x58c8b9,{transparent:true,opacity:.43,side:THREE.DoubleSide,depthWrite:false,roughness:.2,clearcoat:1});
+    const edgeMat=mat(0x078f85,{roughness:.24,side:THREE.DoubleSide,clearcoat:1});
+    const cytMat=mat(0x8bdfd0,{transparent:true,opacity:.13,depthWrite:false,side:THREE.DoubleSide});
+    const nuclearMat=mat(0x75509e,{roughness:.32,clearcoat:.8});
+    const envelopeMat=mat(0xb5a1da,{transparent:true,opacity:.35,depthWrite:false,side:THREE.DoubleSide});
+    const nucleolusMat=mat(0x4d2e72,{roughness:.38});
+    const mitoMat=mat(0xdb9a8d,{roughness:.31});
+    const foldMat=new THREE.MeshStandardMaterial({color:0x97506d,roughness:.55});
+    const vesicleMats=[mat(0xb1d5e5,{transparent:true,opacity:.82}),mat(0xc6a8db,{transparent:true,opacity:.83}),mat(0x6dc5af,{transparent:true,opacity:.8})];
+    const mesh=(geometry,material,parent=cell)=>{const o=new THREE.Mesh(geometry,material);parent.add(o);return o};
+    // Intact rear hemisphere and side shell, with a circular aperture facing +Z.
+    // The opening is constructed geometrically; no opaque disc hides the nucleus.
+    const radius=2.03;
+    const sphere=new THREE.SphereGeometry(radius,96,64);
+    const pos=sphere.getAttribute('position');const idx=sphere.index;
+    const triangles=[];
+    const aperture=Math.cos(.73); // opening centred toward the viewer
+    for(let i=0;i<idx.count;i+=3){
+      const ids=[idx.getX(i),idx.getX(i+1),idx.getX(i+2)];
+      const z=ids.reduce((v,j)=>v+pos.getZ(j),0)/(3*radius);
+      if(z<aperture)triangles.push(...ids);
+    }
+    sphere.setIndex(triangles);sphere.computeVertexNormals();
+    const shell=mesh(sphere,membraneMat);
+    // The thin toroidal lip follows the rim of the opening.
+    const lipRadius=radius*Math.sin(.73);
+    const lip=mesh(new THREE.TorusGeometry(lipRadius,.055,12,112),edgeMat);
+    lip.position.z=radius*Math.cos(.73);
+    // Subtle interior volume; kept behind the nucleus and the open aperture.
+    const cyt=mesh(new THREE.SphereGeometry(1.86,48,32),cytMat);
+    cyt.scale.set(1,.96,.96);
+    const nucleus=mesh(new THREE.IcosahedronGeometry(.83,5),nuclearMat);
+    nucleus.position.set(-.16,.04,.34);nucleus.scale.set(1.08,.88,.92);
+    const envelope=mesh(new THREE.SphereGeometry(.91,48,32),envelopeMat);
+    envelope.position.copy(nucleus.position);envelope.scale.copy(nucleus.scale);
+    const nucleolus=mesh(new THREE.SphereGeometry(.24,24,16),nucleolusMat);
+    nucleolus.position.set(.06,-.08,1.05);
+    // Mitochondria have visible folded cristae, not just featureless spheres.
+    const mito=[];
+    const mitoPositions=[[-1.08,.79,.68],[1.04,.52,.74],[-.95,-.91,.65],[1.08,-.78,.48],[.13,1.28,.26]];
+    for(let i=0;i<mitoPositions.length;i++){
+      const g=new THREE.Group();cell.add(g);g.position.set(...mitoPositions[i]);
+      g.rotation.set(.2*i,.36*i,(i%2?-.5:.55));
+      const body=mesh(new THREE.SphereGeometry(.36,22,16),mitoMat,g);body.scale.set(1.42,.56,.6);
+      for(let k=-2;k<=2;k++){
+        const curve=new THREE.CatmullRomCurve3([
+          new THREE.Vector3(k*.105,-.13,.18),new THREE.Vector3(k*.105+.06,.02,.23),new THREE.Vector3(k*.105-.035,.13,.18)
+        ]);
+        mesh(new THREE.TubeGeometry(curve,10,.018,5,false),foldMat,g);
+      }
+      mito.push(g);
+    }
+    // Curved endoplasmic-reticulum strands arranged around the nuclear envelope.
+    const erMat=mat(0x74b7bf,{transparent:true,opacity:.83,roughness:.45});
+    for(let j=0;j<7;j++){
+      const angle=j*.83;
+      const points=[];
+      for(let k=0;k<=32;k++){
+        const t=k/32,theta=angle+t*1.65;
+        const rr=1.07+.085*Math.sin(t*17+j);
+        points.push(new THREE.Vector3(-.13+rr*Math.cos(theta),.04+rr*Math.sin(theta),.32+.23*Math.sin(t*Math.PI)+.05*j));
+      }
+      const curve=new THREE.CatmullRomCurve3(points);
+      mesh(new THREE.TubeGeometry(curve,45,.032,6,false),erMat);
+    }
+    const vesicles=[];
+    for(let i=0;i<19;i++){
+      const angle=i*2.399963,rr=.98+.56*((i*7%11)/11),z=.35+.58*Math.sin(i*2.3);
+      const o=mesh(new THREE.SphereGeometry(.065+(i%4)*.025,14,10),vesicleMats[i%3]);
+      o.position.set(rr*Math.cos(angle),rr*Math.sin(angle),z);
+      o.userData.base=o.position.clone();o.userData.phase=i*1.37;vesicles.push(o);
+    }
+    // A fine outer membrane edge gives the shell a softly illuminated silhouette.
+    const outline=mesh(new THREE.SphereGeometry(2.045,48,32),mat(0x70c9bf,{transparent:true,opacity:.075,depthWrite:false,side:THREE.BackSide}));
+    let width=0,height=0,visible=true,raf=0,last=0;
+    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(tick)},{threshold:.05});
+    observer.observe(hero);
+    function resize(){const r=host.getBoundingClientRect();const w=Math.round(r.width),h=Math.round(r.height);if(!w||!h||w===width&&h===height)return;width=w;height=h;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+    const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(host);resize();
+    let pointerX=0,pointerY=0;
+    hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=hero.getBoundingClientRect();pointerX=((e.clientX-r.left)/r.width-.5)*2;pointerY=((e.clientY-r.top)/r.height-.5)*2},{passive:true});
+    hero.addEventListener('pointerleave',()=>{pointerX=0;pointerY=0});
+    function tick(t){raf=0;if(!visible||document.hidden)return;
+      resize();
+      const sec=t*.001;
+      if(!reduce.matches){
+        const pulse=1+.018*Math.sin(sec*.85);
+        shell.scale.set(pulse,1+.015*Math.sin(sec*.85+.8),pulse);
+        outline.scale.copy(shell.scale);lip.scale.setScalar(pulse);
+        cell.rotation.y+=((.08*Math.sin(sec*.17)+pointerX*.085)-cell.rotation.y)*.018;
+        cell.rotation.x+=((-.06+pointerY*.075+.04*Math.cos(sec*.21))-cell.rotation.x)*.018;
+        nucleus.rotation.y=sec*.075;nucleus.rotation.z=.05*Math.sin(sec*.35);
+        mito.forEach((g,i)=>{g.position.y=mitoPositions[i][1]+.035*Math.sin(sec*.6+i);g.rotation.y+=.0007});
+        vesicles.forEach(o=>{o.position.copy(o.userData.base);o.position.x+=.026*Math.sin(sec*.75+o.userData.phase);o.position.y+=.026*Math.cos(sec*.62+o.userData.phase)});
+      }
+      renderer.render(scene,camera);
+      raf=requestAnimationFrame(tick);
+    }
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden&&visible&&!raf)raf=requestAnimationFrame(tick)});
+    reduce.addEventListener?.('change',()=>{if(!raf&&visible)raf=requestAnimationFrame(tick)});
+    renderer.render(scene,camera);
+    hero.classList.add('cell-3d-ready');
+    raf=requestAnimationFrame(tick);
+  }catch(err){console.warn('Living Cell V3 unavailable; retaining original animation.',err);}
+}
 </script>
 </body>
 </html>
