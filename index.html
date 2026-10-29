@@ -270,6 +270,19 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .member-join:hover{transform:translateY(-3px);background:var(--ink)}
 .member-invite-note{font-size:11px;color:var(--teal);font-weight:800;letter-spacing:.1em;margin-top:15px}
 @media(max-width:760px){.member-invite-inner{grid-template-columns:1fr;gap:24px}.member-join{justify-self:start;white-space:normal}}
+
+/* Living Cell V2: optical realism applied only to the original hero illustration. */
+.hero-visual{isolation:isolate;perspective:950px}
+.hero-visual::before{content:"";position:absolute;inset:11%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 50% 52%,rgba(69,180,169,.13),rgba(142,116,184,.055) 34%,transparent 70%);filter:blur(18px)}
+.hero-visual .ring{border:1px solid rgba(27,131,126,.22);box-shadow:inset 0 0 12px rgba(84,184,177,.035),0 0 10px rgba(84,184,177,.045);background:transparent}
+.hero-visual .ring.r2{border-color:rgba(116,94,162,.25)}
+.hero-visual .ring.r3{border-color:rgba(39,154,146,.26)}
+.hero-visual .nucleus{isolation:isolate;background:radial-gradient(ellipse at 29% 21%,rgba(255,255,255,.95) 0%,rgba(211,249,241,.68) 10%,rgba(118,218,203,.67) 31%,rgba(35,148,149,.76) 61%,rgba(37,100,124,.89) 83%,rgba(37,82,108,.95) 100%);border:1px solid rgba(182,250,235,.74);box-shadow:inset -18px -24px 33px rgba(13,70,93,.32),inset 11px 12px 24px rgba(255,255,255,.56),0 19px 37px rgba(28,99,106,.19),0 0 36px rgba(74,192,183,.16);filter:none;will-change:transform,border-radius}
+.hero-visual .nucleus::before{content:"";position:absolute;inset:24%;border-radius:52% 48% 55% 45%;background:radial-gradient(circle at 30% 24%,#d5c3f3 0%,#ab8acb 22%,#73539e 57%,#3f2c6b 90%);box-shadow:inset -8px -12px 16px rgba(36,21,77,.45),inset 5px 6px 12px rgba(255,255,255,.25),0 0 15px rgba(92,65,146,.20);animation:birtNucleusPulse 8s ease-in-out infinite}
+.hero-visual .nucleus::after{content:"";position:absolute;left:16%;top:11%;width:44%;height:18%;border-radius:50%;background:rgba(255,255,255,.62);filter:blur(8px);transform:rotate(-30deg);pointer-events:none}
+.hero-visual .cell-dot{background:radial-gradient(circle at 28% 24%,#faffff 0%,#d1f6ef 16%,#70cec3 39%,#218f93 75%,#276379 100%);border:1px solid rgba(196,251,240,.8);box-shadow:inset -3px -4px 7px rgba(18,94,110,.28),inset 2px 2px 5px rgba(255,255,255,.66),0 0 0 7px rgba(92,197,191,.075),0 8px 18px rgba(33,115,121,.17)}
+@keyframes birtNucleusPulse{0%,100%{transform:scale(1) rotate(-5deg)}50%{transform:scale(.94) rotate(5deg)}}
+@media(prefers-reduced-motion:reduce){.hero-visual .nucleus::before{animation:none}}
 </style>
 </head>
 <body>
