@@ -281,6 +281,21 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .hero-visual .nucleus{z-index:2;transition:opacity .5s ease}
 .hero-visual.cell-3d-ready .nucleus{opacity:0;animation:none}
 @media(prefers-reduced-motion:reduce){.hero-visual .nucleus{animation:none}}
+
+/* Research Leadership V2 — editorial portrait; all other sections unchanged */
+.leadership-section .leadership-profile{grid-template-columns:minmax(240px,360px) minmax(0,1fr);gap:clamp(30px,5vw,82px);padding:clamp(28px,4vw,55px) 0;align-items:center}
+.leadership-portrait{display:block;position:relative;overflow:hidden;aspect-ratio:4/5;background:#dce8e4;isolation:isolate}
+.leadership-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 22%;filter:saturate(.94) contrast(1.035);transition:transform .65s ease,filter .5s ease}
+.leadership-portrait:hover img{transform:scale(1.035);filter:saturate(1) contrast(1.04)}
+.leadership-portrait-caption{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;gap:12px;padding:18px 20px;background:linear-gradient(transparent,rgba(8,34,37,.76));color:#fff;font-size:10px;letter-spacing:.12em;font-weight:800}
+.leadership-content h3{font-size:clamp(34px,4.3vw,61px);line-height:1.06;letter-spacing:-.055em;margin:19px 0 16px;max-width:760px}
+.leadership-content .leadership-affiliation{font-size:13px;font-weight:700;color:var(--teal);margin:0 0 24px;letter-spacing:.025em}
+.leadership-content .leadership-description{font-size:16px;line-height:1.8;color:var(--muted);max-width:610px;margin:0 0 29px}
+.leadership-links{display:flex;gap:22px 32px;flex-wrap:wrap;padding-top:23px;border-top:1px solid var(--line)}
+.leadership-links .text-btn{font-size:13px}
+@media(max-width:900px){.leadership-section .leadership-profile{grid-template-columns:minmax(170px,280px) minmax(0,1fr);gap:28px}}
+@media(max-width:650px){.leadership-section .leadership-profile{grid-template-columns:1fr;gap:26px}.leadership-portrait{width:min(100%,340px);aspect-ratio:4/4.6}.leadership-content h3{font-size:clamp(32px,8vw,46px)}.leadership-content .leadership-description{font-size:15px}.leadership-links{gap:18px}}
+@media(prefers-reduced-motion:reduce){.leadership-portrait img{transition:none}}
 </style>
 </head>
 <body>
@@ -381,8 +396,17 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
   <div class="wrap">
     <div class="section-top reveal"><div class="index">RESEARCH LEADERSHIP</div><div><h2>People driving discovery.</h2><p>Research leadership connects scientific direction, interdisciplinary thinking and collaborative opportunities.</p></div></div>
     <div class="leadership-profile reveal">
-      <div class="leadership-mark" aria-hidden="true">B<span>L</span></div>
-      <div><div class="micro">PRINCIPAL RESEARCHER</div><h3>Associate Professor Dr. Nur Aliana Hidayah Binti Mohamed</h3><p>BIRT Lab · Independent Research Laboratory</p><a class="text-btn" href="aliana.html">View Full Profile</a> <a class="text-btn" href="mailto:research@birtlab.com?subject=BIRT%20Lab%20Research%20Enquiry">Contact the Research Team</a></div>
+      <a class="leadership-portrait" href="aliana.html" aria-label="View Dr. Aliana's full profile">
+         <img src="assets/img/aliana3.jpg" alt="Associate Professor Dr. Nur Aliana Hidayah Binti Mohamed" loading="lazy" decoding="async">
+         <span class="leadership-portrait-caption">PRINCIPAL RESEARCHER <span aria-hidden="true">↗</span></span>
+       </a>
+       <div class="leadership-content">
+         <div class="micro">RESEARCH LEADERSHIP / PRINCIPAL RESEARCHER</div>
+         <h3>Associate Professor Dr. Nur Aliana Hidayah Binti Mohamed</h3>
+         <p class="leadership-affiliation">BIRT Lab · Independent Research Laboratory</p>
+         <p class="leadership-description">With a background in biomedical sciences, pharmacology and tissue engineering, her research interests include drug delivery systems, biomaterials and bone regeneration.</p>
+         <div class="leadership-links"><a class="text-btn" href="aliana.html">View Full Profile</a><a class="text-btn" href="mailto:research@birtlab.com?subject=BIRT%20Lab%20Research%20Enquiry">Contact the Research Team</a></div>
+       </div>
     </div>
   </div>
 </section>
