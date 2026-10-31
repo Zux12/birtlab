@@ -324,6 +324,32 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .served-feature-content a{display:inline-block;padding:12px 0;border-bottom:1px solid var(--teal);text-decoration:none}
 @media(max-width:650px){.served-photo-frame{aspect-ratio:4/3}.served-photo-top,.served-photo-bottom{left:14px;right:14px;font-size:9px}.served-photo-top{top:14px}.served-photo-bottom{bottom:14px}}
 @media(prefers-reduced-motion:reduce){.served-photo-frame img{transition:none}}
+
+/* Research Intelligence V4: interactive homepage-to-Discovery-Lab handoff */
+.discovery-home{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.discovery-home-form{padding:36px clamp(22px,3vw,48px) 38px 0}
+.discovery-home-form h3{font-size:clamp(32px,4vw,55px);letter-spacing:-.055em;line-height:1.04;margin:18px 0 30px}
+.discovery-home-form h3 em{font-style:normal;color:var(--teal)}
+.discovery-home-form label{display:block;font-size:10px;letter-spacing:.12em;font-weight:900;color:var(--muted);margin:18px 0 8px}
+.discovery-home-form select{display:block;width:100%;padding:14px 13px;background:rgba(255,255,255,.7);color:var(--ink);border:1px solid #b9cac6;border-radius:2px;font-size:14px}
+.discovery-home-form select:focus-visible,.discovery-home-form button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.discovery-home-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:28px}
+.discovery-home-launch{background:var(--teal);color:#fff;border:1px solid var(--teal);padding:15px 18px;font-size:12px;letter-spacing:.035em;font-weight:900;cursor:pointer;display:flex;gap:20px;justify-content:space-between}
+.discovery-home-launch:hover{background:var(--ink)}
+.discovery-home-random{background:transparent;color:var(--teal);border:0;padding:15px 0;font-size:12px;font-weight:900;cursor:pointer}
+.discovery-home-note{font-size:12px;color:var(--muted);line-height:1.7;margin:24px 0 0;max-width:470px}
+.discovery-home-preview{background:#122d30;color:#fff;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.discovery-preview-top{display:flex;justify-content:space-between;gap:12px;padding:26px 30px 0;color:#b0d4cd;font-size:10px;letter-spacing:.14em;font-weight:800}
+.discovery-preview-art{padding:8px 24px 0;flex:1;display:flex;align-items:center;min-height:220px}
+.discovery-preview-art svg{display:block;width:100%;height:auto;max-height:300px}
+.discovery-preview-details{padding:0 30px 30px}
+.discovery-preview-details .micro{color:#89dccc}
+.discovery-preview-details h4{font-size:clamp(24px,2.9vw,38px);letter-spacing:-.045em;line-height:1.16;margin:12px 0}
+.discovery-preview-details p{font-size:14px;color:#c4d7d2;line-height:1.65;margin:0 0 25px}
+.discovery-preview-foot{border-top:1px solid #456164;padding-top:18px;display:flex;gap:15px;justify-content:space-between;flex-wrap:wrap;font-size:10px;letter-spacing:.07em;color:#9fc8bf}
+.discovery-preview-foot a{color:#8de3d1;font-weight:800}
+@media(max-width:800px){.discovery-home{grid-template-columns:1fr}.discovery-home-form{padding:28px 0 36px}.discovery-preview-art{min-height:180px}.discovery-preview-details{padding:0 22px 26px}.discovery-preview-top{padding:22px 22px 0}}
+@media(prefers-reduced-motion:reduce){.discovery-home-launch{transition:none}}
 </style>
 </head>
 <body>
@@ -461,28 +487,28 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
   </div>
 </section>
 
-<section id="intelligence" class="section">
+<section id="intelligence" class="section discovery-home-section">
   <div class="wrap">
-    <div class="section-top reveal"><div class="index">05 / INTELLIGENCE LAYER</div><div><h2>Research activity as a living signal.</h2><p>Illustrative analytics show how management could view research breadth, collaboration potential, maturity and translation pathways once real BIRT Lab data is connected.</p></div></div>
-
-    <div class="analytics">
-      <div class="reveal">
-        <div class="big-number">31<small>POTENTIAL COLLABORATION CONNECTIONS*</small></div>
+    <div class="section-top reveal"><div class="index">05 / RESEARCH INTELLIGENCE</div><div><h2>What could you discover?</h2><p>Combine biomaterials, fabrication methods and biomedical applications. Explore a research idea, then check related scientific publications using our live Discovery Playground.</p></div></div>
+    <div class="discovery-home reveal">
+      <div class="discovery-home-form">
+        <div class="micro">BIRT LAB / RESEARCH IDEA EXPLORER</div>
+        <h3>Mix an idea.<br><em>Explore the evidence.</em></h3>
+        <form id="homeDiscoveryForm" action="discovery-lab.html" method="get">
+          <label for="homeMaterial">01 / BIOMATERIAL</label>
+          <select id="homeMaterial" name="material"><option>PLGA</option><option>GelMA</option><option>Alginate</option><option>Collagen</option><option>PCL</option><option>Chitosan</option></select>
+          <label for="homeTechnology">02 / FABRICATION TECHNOLOGY</label>
+          <select id="homeTechnology" name="technology"><option>3D Bioprinting</option><option>Electrospinning</option><option>Microfluidics</option><option>Drug Encapsulation</option><option>4D Printing</option></select>
+          <label for="homeApplication">03 / BIOMEDICAL APPLICATION</label>
+          <select id="homeApplication" name="application"><option>Bone Regeneration</option><option>Cartilage Repair</option><option>Drug Delivery</option><option>Wound Healing</option><option>Vascular Tissue</option></select>
+          <div class="discovery-home-actions"><button type="submit" class="discovery-home-launch">EXPLORE PUBLICATIONS <span aria-hidden="true">↗</span></button><button id="homeSurprise" type="button" class="discovery-home-random">SURPRISE ME ↗</button></div>
+        </form>
+        <p class="discovery-home-note">No AI · No account · Real literature searches via Europe PMC. Results are research-screening aids, not proof of novelty.</p>
       </div>
-      <div class="reveal">
-        <div class="data-lines">
-          <div class="data-line"><span>Bioprinting workstreams*</span><b>12</b></div>
-          <div class="data-line"><span>Core technology themes*</span><b>08</b></div>
-          <div class="data-line"><span>Translation stages visualized*</span><b>05</b></div>
-          <div class="data-line"><span>Research intelligence views*</span><b>14</b></div>
-        </div>
-        <div class="spark">
-          <svg viewBox="0 0 700 150" preserveAspectRatio="none" aria-label="Illustrative research trajectory">
-            <path d="M10,130 C90,110 105,118 160,90 S240,108 310,70 S410,86 470,48 S560,60 690,18"/>
-            <circle cx="10" cy="130" r="4"/><circle cx="160" cy="90" r="4"/><circle cx="310" cy="70" r="4"/><circle cx="470" cy="48" r="4"/><circle cx="690" cy="18" r="4"/>
-          </svg>
-        </div>
-        <div class="demo-note">*Illustrative mock analytics only. Replace with validated BIRT Lab data when available.</div>
+      <div class="discovery-home-preview" aria-live="polite">
+        <div class="discovery-preview-top"><span>YOUR RESEARCH COMBINATION</span><span>01 / IDEA</span></div>
+        <div class="discovery-preview-art" aria-hidden="true"><svg viewBox="0 0 460 230" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="dhGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8ee1d1"/><stop offset="1" stop-color="#397d8c"/></linearGradient></defs><g id="dhLattice"></g><circle cx="230" cy="115" r="70" fill="none" stroke="#8de3d1" stroke-opacity=".12"/><circle cx="230" cy="115" r="104" fill="none" stroke="#8de3d1" stroke-opacity=".09"/></svg></div>
+        <div class="discovery-preview-details"><div class="micro">EXPERIMENTAL DIRECTION</div><h4 id="homeDiscoveryConcept">PLGA × 3D Bioprinting × Bone Regeneration</h4><p id="homeDiscoveryQuestion">Could this combination offer a useful research question?</p><div class="discovery-preview-foot"><span>SELECT · EXPLORE · VERIFY</span><a href="discovery-lab.html">OPEN FULL DISCOVERY LAB ↗</a></div></div>
       </div>
     </div>
   </div>
@@ -838,6 +864,31 @@ buttons.forEach((button,i)=>button.addEventListener('click',()=>{
  photo.classList.add('changing');const src=`assets/img/people-${i+1}.webp`;
  const next=new Image();next.onload=()=>{if(!button.classList.contains('active'))return;photo.src=src;photo.alt='Illustrative biomedical research environment';requestAnimationFrame(()=>photo.classList.remove('changing'))};next.onerror=()=>photo.classList.remove('changing');next.src=src;
 }));
+})();
+</script>
+<script>
+/* Homepage Research Intelligence V4: native GET form carries validated select values. */
+(()=>{
+ const form=document.getElementById('homeDiscoveryForm');if(!form)return;
+ const ids=['homeMaterial','homeTechnology','homeApplication'];
+ const fields=ids.map(id=>document.getElementById(id));
+ const concept=document.getElementById('homeDiscoveryConcept');
+ const question=document.getElementById('homeDiscoveryQuestion');
+ const lattice=document.getElementById('dhLattice');
+ function update(){
+  const [m,t,a]=fields.map(el=>el.value);
+  concept.textContent=[m,t,a].join(' × ');
+  question.textContent='Could '+m+' combined with '+t+' for '+a+' offer a useful research question?';
+  const count=7+(fields[0].selectedIndex%3),paths=[];
+  for(let i=0;i<count;i++){
+   const x=68+i*310/(count-1);
+   paths.push('<path d="M'+(x-25)+' 36 L'+(x+24)+' 191 M'+(x+24)+' 36 L'+(x-25)+' 191" fill="none" stroke="url(#dhGrad)" stroke-width="5" stroke-linecap="round" opacity=".8"/>');
+  }
+  lattice.innerHTML=paths.join('');
+ }
+ fields.forEach(el=>el.addEventListener('change',update));
+ document.getElementById('homeSurprise').addEventListener('click',()=>{fields.forEach(el=>el.selectedIndex=Math.floor(Math.random()*el.options.length));update()});
+ update();
 })();
 </script>
 </body>
