@@ -350,6 +350,37 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .discovery-preview-foot a{color:#8de3d1;font-weight:800}
 @media(max-width:800px){.discovery-home{grid-template-columns:1fr}.discovery-home-form{padding:28px 0 36px}.discovery-preview-art{min-height:180px}.discovery-preview-details{padding:0 22px 26px}.discovery-preview-top{padding:22px 22px 0}}
 @media(prefers-reduced-motion:reduce){.discovery-home-launch{transition:none}}
+
+/* Navigation V2: accessible compact desktop dropdowns and mobile accordion */
+.topbar{overflow:visible}
+.topbar-inner{grid-template-columns:minmax(230px,1fr) auto minmax(85px,1fr);gap:20px}
+.center-nav{display:flex;align-items:center;gap:6px;font-size:13px}
+.nav-group{position:relative}
+.nav-group>summary{display:flex;align-items:center;gap:9px;list-style:none;cursor:pointer;padding:13px 15px;border-radius:3px;color:var(--ink);font-weight:700;white-space:nowrap;user-select:none}
+.nav-group>summary::-webkit-details-marker{display:none}
+.nav-group>summary:hover,.nav-group[open]>summary{background:rgba(11,119,113,.075);color:var(--teal)}
+.nav-group>summary:focus-visible,.nav-dropdown a:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.nav-chevron{font-size:18px;line-height:1;transition:transform .2s}
+.nav-group[open] .nav-chevron{transform:rotate(180deg)}
+.nav-dropdown{position:absolute;top:calc(100% + 8px);left:0;min-width:260px;max-width:340px;padding:9px;background:#f9fcfa;border:1px solid var(--line);box-shadow:0 18px 40px rgba(13,38,37,.14);z-index:75}
+.nav-group:nth-last-child(-n+2) .nav-dropdown{left:auto;right:0}
+.nav-dropdown a{display:block;padding:12px 13px;font-size:13px;font-weight:600;line-height:1.35;color:var(--ink);border-bottom:1px solid rgba(207,218,215,.65)}
+.nav-dropdown a:last-child{border-bottom:0}
+.nav-dropdown a:hover{background:rgba(11,119,113,.07);color:var(--teal)}
+.nav-dropdown .nav-featured{color:var(--teal);font-weight:900;background:rgba(11,119,113,.055)}
+.hero-discovery-link{color:var(--teal)}
+@media(max-width:1000px){
+ .center-nav{display:none}
+ .topbar-inner{grid-template-columns:minmax(0,1fr) auto auto;gap:12px}
+ .mobile-menu-toggle{display:block;background:transparent;border:1px solid var(--line);border-radius:4px;padding:10px 12px;font-weight:800;color:var(--ink);cursor:pointer}
+ .mobile-nav{display:none;padding:10px 20px 20px;border-top:1px solid var(--line);background:var(--paper);max-height:calc(100dvh - 70px);overflow-y:auto}
+ .mobile-nav.open{display:block}
+ .mobile-nav .nav-group{border-bottom:1px solid var(--line)}
+ .mobile-nav .nav-group>summary{padding:15px 0;justify-content:space-between;font-size:15px}
+ .mobile-nav .nav-dropdown{position:static;min-width:0;max-width:none;padding:0 0 12px 14px;border:0;box-shadow:none;background:transparent}
+ .mobile-nav .nav-dropdown a{padding:12px 8px;font-size:14px;font-weight:600}
+}
+@media(prefers-reduced-motion:reduce){.nav-chevron{transition:none}}
 </style>
 </head>
 <body>
@@ -359,11 +390,11 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a href="#top" class="brand">BIRT LAB<small>BIOENGINEERING + INTEGRATED REGENERATIVE TECHNOLOGIES</small></a>
-    <nav class="center-nav" aria-label="Main navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="membership.html">Free Membership</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="scientific-studio.html">3D Studio</a></nav>
+    <nav class="center-nav" aria-label="Main navigation"><details class="nav-group"><summary>Research<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#research">Research Domains</a><a href="#frontiers">Research Frontiers</a><a href="#flow">Research Flow</a></div></details><details class="nav-group"><summary>Explore<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="discovery-lab.html" class="nav-featured">Research Intelligence · Discovery Lab</a><a href="#intelligence">Research Idea Explorer</a><a href="scientific-studio.html">Scientific Visualisation Studio</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="#tools">Digital Lab</a></div></details><details class="nav-group"><summary>Community<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#people">People We Serve</a><a href="membership.html">Free Membership</a><a href="#leadership">Research Leadership</a><a href="experts.html">TERMIS-AP 2028</a></div></details><details class="nav-group"><summary>About<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#vision">Our Vision</a><a href="#contact">Contact</a></div></details></nav>
     <a class="nav-action" href="#contact">CONTACT ↗</a>
     <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="mobileNav">MENU ☰</button>
   </div>
-  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><a href="#research">Research</a><a href="#people">People We Serve</a><a href="#frontiers">Frontiers</a><a href="#tools">Digital Lab</a><a href="#intelligence">Intelligence</a><a href="#vision">Vision</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="scientific-studio.html">3D Studio</a><a href="membership.html">Free Membership</a><a href="experts.html">TERMIS-AP 2028</a><a href="#contact">Contact</a></nav>
+  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><details class="nav-group"><summary>Research<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#research">Research Domains</a><a href="#frontiers">Research Frontiers</a><a href="#flow">Research Flow</a></div></details><details class="nav-group"><summary>Explore<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="discovery-lab.html" class="nav-featured">Research Intelligence · Discovery Lab</a><a href="#intelligence">Research Idea Explorer</a><a href="scientific-studio.html">Scientific Visualisation Studio</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="#tools">Digital Lab</a></div></details><details class="nav-group"><summary>Community<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#people">People We Serve</a><a href="membership.html">Free Membership</a><a href="#leadership">Research Leadership</a><a href="experts.html">TERMIS-AP 2028</a></div></details><details class="nav-group"><summary>About<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#vision">Our Vision</a><a href="#contact">Contact</a></div></details></nav>
 </header>
 
 <main id="top">
@@ -374,7 +405,7 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <h1 class="reveal">BIRT<em>LAB</em></h1>
       <div class="fullname reveal">Bioengineering &amp; Integrated Regenerative Technologies</div>
       <div class="hero-copy reveal"><b>Our mission</b><p>Advancing bioprinting, biomaterials, tissue engineering and regenerative technologies through interdisciplinary research, technology development and scientific collaboration.</p></div>
-      <div class="launchline reveal"><a class="text-btn" href="#research">Explore Research</a><a class="text-btn" href="#leadership">Meet Our Leadership</a><button class="text-btn" data-open="sim">Digital Lab Demo</button></div>
+      <div class="launchline reveal"><a class="text-btn hero-discovery-link" href="discovery-lab.html">Discover Research Ideas</a><a class="text-btn" href="#research">Explore Research</a><a class="text-btn" href="#leadership">Meet Our Leadership</a><button class="text-btn" data-open="sim">Digital Lab Demo</button></div>
     </div>
     <div class="hero-visual reveal">
       <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="nucleus"></div><div class="hero-cell-webgl" id="livingCellV3" aria-hidden="true"></div>
@@ -452,7 +483,7 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
   </div>
 </section>
 
-<section class="section">
+<section id="flow" class="section">
   <div class="wrap">
     <div class="section-top reveal"><div class="index">03 / CONNECTED SYSTEM</div><div><h2>One research flow.</h2><p>Instead of decorative cards, the lab is visualized as a continuous scientific pathway. Tap any point to change the pathway narrative.</p></div></div>
     <div class="flow-shell reveal">
@@ -889,6 +920,28 @@ buttons.forEach((button,i)=>button.addEventListener('click',()=>{
  fields.forEach(el=>el.addEventListener('change',update));
  document.getElementById('homeSurprise').addEventListener('click',()=>{fields.forEach(el=>el.selectedIndex=Math.floor(Math.random()*el.options.length));update()});
  update();
+})();
+</script>
+<script>
+/* Navigation V2 interaction: one open group, Escape and outside-click dismissal. */
+(()=>{
+ const groups=[...document.querySelectorAll('.nav-group')];
+ groups.forEach(group=>{
+  group.addEventListener('toggle',()=>{
+   if(group.open) groups.forEach(other=>{if(other!==group && other.closest('nav')===group.closest('nav'))other.open=false;});
+  });
+  group.querySelectorAll('.nav-dropdown a').forEach(link=>link.addEventListener('click',()=>{
+   group.open=false;
+   const mobile=group.closest('#mobileNav');
+   if(mobile){mobile.classList.remove('open');document.querySelector('.mobile-menu-toggle')?.setAttribute('aria-expanded','false');}
+  }));
+ });
+ document.addEventListener('click',event=>{if(!event.target.closest('.nav-group'))groups.forEach(group=>group.open=false);});
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'){
+  groups.forEach(group=>group.open=false);
+  const mobile=document.getElementById('mobileNav');
+  if(mobile?.classList.contains('open')){mobile.classList.remove('open');document.querySelector('.mobile-menu-toggle')?.setAttribute('aria-expanded','false');document.querySelector('.mobile-menu-toggle')?.focus();}
+ }});
 })();
 </script>
 </body>
