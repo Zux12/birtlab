@@ -277,9 +277,9 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
         <button class="ic-text-action cursor-interaction" type="button" data-go="icirm-about">Discover ICIRM <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
       </div></div>
   </section>
-  <section id="icirm-countdown" class="ic-countdown ic-wrap" aria-labelledby="ic-countdown-heading" data-countdown="2026-09-01T00:00:00+08:00">
-    <div><div class="ic-kicker">The countdown</div><h2 id="ic-countdown-heading">A new chapter awaits.</h2><p class="ic-countdown-date">1 September 2026 · 12:00 AM, Malaysia time</p><p class="ic-countdown-note" id="ic-countdown-status" aria-live="polite">ICIRM2027 exact conference dates will be announced.</p></div>
-    <div class="ic-countdown-right"><div class="ic-clock" role="timer" aria-label="Countdown to 1 September 2026, Malaysia time" aria-live="off">
+  <section id="icirm-countdown" class="ic-countdown ic-wrap" aria-labelledby="ic-countdown-heading" data-countdown="2027-09-01T00:00:00+08:00">
+    <div><div class="ic-kicker">The countdown</div><h2 id="ic-countdown-heading">A new chapter awaits.</h2><p class="ic-countdown-date">1 September 2027 · 12:00 AM, Malaysia time</p><p class="ic-countdown-note" id="ic-countdown-status" aria-live="polite">ICIRM2027 exact conference dates will be announced.</p></div>
+    <div class="ic-countdown-right"><div class="ic-clock" role="timer" aria-label="Countdown to 1 September 2027, Malaysia time" aria-live="off">
       <div class="ic-time"><span class="ic-time-value" data-unit="days">00</span><span class="ic-time-label">Days</span></div>
       <div class="ic-time"><span class="ic-time-value" data-unit="hours">00</span><span class="ic-time-label">Hours</span></div>
       <div class="ic-time"><span class="ic-time-value" data-unit="minutes">00</span><span class="ic-time-label">Minutes</span></div>
@@ -413,7 +413,7 @@ button, summary, a { -webkit-tap-highlight-color: transparent; }
     if(seconds===0){
       root.querySelector('#ic-countdown-heading').textContent='The countdown has finished.';
       status.textContent='This date has passed. ICIRM2027 is planned for September 2027.';
-      clock.setAttribute('aria-label','Countdown completed. The date 1 September 2026 has passed.');
+      clock.setAttribute('aria-label','Countdown completed. The date 1 September 2027 has passed.');
       return false;
     }
     return true;
