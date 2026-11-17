@@ -381,6 +381,11 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
  .mobile-nav .nav-dropdown a{padding:12px 8px;font-size:14px;font-weight:600}
 }
 @media(prefers-reduced-motion:reduce){.nav-chevron{transition:none}}
+
+/* BIRT Lab banner — not sticky; immediately follows the navigation */
+.birt-banner{width:100%;line-height:0;overflow:hidden;background:#e5f0f4}
+.birt-banner img{display:block;width:100%;height:auto;object-fit:cover}
+@media(max-width:650px){.birt-banner img{width:100%;min-height:105px;object-fit:cover;object-position:center}}
 </style>
 </head>
 <body>
@@ -396,6 +401,9 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
   </div>
   <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation"><details class="nav-group"><summary>Research<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#research">Research Domains</a><a href="#frontiers">Research Frontiers</a><a href="#flow">Research Flow</a></div></details><details class="nav-group"><summary>Explore<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="discovery-lab.html" class="nav-featured">Research Intelligence · Discovery Lab</a><a href="#intelligence">Research Idea Explorer</a><a href="scientific-studio.html">Scientific Visualisation Studio</a><a href="plga-scaffold-live.html">PLGA Scaffold Studio</a><a href="#tools">Digital Lab</a></div></details><details class="nav-group"><summary>Community<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#people">People We Serve</a><a href="membership.html">Free Membership</a><a href="#leadership">Research Leadership</a><a href="experts.html">TERMIS-AP 2028</a></div></details><details class="nav-group"><summary>About<span class="nav-chevron" aria-hidden="true">⌄</span></summary><div class="nav-dropdown"><a href="#vision">Our Vision</a><a href="#contact">Contact</a></div></details></nav>
 </header>
+<!-- BIRT Lab editorial banner: scrolls naturally beneath the sticky navigation -->
+<div class="birt-banner" aria-label="BIRT Lab scientific research banner"><img src="assets/img/birtlab-banner-cropped.jpg" alt="BIRT Lab scientific banner featuring biomaterials and regenerative technology" decoding="async"></div>
+
 
 <main id="top">
 <section class="hero">
