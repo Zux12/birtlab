@@ -101,7 +101,24 @@ function relevance(p,category){
  if(category===0&&!TECH.test(title))return -1;
  return hits*3+(TECH.test(title)?3:0)+(p.doi?2:0)+(p.source==='PPR'?-1:1);
 }
-function choosePhoto(p){const t=p.title.toLowerCase();if(/chip|microfluid/.test(t))return 'https://commons.wikimedia.org/wiki/Special:FilePath/Microfluidic_Chip.jpg?width=900';if(/hydrogel|scaffold|material/.test(t))return 'https://commons.wikimedia.org/wiki/Special:FilePath/3D_printed_Scaffold_side_view.png?width=900';if(/bioprint|fabricat/.test(t))return 'https://commons.wikimedia.org/wiki/Special:FilePath/Making_3-D_Bioprinted_Tissue.jpg?width=900';return 'https://commons.wikimedia.org/wiki/Special:FilePath/3-D_Image_of_Bioprinted_Skin_Tissue_(28746740398).jpg?width=900'}
+const editionImageLibrary=[
+ {id:'microfluidic',url:'https://commons.wikimedia.org/wiki/Special:FilePath/Microfluidic_Chip.jpg?width=900',match:/chip|microfluid|organ.on.chip/i,alt:'Microfluidic chip device, illustrative'},
+ {id:'scaffold',url:'https://commons.wikimedia.org/wiki/Special:FilePath/3D_printed_Scaffold_side_view.png?width=900',match:/scaffold|hydrogel|biomaterial|material/i,alt:'Three-dimensional scaffold, illustrative'},
+ {id:'bioprinting',url:'https://commons.wikimedia.org/wiki/Special:FilePath/Making_3-D_Bioprinted_Tissue.jpg?width=900',match:/bioprint|biofabricat|bioink|print/i,alt:'Three-dimensional tissue bioprinting, illustrative'},
+ {id:'tissue',url:'https://commons.wikimedia.org/wiki/Special:FilePath/3-D_Image_of_Bioprinted_Skin_Tissue_(28746740398).jpg?width=900',match:/tissue|cell|skin|regenerat/i,alt:'Bioprinted skin tissue microscopy image, illustrative'}
+];
+function assignEditionImages(papers){
+ // One image per visible story, including the hero. A category can never reuse
+ // the same photograph within an edition; the best remaining image is assigned.
+ const used=new Set(),assigned=new Map();
+ for(const p of papers){
+  const ranked=editionImageLibrary.filter(im=>!used.has(im.id)).sort((a,b)=>Number(b.match.test(p.title))-Number(a.match.test(p.title)));
+  const selected=ranked[0];
+  if(!selected)throw Error('Insufficient distinct illustrative images for this edition');
+  used.add(selected.id);assigned.set(keyOf(p),selected);
+ }
+ return assigned;
+}
 
 function paper(p,featured=false){
  const photo=photoFor(p);return '<div style="padding:18px 0;border-bottom:1px solid #e5ecee">'+(featured?'<img src="'+esc(photo.url)+'" alt="Illustrative laboratory stock photograph; not an image from this paper" style="display:block;width:100%;height:auto;max-height:270px;object-fit:cover;margin:0 0 14px"><div style="font:11px Arial;color:#6a7d83">Illustrative photograph · '+esc(photo.credit)+'</div>':'')+
@@ -112,13 +129,15 @@ function paper(p,featured=false){
 }
 function section(kicker,title,inner){return '<tr><td style="padding:30px 32px;border-bottom:1px solid #e1e9ed"><div style="font:700 11px Arial;color:#07838a;letter-spacing:2px">'+esc(kicker)+'</div><h2 style="font:700 24px/1.2 Arial;color:#0e2b46;margin:12px 0 10px">'+esc(title)+'</h2>'+inner+'</td></tr>'}
 function makeHtml({date,lead,groups,opportunities}){
+ const tech=groups[0].slice(0,3),pubs=groups[1].slice(0,3),materials=groups[2].slice(0,2);
+ const images=assignEditionImages([lead,...tech]);
+ const imageFor=p=>images.get(keyOf(p));
  const cell=(p,mode='small')=>'<div style="padding:10px 0;border-bottom:1px solid #dce8eb">'+
- (mode==='tech'?'<img src="'+esc(choosePhoto(p))+'" alt="Illustrative scientific technology image" style="width:100%;height:130px;object-fit:cover;border-radius:7px;display:block;margin-bottom:10px">':'')+
+ (mode==='tech'?'<img src="'+esc(imageFor(p).url)+'" alt="Illustrative scientific technology image" style="width:100%;height:130px;object-fit:cover;border-radius:7px;display:block;margin-bottom:10px">':'')+
  '<div style="font:700 10px Arial;color:#00858c;letter-spacing:.6px">'+esc(p.type)+' · '+esc(p.date)+'</div>'+
  '<div style="font:700 '+(mode==='tech'?'15':'13')+'px/1.35 Arial;margin:7px 0"><a style="color:#0c3048;text-decoration:none" href="'+esc(p.url)+'">'+esc(p.title)+'</a></div>'+
  '<div style="font:11px Arial;color:#667984">'+esc(p.journal||'Indexed research record')+'</div>'+
  '<a style="font:700 11px Arial;color:#00858c" href="'+esc(p.url)+'">ORIGINAL SOURCE →</a></div>';
- const tech=groups[0].slice(0,3),pubs=groups[1].slice(0,3),materials=groups[2].slice(0,2);
  const cols=(items)=>items.map(p=>'<td valign="top" width="'+Math.floor(100/Math.max(1,items.length))+'%" style="padding:8px;vertical-align:top">'+cell(p,'tech')+'</td>').join('');
  const research=[...pubs,...materials].slice(0,3);
  const trendRules=[['Biofabrication & bioprinting',/bioprint|biofabricat/i],['Scaffolds & hydrogels',/hydrogel|scaffold/i],['Organ-on-chip platforms',/organ.on.chip|microfluid/i],['Regenerative tissue engineering',/regenerat|tissue.engineer/i]];
@@ -133,7 +152,7 @@ function makeHtml({date,lead,groups,opportunities}){
  (oppCells?'<table role="presentation" width="100%" style="margin-top:20px"><tr>'+oppCells+'</tr></table>':'')+
  '</td></tr>';
  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIRT Lab Research Digest · '+esc(date)+'</title></head><body style="margin:0;background:#eaf2f4;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:760px;background:#fff"><tr><td style="padding:24px 30px;border-top:5px solid #00858c"><table role="presentation" width="100%"><tr><td><strong style="font:900 28px Arial;color:#0b3047">BIRT<span style="color:#00858c">LAB</span></strong><div style="font:11px Arial;color:#536b74">Bioengineering &amp; Integrated<br>Regenerative Technologies Lab</div></td><td align="right"><strong style="font:900 21px Arial;color:#0b3047">RESEARCH <span style="color:#00858c">DIGEST</span></strong><div style="font:11px Arial;color:#536b74">WEEKLY TECHNOLOGY REVIEW · '+esc(date)+'</div></td></tr></table></td></tr>'+
- '<tr><td style="background:#07334d;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="52%" valign="middle" style="padding:27px"><div style="font:700 11px Arial;color:#9de5e5">FEATURE STORY</div><h1 style="font:800 26px/1.15 Arial;color:#fff">'+esc(lead.title)+'</h1><p style="font:13px Arial;color:#d7eef0">'+esc(lead.type)+' · '+esc(lead.date)+'</p><a style="display:inline-block;padding:12px;background:#fff;border-radius:22px;font:700 12px Arial;color:#007c83" href="'+esc(lead.url)+'">READ ORIGINAL RESEARCH →</a></td><td width="48%" valign="middle"><img src="'+esc(choosePhoto(lead))+'" alt="Illustrative image for the featured technology, not a figure from the publication" style="width:100%;max-height:300px;object-fit:cover;display:block"></td></tr></table></td></tr>'+
+ '<tr><td style="background:#07334d;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="52%" valign="middle" style="padding:27px"><div style="font:700 11px Arial;color:#9de5e5">FEATURE STORY</div><h1 style="font:800 26px/1.15 Arial;color:#fff">'+esc(lead.title)+'</h1><p style="font:13px Arial;color:#d7eef0">'+esc(lead.type)+' · '+esc(lead.date)+'</p><a style="display:inline-block;padding:12px;background:#fff;border-radius:22px;font:700 12px Arial;color:#007c83" href="'+esc(lead.url)+'">READ ORIGINAL RESEARCH →</a></td><td width="48%" valign="middle"><img src="'+esc(imageFor(lead).url)+'" alt="Illustrative image for the featured technology, not a figure from the publication" style="width:100%;max-height:300px;object-fit:cover;display:block"></td></tr></table></td></tr>'+
  content+
  '<tr><td style="background:#075365;padding:24px 30px;color:#fff;font:12px Arial">BIRT Lab Research Digest · <a style="color:#b9f1ef" href="https://birtlab.com/research-digest-latest.html">View online</a><p style="font:11px/1.5 Arial;color:#d7ebed">Research titles and bibliographic metadata are sourced from live indexes. Images are illustrative, not original study figures. No subscriber email has been sent; unsubscribe controls must be added before live distribution.</p></td></tr></table></td></tr></table></body></html>';
 }
