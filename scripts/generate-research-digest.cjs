@@ -88,13 +88,11 @@ function makeHtml({date,lead,groups,opportunities}){
  ...(research?[section('03 / LATEST RESEARCH','Selected scientific publications',research)]:[]),
  ...(materials?[section('04 / BIOMATERIALS','Materials and scaffold innovation',materials)]:[]),
  trendSection(groups),
- section('BIRT LAB / PROJECT SPOTLIGHT','OSTEOSERRA','<p style="font:15px/1.7 Arial;color:#536d79">Porous PLGA microsphere scaffold research concept. The prototype is research-stage; clinical performance is not established.</p><a style="color:#087f82;font-weight:bold" href="https://birtlab.com/osteoserra.html">EXPLORE THE PROJECT →</a>'),
  opportunitySection('RESEARCH GRANTS & FUNDING','New verified funding calls',opportunities.funding),
  opportunitySection('CONFERENCES & EVENTS','New event announcements',opportunities.event),
  opportunitySection('COLLABORATION OPPORTUNITIES','New collaboration calls',opportunities.collaboration)
  ].filter(Boolean).join('');
- // Funding, events beyond verified BIRT Lab announcement, and collaboration calls are intentionally omitted.
- // They will appear only when an approved live source supplies a new verified opportunity.
+ // All opportunities are omitted unless newly verified; unchanged BIRT Lab projects are not repeated.
  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIRT Lab Research Digest · '+esc(date)+'</title></head>'+
  '<body style="margin:0;background:#edf3f6;font-family:Arial,sans-serif;color:#0e2b46"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#edf3f6"><tr><td align="center" style="padding:20px 10px">'+
  '<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:680px;background:#fff;border-collapse:collapse">'+
