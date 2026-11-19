@@ -34,6 +34,41 @@ async function search(query){
    url:'https://europepmc.org/article/'+encodeURIComponent(p.source)+'/'+encodeURIComponent(p.id)
  }));
 }
+
+const crypto=require('node:crypto');
+const feedPath=path.join(root,'research-digest-data','opportunities.json');
+function normalizeTitle(t){return String(t||'').toLowerCase().normalize('NFKC').replace(/[^a-z0-9]+/g,' ').trim();}
+function fingerprint(item){return crypto.createHash('sha256').update([item.type||'',item.url||'',normalizeTitle(item.title),item.deadline||'',item.status||''].join('|')).digest('hex');}
+function readOpportunities(){try{const d=JSON.parse(fs.readFileSync(feedPath,'utf8'));return Array.isArray(d.items)?d.items:[]}catch(e){if(e.code==='ENOENT')return [];throw e}}
+function validOpportunity(o,now){
+ if(!o||!['funding','event','collaboration'].includes(o.type)||!o.title||!o.url||!o.verifiedAt||!o.source)return false;
+ let u;try{u=new URL(o.url)}catch{return false}
+ if(u.protocol!=='https:'||!Number.isFinite(Date.parse(o.verifiedAt)))return false;
+ if(Date.now()-Date.parse(o.verifiedAt)>14*86400000)return false;
+ if(o.deadline&&(!Number.isFinite(Date.parse(o.deadline))||Date.parse(o.deadline)<now.getTime()))return false;
+ return true;
+}
+function freshOpportunities(history,now){
+ const entries=readOpportunities().filter(o=>validOpportunity(o,now));
+ const result={funding:[],event:[],collaboration:[]};
+ for(const o of entries){
+  const fp=fingerprint(o);
+  if(history.opportunities?.[fp])continue;
+  result[o.type].push({...o,fp});
+ }
+ return result;
+}
+function opportunitySection(kind,title,items){
+ if(!items.length)return '';
+ return section(kind,title,items.map(o=>'<div style="padding:12px 0;border-bottom:1px solid #e2eaeb"><strong>'+esc(o.title)+'</strong><p style="font:13px Arial;color:#637781">'+esc(o.source)+(o.deadline?' · Deadline: '+esc(o.deadline):'')+'</p><a href="'+esc(o.url)+'" style="color:#07838a">OFFICIAL SOURCE →</a></div>').join(''));
+}
+function trendSection(groups){
+ const all=groups.flat(),rules=[['Bioprinting & biofabrication',/bioprint|biofabricat/i],['Smart hydrogels & scaffolds',/hydrogel|scaffold|biomaterial/i],['Organ-on-chip & microfluidics',/organ.on.chip|microfluid/i],['Regenerative cell systems',/cell|regenerat/i]];
+ const ranked=rules.map(([label,re])=>({label,count:all.filter(p=>re.test(p.title)).length})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,3);
+ if(!ranked.length)return '';
+ return section('EMERGING RESEARCH TOPICS','Topics represented in this week’s selected publications',ranked.map(x=>'<p style="font:14px Arial;color:#294f5a"><strong>'+esc(x.label)+'</strong> · '+x.count+' selected record'+(x.count===1?'':'s')+'</p>').join('')+'<p style="font:11px Arial;color:#657984">These counts describe this edition’s selection, not a measured field-wide research trend.</p>');
+}
+
 function paper(p,featured=false){
  const photo=photoFor(p);return '<div style="padding:18px 0;border-bottom:1px solid #e5ecee">'+(featured?'<img src="'+esc(photo.url)+'" alt="Illustrative laboratory stock photograph; not an image from this paper" style="display:block;width:100%;height:auto;max-height:270px;object-fit:cover;margin:0 0 14px"><div style="font:11px Arial;color:#6a7d83">Illustrative photograph · '+esc(photo.credit)+'</div>':'')+
  '<div style="font:700 10px Arial;color:#087f82;letter-spacing:1.3px">'+esc(p.type)+' · '+esc(p.date)+'</div>'+
@@ -42,7 +77,7 @@ function paper(p,featured=false){
  '<a style="font:700 12px Arial;color:#007f88" href="'+esc(p.url)+'">READ ORIGINAL PUBLICATION →</a></div>';
 }
 function section(kicker,title,inner){return '<tr><td style="padding:30px 32px;border-bottom:1px solid #e1e9ed"><div style="font:700 11px Arial;color:#07838a;letter-spacing:2px">'+esc(kicker)+'</div><h2 style="font:700 24px/1.2 Arial;color:#0e2b46;margin:12px 0 10px">'+esc(title)+'</h2>'+inner+'</td></tr>'}
-function makeHtml({date,lead,groups}){
+function makeHtml({date,lead,groups,opportunities}){
  const intro='<p style="font:15px/1.7 Arial;color:#536d79;margin:12px 0">A curated view of emerging bioengineering and regenerative technologies. Every publication links to its original indexed record; article titles and metadata are reproduced without AI-generated claims.</p>';
  const tech=groups[0].map(p=>paper(p)).join('');
  const research=groups[1].map(p=>paper(p)).join('');
@@ -52,9 +87,12 @@ function makeHtml({date,lead,groups}){
  ...(tech?[section('02 / TECHNOLOGY FRONTIERS','Engineering the next generation',tech)]:[]),
  ...(research?[section('03 / LATEST RESEARCH','Selected scientific publications',research)]:[]),
  ...(materials?[section('04 / BIOMATERIALS','Materials and scaffold innovation',materials)]:[]),
+ trendSection(groups),
  section('BIRT LAB / PROJECT SPOTLIGHT','OSTEOSERRA','<p style="font:15px/1.7 Arial;color:#536d79">Porous PLGA microsphere scaffold research concept. The prototype is research-stage; clinical performance is not established.</p><a style="color:#087f82;font-weight:bold" href="https://birtlab.com/osteoserra.html">EXPLORE THE PROJECT →</a>'),
- section('BIRT LAB / SCIENTIFIC COMMUNITY','ICIRM 2027','<p style="font:15px/1.7 Arial;color:#536d79">International Clinical Innovation &amp; Regenerative Medicine Conference · Kuala Lumpur · September 2027. Exact dates to be confirmed.</p><a style="color:#087f82;font-weight:bold" href="https://birtlab.com/icirm2027.html">CONFERENCE INFORMATION →</a>')
- ].join('');
+ opportunitySection('RESEARCH GRANTS & FUNDING','New verified funding calls',opportunities.funding),
+ opportunitySection('CONFERENCES & EVENTS','New event announcements',opportunities.event),
+ opportunitySection('COLLABORATION OPPORTUNITIES','New collaboration calls',opportunities.collaboration)
+ ].filter(Boolean).join('');
  // Funding, events beyond verified BIRT Lab announcement, and collaboration calls are intentionally omitted.
  // They will appear only when an approved live source supplies a new verified opportunity.
  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIRT Lab Research Digest · '+esc(date)+'</title></head>'+
@@ -68,16 +106,31 @@ function makeHtml({date,lead,groups}){
 }
 async function main(){
  const now=new Date();const week=weekKey(now);const history=readHistory();
+ history.featured=history.featured||{};history.issues=history.issues||[];history.opportunities=history.opportunities||{};
  if(history.issues.includes(week)&&!process.env.BIRT_DIGEST_FORCE_REBUILD){console.log('Issue already generated for week '+week);return}
- const seen=new Set();const results=await Promise.all(topics.map(t=>search(t.query)));
- const groups=results.map((items,i)=>items.filter(p=>{const k=keyOf(p);if(seen.has(k)||history.featured[k])return false;seen.add(k);return true}).slice(0,topics[i].max));
- const lead=groups[0].shift()||groups[1].shift()||groups[2].shift();
- if(!lead||groups.flat().length<2)throw Error('Insufficient new source-verified content; refusing to publish.');
- const html=makeHtml({date:week,lead,groups});
+ const seen=new Set(),titleSeen=new Set();
+ const results=await Promise.all(topics.map(t=>search(t.query)));
+ // Rotate the lead technology category by ISO week; other categories remain eligible.
+ const rotation=Math.floor(now.getTime()/604800000)%topics.length;
+ const ordered=results.map((items,i)=>items.filter(p=>{
+  const k=keyOf(p),t=normalizeTitle(p.title);
+  if(seen.has(k)||titleSeen.has(t)||history.featured[k]||history.titles?.[t])return false;
+  seen.add(k);titleSeen.add(t);return true;
+ }).slice(0,topics[i].max+2));
+ const lead=ordered[rotation].shift()||ordered.find(x=>x.length)?.shift();
+ if(!lead)throw Error('No new source-verified publications; edition withheld.');
+ const groups=ordered.map((items,i)=>items.slice(0,topics[i].max));
+ if(groups.flat().length<2)throw Error('Insufficient new verified content; edition withheld.');
+ const opportunities=freshOpportunities(history,now);
+ const html=makeHtml({date:week,lead,groups,opportunities});
  fs.mkdirSync(outDir,{recursive:true});fs.mkdirSync(path.dirname(historyPath),{recursive:true});
- fs.writeFileSync(path.join(outDir,week+'.html'),html);fs.writeFileSync(path.join(root,'research-digest-latest.html'),html);
- for(const p of [lead,...groups.flat()])history.featured[keyOf(p)]={date:week,title:p.title,url:p.url};
- history.issues.push(week);fs.writeFileSync(historyPath,JSON.stringify(history,null,2)+'\n');
- console.log('Generated issue '+week+' with '+(1+groups.flat().length)+' new source-linked publications. No emails sent.');
+ fs.writeFileSync(path.join(outDir,week+'.html'),html);
+ fs.writeFileSync(path.join(root,'research-digest-latest.html'),html);
+ history.titles=history.titles||{};
+ for(const p of [lead,...groups.flat()]){history.featured[keyOf(p)]={date:week,title:p.title,url:p.url};history.titles[normalizeTitle(p.title)]=week}
+ for(const o of Object.values(opportunities).flat())history.opportunities[o.fp]={date:week,title:o.title,url:o.url};
+ if(!history.issues.includes(week))history.issues.push(week);
+ fs.writeFileSync(historyPath,JSON.stringify(history,null,2)+'\n');
+ console.log('Generated issue '+week+' with '+(1+groups.flat().length)+' new source-linked publications and '+Object.values(opportunities).flat().length+' verified opportunity updates. No emails sent.');
 }
 main().catch(e=>{console.error(e);process.exitCode=1});
