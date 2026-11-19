@@ -1,0 +1,25 @@
+name: BIRT Lab Research Digest - Preview Issue
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Generate isolated editorial preview
+        env:
+          BIRT_DIGEST_PREVIEW: 'true'
+        run: node scripts/generate-research-digest.cjs
+      - name: Upload preview HTML and report
+        uses: actions/upload-artifact@v4
+        with:
+          name: birt-research-digest-preview
+          path: research-digest-preview/
+          if-no-files-found: error
+          retention-days: 14
