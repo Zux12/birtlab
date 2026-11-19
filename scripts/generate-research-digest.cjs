@@ -139,9 +139,9 @@ function makeHtml({date,lead,groups,opportunities}){
 }
 
 async function main(){
- const now=new Date();const week=weekKey(now);const history=readHistory();
+ const now=new Date();const week=weekKey(now);const preview=process.env.BIRT_DIGEST_PREVIEW==='true';const history=readHistory();
  history.featured=history.featured||{};history.issues=history.issues||[];history.opportunities=history.opportunities||{};
- if(history.issues.includes(week)&&!process.env.BIRT_DIGEST_FORCE_REBUILD){console.log('Issue already generated for week '+week);return}
+ if(!preview&&history.issues.includes(week)&&!process.env.BIRT_DIGEST_FORCE_REBUILD){console.log('Issue already generated for week '+week);return}
  const seen=new Set(),titleSeen=new Set();
  const results=[];
  for(const t of topics){try{results.push(await search(t.query))}catch(err){console.error('Source unavailable for '+t.name+': '+err.message);results.push([])}}
@@ -158,6 +158,19 @@ async function main(){
  if(groups.flat().length<2)throw Error('Insufficient new verified content; edition withheld.');
  const opportunities=freshOpportunities(history,now);
  const html=makeHtml({date:week,lead,groups,opportunities});
+ if(preview){
+  const previewDir=path.join(root,'research-digest-preview');
+  fs.mkdirSync(previewDir,{recursive:true});
+  fs.writeFileSync(path.join(previewDir,'issue-preview.html'),html);
+  fs.writeFileSync(path.join(previewDir,'preview-report.json'),JSON.stringify({
+   generatedAt:now.toISOString(),issueWeek:week,mode:'preview',lead:{title:lead.title,url:lead.url},
+   categories:groups.map((items,i)=>({category:topics[i].name,count:items.length,articles:items.map(p=>({title:p.title,url:p.url}))})),
+   opportunityCounts:Object.fromEntries(Object.entries(opportunities).map(([k,v])=>[k,v.length])),
+   historicalIssuesUnchanged:true,emailSent:false
+  },null,2)+'\n');
+  console.log('PREVIEW generated with '+(1+groups.flat().length)+' publications. History and published editions unchanged. No emails sent.');
+  return;
+ }
  fs.mkdirSync(outDir,{recursive:true});fs.mkdirSync(path.dirname(historyPath),{recursive:true});
  fs.writeFileSync(path.join(outDir,week+'.html'),html);
  fs.writeFileSync(path.join(root,'research-digest-latest.html'),html);
