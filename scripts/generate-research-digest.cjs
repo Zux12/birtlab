@@ -90,6 +90,19 @@ function trendSection(groups){
  return section('EMERGING RESEARCH TOPICS','Topics represented in this week’s selected publications',ranked.map(x=>'<p style="font:14px Arial;color:#294f5a"><strong>'+esc(x.label)+'</strong> · '+x.count+' selected record'+(x.count===1?'':'s')+'</p>').join('')+'<p style="font:11px Arial;color:#657984">These counts describe this edition’s selection, not a measured field-wide research trend.</p>');
 }
 
+
+const RELEVANT=/bioprint|biofabricat|tissue.engineer|regenerat|biomaterial|hydrogel|scaffold|microfluid|organ.on.chip|bioreactor|bioink|cell.therap|stem.cell|bone.graft|electrospin|biosensor/i;
+const TECH=/bioprint|biofabricat|organ.on.chip|microfluid|bioreactor|bioink|biosensor|electrospin|hydrogel|scaffold|biomaterial/i;
+const EXCLUDE=/statistical.analysis.plan|trial.protocol|study.protocol|hospitalisation|case.report|clinical.guideline|survey.of|bibliometric|editorial|correction|erratum|commentary|letter.to.the.editor/i;
+function relevance(p,category){
+ const title=String(p.title||'');
+ if(EXCLUDE.test(title)||!RELEVANT.test(title))return -1;
+ const hits=(title.match(/bioprint|biofabricat|tissue.engineer|regenerat|biomaterial|hydrogel|scaffold|microfluid|organ.on.chip|bioreactor|bioink|biosensor/gi)||[]).length;
+ if(category===0&&!TECH.test(title))return -1;
+ return hits*3+(TECH.test(title)?3:0)+(p.doi?2:0)+(p.source==='PPR'?-1:1);
+}
+function choosePhoto(p){const t=p.title.toLowerCase();if(/chip|microfluid/.test(t))return 'https://commons.wikimedia.org/wiki/Special:FilePath/Microfluidic_Chip.jpg?width=900';if(/hydrogel|scaffold|material/.test(t))return 'https://commons.wikimedia.org/wiki/Special:FilePath/3D_printed_Scaffold_side_view.png?width=900';if(/bioprint|fabricat/.test(t))return 'https://commons.wikimedia.org/wiki/Special:FilePath/Making_3-D_Bioprinted_Tissue.jpg?width=900';return 'https://commons.wikimedia.org/wiki/Special:FilePath/3-D_Image_of_Bioprinted_Skin_Tissue_(28746740398).jpg?width=900'}
+
 function paper(p,featured=false){
  const photo=photoFor(p);return '<div style="padding:18px 0;border-bottom:1px solid #e5ecee">'+(featured?'<img src="'+esc(photo.url)+'" alt="Illustrative laboratory stock photograph; not an image from this paper" style="display:block;width:100%;height:auto;max-height:270px;object-fit:cover;margin:0 0 14px"><div style="font:11px Arial;color:#6a7d83">Illustrative photograph · '+esc(photo.credit)+'</div>':'')+
  '<div style="font:700 10px Arial;color:#087f82;letter-spacing:1.3px">'+esc(p.type)+' · '+esc(p.date)+'</div>'+
@@ -99,30 +112,32 @@ function paper(p,featured=false){
 }
 function section(kicker,title,inner){return '<tr><td style="padding:30px 32px;border-bottom:1px solid #e1e9ed"><div style="font:700 11px Arial;color:#07838a;letter-spacing:2px">'+esc(kicker)+'</div><h2 style="font:700 24px/1.2 Arial;color:#0e2b46;margin:12px 0 10px">'+esc(title)+'</h2>'+inner+'</td></tr>'}
 function makeHtml({date,lead,groups,opportunities}){
- const intro='<p style="font:15px/1.7 Arial;color:#536d79;margin:12px 0">A curated view of emerging bioengineering and regenerative technologies. Every publication links to its original indexed record; article titles and metadata are reproduced without AI-generated claims.</p>';
- const tech=groups[0].map(p=>paper(p)).join('');
- const research=groups[1].map(p=>paper(p)).join('');
- const materials=groups[2].map(p=>paper(p)).join('');
- const sections=[
- section('01 / FEATURE STORY','This week in regenerative technology',paper(lead,true)+intro),
- ...(tech?[section('02 / TECHNOLOGY FRONTIERS','Engineering the next generation',tech)]:[]),
- ...(research?[section('03 / LATEST RESEARCH','Selected scientific publications',research)]:[]),
- ...(materials?[section('04 / BIOMATERIALS','Materials and scaffold innovation',materials)]:[]),
- trendSection(groups),
- opportunitySection('RESEARCH GRANTS & FUNDING','New verified funding calls',opportunities.funding),
- opportunitySection('CONFERENCES & EVENTS','New event announcements',opportunities.event),
- opportunitySection('COLLABORATION OPPORTUNITIES','New collaboration calls',opportunities.collaboration)
- ].filter(Boolean).join('');
- // All opportunities are omitted unless newly verified; unchanged BIRT Lab projects are not repeated.
- return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIRT Lab Research Digest · '+esc(date)+'</title></head>'+
- '<body style="margin:0;background:#edf3f6;font-family:Arial,sans-serif;color:#0e2b46"><table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#edf3f6"><tr><td align="center" style="padding:20px 10px">'+
- '<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:680px;background:#fff;border-collapse:collapse">'+
- '<tr><td style="padding:23px 32px;border-top:5px solid #07838a;background:#fff"><table role="presentation" width="100%"><tr><td><span style="font:900 28px Arial;color:#0d3241">BIRT<span style="color:#07838a">LAB</span></span><div style="font:10px Arial;color:#5d737e;letter-spacing:.8px">BIOENGINEERING &amp; INTEGRATED<br>REGENERATIVE TECHNOLOGIES LAB</div></td><td align="right" style="font:700 14px Arial;color:#0e2b46">RESEARCH <span style="color:#07838a">DIGEST</span><div style="font:11px Arial;color:#68808a;margin-top:5px">WEEKLY TECHNOLOGY REVIEW<br>'+esc(date)+'</div></td></tr></table></td></tr>'+
- '<tr><td style="background:#0d334a;padding:39px 32px;background-image:linear-gradient(110deg,#0d334a,#076c82)"><div style="font:700 11px Arial;color:#b1f0e7;letter-spacing:2px">FEATURE / BIOENGINEERING INTELLIGENCE</div><h1 style="font:700 36px/1.12 Arial;color:#fff;margin:17px 0">The future of regenerative technologies, in focus.</h1><p style="font:15px/1.6 Arial;color:#d5eff1;margin:0">A weekly review of the science, engineering and platforms shaping tissue repair and biomedical innovation.</p></td></tr>'+
- sections+
- '<tr><td style="background:#0d334a;padding:28px 32px;color:#fff"><div style="font:700 17px Arial">BIRT Lab Research Digest</div><p style="font:12px/1.6 Arial;color:#c8dfe5">Source-grounded scientific discovery · <a href="https://birtlab.com/research-digest-latest.html" style="color:#b8f6ee">Read online</a></p><p style="font:11px/1.6 Arial;color:#c8dfe5">This is an online editorial edition. Email distribution is not yet active. Subscription management and unsubscribe links will be integrated before sending to subscribers.</p></td></tr>'+
- '</table></td></tr></table></body></html>';
+ const cell=(p,mode='small')=>'<div style="padding:10px 0;border-bottom:1px solid #dce8eb">'+
+ (mode==='tech'?'<img src="'+esc(choosePhoto(p))+'" alt="Illustrative scientific technology image" style="width:100%;height:130px;object-fit:cover;border-radius:7px;display:block;margin-bottom:10px">':'')+
+ '<div style="font:700 10px Arial;color:#00858c;letter-spacing:.6px">'+esc(p.type)+' · '+esc(p.date)+'</div>'+
+ '<div style="font:700 '+(mode==='tech'?'15':'13')+'px/1.35 Arial;margin:7px 0"><a style="color:#0c3048;text-decoration:none" href="'+esc(p.url)+'">'+esc(p.title)+'</a></div>'+
+ '<div style="font:11px Arial;color:#667984">'+esc(p.journal||'Indexed research record')+'</div>'+
+ '<a style="font:700 11px Arial;color:#00858c" href="'+esc(p.url)+'">ORIGINAL SOURCE →</a></div>';
+ const tech=groups[0].slice(0,3),pubs=groups[1].slice(0,3),materials=groups[2].slice(0,2);
+ const cols=(items)=>items.map(p=>'<td valign="top" width="'+Math.floor(100/Math.max(1,items.length))+'%" style="padding:8px;vertical-align:top">'+cell(p,'tech')+'</td>').join('');
+ const research=[...pubs,...materials].slice(0,3);
+ const trendRules=[['Biofabrication & bioprinting',/bioprint|biofabricat/i],['Scaffolds & hydrogels',/hydrogel|scaffold/i],['Organ-on-chip platforms',/organ.on.chip|microfluid/i],['Regenerative tissue engineering',/regenerat|tissue.engineer/i]];
+ const trends=trendRules.map(([label,re])=>({label,count:[lead,...groups.flat()].filter(p=>re.test(p.title)).length})).filter(t=>t.count).sort((a,b)=>b.count-a.count).slice(0,3);
+ const oppCard=(kind,label,items)=>items.length?'<td width="33%" valign="top" style="padding:8px"><div style="background:#f0f7f8;border-radius:9px;padding:14px"><h3 style="font:700 15px Arial;color:#0c3048">'+esc(label)+'</h3>'+items.map(o=>'<p style="font:12px/1.5 Arial"><a href="'+esc(o.url)+'">'+esc(o.title)+'</a></p>').join('')+'</div></td>':'';
+ const oppCells=[oppCard('funding','RESEARCH GRANTS & FUNDING',opportunities.funding),oppCard('event','CONFERENCES & EVENTS',opportunities.event),oppCard('collaboration','COLLABORATION OPPORTUNITIES',opportunities.collaboration)].filter(Boolean).join('');
+ const content='<tr><td style="padding:0 28px 24px">'+
+ (tech.length?'<h2 style="font:800 23px Arial;color:#0b3047;margin:26px 0 10px">TECHNOLOGY <span style="color:#008d94">FRONTIERS</span></h2><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'+cols(tech)+'</tr></table>':'')+
+ '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px"><tr>'+
+ '<td width="50%" valign="top" style="padding:10px;border-top:2px solid #00858c"><h2 style="font:800 18px Arial;color:#0b3047">LATEST RESEARCH PUBLICATIONS</h2>'+research.map(p=>cell(p)).join('')+'</td>'+
+ '<td width="50%" valign="top" style="padding:10px;border-top:2px solid #00858c"><h2 style="font:800 18px Arial;color:#0b3047">EMERGING RESEARCH TOPICS</h2>'+trends.map((t,i)=>'<p style="background:#eaf6f7;padding:10px;font:13px Arial;color:#0b3047"><strong style="color:#00858c">0'+(i+1)+'</strong> &nbsp; '+esc(t.label)+' ('+t.count+' selected records)</p>').join('')+'<p style="font:11px Arial;color:#60737d">Topic counts describe this edition, not measured industry-wide trends.</p></td></tr></table>'+
+ (oppCells?'<table role="presentation" width="100%" style="margin-top:20px"><tr>'+oppCells+'</tr></table>':'')+
+ '</td></tr>';
+ return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIRT Lab Research Digest · '+esc(date)+'</title></head><body style="margin:0;background:#eaf2f4;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:760px;background:#fff"><tr><td style="padding:24px 30px;border-top:5px solid #00858c"><table role="presentation" width="100%"><tr><td><strong style="font:900 28px Arial;color:#0b3047">BIRT<span style="color:#00858c">LAB</span></strong><div style="font:11px Arial;color:#536b74">Bioengineering &amp; Integrated<br>Regenerative Technologies Lab</div></td><td align="right"><strong style="font:900 21px Arial;color:#0b3047">RESEARCH <span style="color:#00858c">DIGEST</span></strong><div style="font:11px Arial;color:#536b74">WEEKLY TECHNOLOGY REVIEW · '+esc(date)+'</div></td></tr></table></td></tr>'+
+ '<tr><td style="background:#07334d;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="52%" valign="middle" style="padding:27px"><div style="font:700 11px Arial;color:#9de5e5">FEATURE STORY</div><h1 style="font:800 26px/1.15 Arial;color:#fff">'+esc(lead.title)+'</h1><p style="font:13px Arial;color:#d7eef0">'+esc(lead.type)+' · '+esc(lead.date)+'</p><a style="display:inline-block;padding:12px;background:#fff;border-radius:22px;font:700 12px Arial;color:#007c83" href="'+esc(lead.url)+'">READ ORIGINAL RESEARCH →</a></td><td width="48%" valign="middle"><img src="'+esc(choosePhoto(lead))+'" alt="Illustrative image for the featured technology, not a figure from the publication" style="width:100%;max-height:300px;object-fit:cover;display:block"></td></tr></table></td></tr>'+
+ content+
+ '<tr><td style="background:#075365;padding:24px 30px;color:#fff;font:12px Arial">BIRT Lab Research Digest · <a style="color:#b9f1ef" href="https://birtlab.com/research-digest-latest.html">View online</a><p style="font:11px/1.5 Arial;color:#d7ebed">Research titles and bibliographic metadata are sourced from live indexes. Images are illustrative, not original study figures. No subscriber email has been sent; unsubscribe controls must be added before live distribution.</p></td></tr></table></td></tr></table></body></html>';
 }
+
 async function main(){
  const now=new Date();const week=weekKey(now);const history=readHistory();
  history.featured=history.featured||{};history.issues=history.issues||[];history.opportunities=history.opportunities||{};
@@ -136,7 +151,7 @@ async function main(){
   const k=keyOf(p),t=normalizeTitle(p.title);
   if(seen.has(k)||titleSeen.has(t)||history.featured[k]||history.titles?.[t])return false;
   seen.add(k);titleSeen.add(t);return true;
- }).slice(0,topics[i].max+2));
+ }).sort((a,b)=>relevance(b,i)-relevance(a,i)).filter(p=>relevance(p,i)>=3).slice(0,topics[i].max+2));
  const lead=ordered[rotation].shift()||ordered.find(x=>x.length)?.shift();
  if(!lead)throw Error('No new source-verified publications; edition withheld.');
  const groups=ordered.map((items,i)=>items.slice(0,topics[i].max));
