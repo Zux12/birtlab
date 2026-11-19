@@ -1,0 +1,52 @@
+{
+  "featured": {
+    "doi:10.1051/medsci/2026164": {
+      "date": "2026-11-16",
+      "title": "[Deciphering the fate of somitic multipotent progenitors through lineage tracing].",
+      "url": "https://europepmc.org/article/MED/43049500"
+    },
+    "doi:10.64898/2026.11.16.766976": {
+      "date": "2026-11-16",
+      "title": "ALI MEA60: A porous thin-film microelectrode array for air-liquid interface electrophysiology of 3D excitable tissues",
+      "url": "https://europepmc.org/article/PPR/PPR1371210"
+    },
+    "doi:10.64898/2026.11.15.26367580": {
+      "date": "2026-11-16",
+      "title": "Statistical analysis plan for the Preventing InfusAte injuries Throughout a Childs Hospitalisation (PATCH) trial: a type 1 hybrid randomised controlled trial",
+      "url": "https://europepmc.org/article/PPR/PPR1371109"
+    },
+    "doi:10.64898/2026.11.15.766740": {
+      "date": "2026-11-16",
+      "title": "A near-infrared fluorescent genetically encoded calcium ion biosensor with a direct response",
+      "url": "https://europepmc.org/article/PPR/PPR1371032"
+    },
+    "doi:10.1093/gerona/glag264": {
+      "date": "2026-11-16",
+      "title": "Electro-Responsive Biomaterials as Mechanobiological Regulators of Infection and Immunity in Aging Tissues.",
+      "url": "https://europepmc.org/article/MED/43048945"
+    },
+    "doi:10.1002/smll.76725": {
+      "date": "2026-11-16",
+      "title": "Integrated Electrohydrodynamic Direct-Writing and Electrospray for Hydroxyapatite-Modified Poly( ε -caprolactone) Microfiber Scaffolds.",
+      "url": "https://europepmc.org/article/MED/43046922"
+    },
+    "doi:10.1002/mus.70448": {
+      "date": "2026-11-16",
+      "title": "From Burden to Breakthrough: A Roadmap to Disentangle Fatigue in Spinal Muscular Atrophy.",
+      "url": "https://europepmc.org/article/MED/43046887"
+    }
+  },
+  "issues": [
+    "2026-11-16"
+  ],
+  "opportunities": {},
+  "titles": {
+    "deciphering the fate of somitic multipotent progenitors through lineage tracing": "2026-11-16",
+    "ali mea60 a porous thin film microelectrode array for air liquid interface electrophysiology of 3d excitable tissues": "2026-11-16",
+    "statistical analysis plan for the preventing infusate injuries throughout a childs hospitalisation patch trial a type 1 hybrid randomised controlled trial": "2026-11-16",
+    "a near infrared fluorescent genetically encoded calcium ion biosensor with a direct response": "2026-11-16",
+    "electro responsive biomaterials as mechanobiological regulators of infection and immunity in aging tissues": "2026-11-16",
+    "integrated electrohydrodynamic direct writing and electrospray for hydroxyapatite modified poly caprolactone microfiber scaffolds": "2026-11-16",
+    "from burden to breakthrough a roadmap to disentangle fatigue in spinal muscular atrophy": "2026-11-16"
+  }
+}
