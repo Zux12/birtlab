@@ -23,15 +23,36 @@ const root=path.join(__dirname,'..');
 function readHistory(){try{return JSON.parse(fs.readFileSync(historyPath,'utf8'))}catch(e){if(e.code==='ENOENT')return {featured:{},issues:[]};throw e}}
 function keyOf(p){return (p.doi?'doi:'+p.doi.toLowerCase():'pmc:'+p.source+':'+p.id).replace(/\s/g,'')}
 function weekKey(d){const x=new Date(d);const day=x.getUTCDay();x.setUTCDate(x.getUTCDate()-(day+6)%7);return x.toISOString().slice(0,10)}
+async function fetchJson(url,timeout=18000){
+ const r=await fetch(url,{headers:{'Accept':'application/json','User-Agent':'BirtLabResearchDigest/1.0 (https://birtlab.com)'},signal:AbortSignal.timeout(timeout)});
+ if(!r.ok)throw Error('HTTP '+r.status);
+ return r.json();
+}
 async function search(query){
  const params=new URLSearchParams({query:query+' AND FIRST_PDATE:[NOW-45DAYS TO NOW]',format:'json',pageSize:'30',sort:'FIRST_PDATE_D desc'});
- const res=await fetch('https://www.ebi.ac.uk/europepmc/webservices/rest/search?'+params,{signal:AbortSignal.timeout(25000)});
- if(!res.ok)throw Error('Europe PMC returned HTTP '+res.status);
- const data=await res.json();
- return (data.resultList?.result||[]).filter(p=>p.title&&p.id&&p.source&&p.firstPublicationDate).map(p=>({
-   title:p.title.replace(/<[^>]+>/g,''),source:p.source,id:p.id,date:p.firstPublicationDate,
-   journal:p.journalTitle||'',doi:p.doi||'',type:p.source==='PPR'?'PREPRINT · NOT PEER REVIEWED':'INDEXED PUBLICATION',
-   url:'https://europepmc.org/article/'+encodeURIComponent(p.source)+'/'+encodeURIComponent(p.id)
+ const endpoint='https://www.ebi.ac.uk/europepmc/webservices/rest/search?'+params;
+ for(let attempt=1;attempt<=2;attempt++){
+  try{
+   const data=await fetchJson(endpoint,20000);
+   return (data.resultList?.result||[]).filter(p=>p.title&&p.id&&p.source&&p.firstPublicationDate).map(p=>({
+    title:p.title.replace(/<[^>]+>/g,''),source:p.source,id:p.id,date:p.firstPublicationDate,
+    journal:p.journalTitle||'',doi:p.doi||'',type:p.source==='PPR'?'PREPRINT · NOT PEER REVIEWED':'INDEXED PUBLICATION',
+    url:'https://europepmc.org/article/'+encodeURIComponent(p.source)+'/'+encodeURIComponent(p.id)
+   }));
+  }catch(err){console.warn('Europe PMC attempt '+attempt+' failed: '+err.message)}
+ }
+ // OpenAlex provides a secondary live scholarly metadata source when Europe PMC is unavailable.
+ // It does not establish peer-review status: label records as scholarly metadata only.
+ const keywords=query.includes('bioprinting')?'bioprinting organ on chip biofabrication':query.includes('tissue engineering')?'tissue engineering regenerative medicine':'hydrogel scaffold biomaterials';
+ const since=new Date(Date.now()-45*86400000).toISOString().slice(0,10);
+ const oa='https://api.openalex.org/works?'+new URLSearchParams({search:keywords,filter:'from_publication_date:'+since,sort:'publication_date:desc',per_page:'30'});
+ const data=await fetchJson(oa,20000);
+ console.log('Using OpenAlex metadata fallback for '+keywords);
+ return (data.results||[]).filter(p=>p.title&&p.id&&p.publication_date).map(p=>({
+  title:p.title.replace(/<[^>]+>/g,''),source:'OPENALEX',id:p.id.split('/').pop(),date:p.publication_date,
+  journal:p.primary_location?.source?.display_name||'',doi:p.doi?.replace(/^https?:\/\/doi.org\//i,'')||'',
+  type:'SCHOLARLY RECORD · REVIEW STATUS UNVERIFIED',
+  url:p.doi||p.primary_location?.landing_page_url||p.id
  }));
 }
 
@@ -107,7 +128,8 @@ async function main(){
  history.featured=history.featured||{};history.issues=history.issues||[];history.opportunities=history.opportunities||{};
  if(history.issues.includes(week)&&!process.env.BIRT_DIGEST_FORCE_REBUILD){console.log('Issue already generated for week '+week);return}
  const seen=new Set(),titleSeen=new Set();
- const results=await Promise.all(topics.map(t=>search(t.query)));
+ const results=[];
+ for(const t of topics){try{results.push(await search(t.query))}catch(err){console.error('Source unavailable for '+t.name+': '+err.message);results.push([])}}
  // Rotate the lead technology category by ISO week; other categories remain eligible.
  const rotation=Math.floor(now.getTime()/604800000)%topics.length;
  const ordered=results.map((items,i)=>items.filter(p=>{
