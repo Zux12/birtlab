@@ -110,15 +110,18 @@ const editionImageLibrary=[
  {id:'biomedical-lab',url:'https://images.pexels.com/photos/4031416/pexels-photo-4031416.jpeg?auto=compress&cs=tinysrgb&w=900',match:/cell|tissue|regenerat/i,alt:'Illustrative biomedical laboratory photograph'},
  {id:'bioengineering-lab',url:'https://images.pexels.com/photos/8533045/pexels-photo-8533045.jpeg?auto=compress&cs=tinysrgb&w=900',match:/biofabricat|bioprint|tissue/i,alt:'Illustrative bioengineering laboratory photograph'}
 ];
-function assignEditionImages(papers){
- // One image per visible story, including the hero. A category can never reuse
- // the same photograph within an edition; the best remaining image is assigned.
- const used=new Set(),assigned=new Map();
- for(const p of papers){
-  const ranked=editionImageLibrary.filter(im=>!used.has(im.id)).sort((a,b)=>Number(b.match.test(p.title))-Number(a.match.test(p.title)));
-  const selected=ranked[0];
-  if(!selected)throw Error('Insufficient distinct illustrative images for this edition');
-  used.add(selected.id);assigned.set(keyOf(p),selected);
+function assignEditionImages(slots){
+ // Image uniqueness is per VISUAL SLOT, not per publication ID. The same paper
+ // may support multiple sections but must never repeat its image on one page.
+ const usedUrls=new Set(),assigned=new Map();
+ for(const slot of slots){
+  const choices=editionImageLibrary.filter(im=>!usedUrls.has(im.url))
+   .sort((a,b)=>Number(b.match.test(slot.paper.title))-Number(a.match.test(slot.paper.title)));
+  const chosen=choices[0]||null;
+  // If the image library is exhausted, render a text-only entry rather than
+  // repeat a photograph. This is intentional and guarantees uniqueness.
+  if(chosen)usedUrls.add(chosen.url);
+  assigned.set(slot.id,chosen);
  }
  return assigned;
 }
@@ -143,16 +146,16 @@ function emergingTopics(papers){
 function makeHtml({date,lead,groups,opportunities}){
  const tech=groups[0].slice(0,3),pubs=groups[1].slice(0,3),materials=groups[2].slice(0,2);
  const trends=emergingTopics([lead,...groups.flat()]);
- const imagePapers=[lead,...tech,...trends.map(t=>t.support)].filter((p,i,a)=>a.findIndex(q=>keyOf(q)===keyOf(p))===i);
- const images=assignEditionImages(imagePapers);
- const imageFor=p=>images.get(keyOf(p));
- const cell=(p,mode='small')=>'<div style="padding:10px 0;border-bottom:1px solid #dce8eb">'+
- (mode==='tech'?'<img src="'+esc(imageFor(p).url)+'" alt="Illustrative scientific technology image" style="width:100%;height:130px;object-fit:cover;border-radius:7px;display:block;margin-bottom:10px">':'')+
+ const slots=[{id:'hero',paper:lead},...tech.map((paper,i)=>({id:'tech-'+i,paper})),...trends.map((t,i)=>({id:'trend-'+i,paper:t.support}))];
+ const images=assignEditionImages(slots);
+ const imageFor=id=>images.get(id);
+ const cell=(p,mode='small',slotId='')=>'<div style="padding:10px 0;border-bottom:1px solid #dce8eb">'+
+ (mode==='tech'&&imageFor(slotId)?'<img src="'+esc(imageFor(slotId).url)+'" alt="'+esc(imageFor(slotId).alt)+'" style="width:100%;height:130px;object-fit:cover;border-radius:7px;display:block;margin-bottom:10px">':'')+
  '<div style="font:700 10px Arial;color:#00858c;letter-spacing:.6px">'+esc(p.type)+' · '+esc(p.date)+'</div>'+
  '<div style="font:700 '+(mode==='tech'?'15':'13')+'px/1.35 Arial;margin:7px 0"><a style="color:#0c3048;text-decoration:none" href="'+esc(p.url)+'">'+esc(p.title)+'</a></div>'+
  '<div style="font:11px Arial;color:#667984">'+esc(p.journal||'Indexed research record')+'</div>'+
  '<a style="font:700 11px Arial;color:#00858c" href="'+esc(p.url)+'">ORIGINAL SOURCE →</a></div>';
- const cols=(items)=>items.map(p=>'<td valign="top" width="'+Math.floor(100/Math.max(1,items.length))+'%" style="padding:8px;vertical-align:top">'+cell(p,'tech')+'</td>').join('');
+ const cols=(items)=>items.map((p,i)=>'<td valign="top" width="'+Math.floor(100/Math.max(1,items.length))+'%" style="padding:8px;vertical-align:top">'+cell(p,'tech','tech-'+i)+'</td>').join('');
  const research=[...pubs,...materials].slice(0,3);
  const oppCard=(kind,label,items)=>items.length?'<td width="33%" valign="top" style="padding:8px"><div style="background:#f0f7f8;border-radius:9px;padding:14px"><h3 style="font:700 15px Arial;color:#0c3048">'+esc(label)+'</h3>'+items.map(o=>'<p style="font:12px/1.5 Arial"><a href="'+esc(o.url)+'">'+esc(o.title)+'</a></p>').join('')+'</div></td>':'';
  const oppCells=[oppCard('funding','RESEARCH GRANTS & FUNDING',opportunities.funding),oppCard('event','CONFERENCES & EVENTS',opportunities.event),oppCard('collaboration','COLLABORATION OPPORTUNITIES',opportunities.collaboration)].filter(Boolean).join('');
@@ -164,7 +167,7 @@ function makeHtml({date,lead,groups,opportunities}){
  (oppCells?'<table role="presentation" width="100%" style="margin-top:20px"><tr>'+oppCells+'</tr></table>':'')+
  '</td></tr>';
  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BIRT Lab Research Digest · '+esc(date)+'</title></head><body style="margin:0;background:#eaf2f4;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:760px;background:#fff"><tr><td style="padding:24px 30px;border-top:5px solid #00858c"><table role="presentation" width="100%"><tr><td><strong style="font:900 28px Arial;color:#0b3047">BIRT<span style="color:#00858c">LAB</span></strong><div style="font:11px Arial;color:#536b74">Bioengineering &amp; Integrated<br>Regenerative Technologies Lab</div></td><td align="right"><strong style="font:900 21px Arial;color:#0b3047">RESEARCH <span style="color:#00858c">DIGEST</span></strong><div style="font:11px Arial;color:#536b74">WEEKLY TECHNOLOGY REVIEW · '+esc(date)+'</div></td></tr></table></td></tr>'+
- '<tr><td style="background:#07334d;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="52%" valign="middle" style="padding:27px"><div style="font:700 11px Arial;color:#9de5e5">FEATURE STORY</div><h1 style="font:800 26px/1.15 Arial;color:#fff">'+esc(lead.title)+'</h1><p style="font:13px Arial;color:#d7eef0">'+esc(lead.type)+' · '+esc(lead.date)+'</p><a style="display:inline-block;padding:12px;background:#fff;border-radius:22px;font:700 12px Arial;color:#007c83" href="'+esc(lead.url)+'">READ ORIGINAL RESEARCH →</a></td><td width="48%" valign="middle"><img src="'+esc(imageFor(lead).url)+'" alt="Illustrative image for the featured technology, not a figure from the publication" style="width:100%;max-height:300px;object-fit:cover;display:block"></td></tr></table></td></tr>'+
+ '<tr><td style="background:#07334d;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="52%" valign="middle" style="padding:27px"><div style="font:700 11px Arial;color:#9de5e5">FEATURE STORY</div><h1 style="font:800 26px/1.15 Arial;color:#fff">'+esc(lead.title)+'</h1><p style="font:13px Arial;color:#d7eef0">'+esc(lead.type)+' · '+esc(lead.date)+'</p><a style="display:inline-block;padding:12px;background:#fff;border-radius:22px;font:700 12px Arial;color:#007c83" href="'+esc(lead.url)+'">READ ORIGINAL RESEARCH →</a></td><td width="48%" valign="middle"><img src="'+esc(imageFor('hero').url)+'" alt="Illustrative image for the featured technology, not a figure from the publication" style="width:100%;max-height:300px;object-fit:cover;display:block"></td></tr></table></td></tr>'+
  content+
  '<tr><td style="background:#075365;padding:24px 30px;color:#fff;font:12px Arial">BIRT Lab Research Digest · <a style="color:#b9f1ef" href="https://birtlab.com/research-digest-latest.html">View online</a><p style="font:11px/1.5 Arial;color:#d7ebed">Research titles and bibliographic metadata are sourced from live indexes. Images are illustrative, not original study figures. No subscriber email has been sent; unsubscribe controls must be added before live distribution.</p></td></tr></table></td></tr></table></body></html>';
 }
