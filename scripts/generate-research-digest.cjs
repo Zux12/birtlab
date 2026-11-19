@@ -10,6 +10,13 @@ const topics=[
  {name:'Research Publications',query:'("tissue engineering" OR "regenerative medicine")',max:3},
  {name:'Biomaterials & Scaffolds',query:'("hydrogel" OR "scaffold" OR "biomaterials") AND ("regeneration" OR "tissue")',max:2}
 ];
+const photoLibrary=[
+ {topic:'bioprinting',url:'https://images.pexels.com/photos/4031523/pexels-photo-4031523.jpeg?auto=compress&cs=tinysrgb&w=1000',credit:'Edward Jenner / Pexels'},
+ {topic:'biomaterials',url:'https://images.pexels.com/photos/8443069/pexels-photo-8443069.jpeg?auto=compress&cs=tinysrgb&w=900',credit:'Pavel Danilyuk / Pexels'},
+ {topic:'microfluidics',url:'https://images.pexels.com/photos/4031416/pexels-photo-4031416.jpeg?auto=compress&cs=tinysrgb&w=900',credit:'Edward Jenner / Pexels'},
+ {topic:'research',url:'https://images.pexels.com/photos/8533045/pexels-photo-8533045.jpeg?auto=compress&cs=tinysrgb&w=900',credit:'Artem Podrez / Pexels'}
+];
+function photoFor(p){const title=p.title.toLowerCase();if(/print|fabricat/.test(title))return photoLibrary[0];if(/hydrogel|scaffold|polymer|material/.test(title))return photoLibrary[1];if(/chip|microfluidic|organ/.test(title))return photoLibrary[2];return photoLibrary[3];}
 const historyPath=path.join(__dirname,'..','research-digest-data','history.json');
 const outDir=path.join(__dirname,'..','research-digest-issues');
 const root=path.join(__dirname,'..');
@@ -28,7 +35,7 @@ async function search(query){
  }));
 }
 function paper(p,featured=false){
- return '<div style="padding:18px 0;border-bottom:1px solid #e5ecee">'+
+ const photo=photoFor(p);return '<div style="padding:18px 0;border-bottom:1px solid #e5ecee">'+(featured?'<img src="'+esc(photo.url)+'" alt="Illustrative laboratory stock photograph; not an image from this paper" style="display:block;width:100%;height:auto;max-height:270px;object-fit:cover;margin:0 0 14px"><div style="font:11px Arial;color:#6a7d83">Illustrative photograph · '+esc(photo.credit)+'</div>':'')+
  '<div style="font:700 10px Arial;color:#087f82;letter-spacing:1.3px">'+esc(p.type)+' · '+esc(p.date)+'</div>'+
  '<h3 style="font:700 '+(featured?'23':'17')+'px/1.35 Arial;color:#0e2b46;margin:9px 0"><a style="color:#0e2b46;text-decoration:none" href="'+esc(p.url)+'">'+esc(p.title)+'</a></h3>'+
  '<p style="font:13px/1.6 Arial;color:#657984;margin:7px 0">'+esc(p.journal||'Europe PMC record')+(p.doi?' · DOI: '+esc(p.doi):'')+'</p>'+
