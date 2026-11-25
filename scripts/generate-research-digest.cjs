@@ -22,7 +22,7 @@ const outDir=path.join(__dirname,'..','research-digest-issues');
 const root=path.join(__dirname,'..');
 function readHistory(){try{return JSON.parse(fs.readFileSync(historyPath,'utf8'))}catch(e){if(e.code==='ENOENT')return {featured:{},issues:[]};throw e}}
 function keyOf(p){return (p.doi?'doi:'+p.doi.toLowerCase():'pmc:'+p.source+':'+p.id).replace(/\s/g,'')}
-function weekKey(d){const x=new Date(d);const day=x.getUTCDay();x.setUTCDate(x.getUTCDate()-(day+6)%7);return x.toISOString().slice(0,10)}
+function weekKey(d){const local=new Date(d.getTime()+8*3600000);const day=local.getUTCDay();local.setUTCDate(local.getUTCDate()+(day===0?1:-(day+6)%7));return local.toISOString().slice(0,10)}
 async function fetchJson(url,timeout=18000){
  const r=await fetch(url,{headers:{'Accept':'application/json','User-Agent':'BirtLabResearchDigest/1.0 (https://birtlab.com)'},signal:AbortSignal.timeout(timeout)});
  if(!r.ok)throw Error('HTTP '+r.status);
