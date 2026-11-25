@@ -34,10 +34,56 @@
       "date": "2026-11-16",
       "title": "From Burden to Breakthrough: A Roadmap to Disentangle Fatigue in Spinal Muscular Atrophy.",
       "url": "https://europepmc.org/article/MED/43046887"
+    },
+    "doi:10.21203/rs.3.rs-11705178/v1": {
+      "date": "2026-11-23",
+      "title": "Fabrication and Characterization of Hybrid Scaffolds Based on Alginate, Aloe Vera, and Polycaprolactone via 3D Printing and Electrospinning for Bone Tissue Regeneration",
+      "url": "https://europepmc.org/article/PPR/PPR1376413"
+    },
+    "doi:10.1039/d6ra07875c": {
+      "date": "2026-11-23",
+      "title": "Paper-based hydrogel biosensor integrated with carbon dots for portable detection of microRNA-21 using a fluorescent diffusion area as the readout.",
+      "url": "https://europepmc.org/article/MED/43075244"
+    },
+    "doi:10.1021/acsbiomaterials.6c00493": {
+      "date": "2026-11-23",
+      "title": "Exploration of Photoclickable Polysaccharide-Gelatin Hydrogels for Vascular Self-Assembly in Three-Dimensional Bioprinted Constructs.",
+      "url": "https://europepmc.org/article/MED/43072405"
+    },
+    "doi:10.64898/2026.11.22.768397": {
+      "date": "2026-11-23",
+      "title": "BioSensor-X: A Coverage-Aware Evidence-Integration and Benchmarking Framework for Transcription-Factor Prioritization in Microbial Biosensor Engineering",
+      "url": "https://europepmc.org/article/PPR/PPR1376749"
+    },
+    "doi:10.1002/adma.75812": {
+      "date": "2026-11-23",
+      "title": "Multiscale Design of Strong and Tough Gelatin Hydrogels for Biomedical Applications.",
+      "url": "https://europepmc.org/article/MED/43076020"
+    },
+    "doi:10.1039/d6tb01871h": {
+      "date": "2026-11-23",
+      "title": "Electrospun scaffolds for MSC-derived secretome delivery.",
+      "url": "https://europepmc.org/article/MED/43075861"
+    },
+    "doi:10.1039/d6bm00830e": {
+      "date": "2026-11-23",
+      "title": "Stem cell-delivery hydrogels with shear-thinning injectability promote bone healing in distraction osteogenesis.",
+      "url": "https://europepmc.org/article/MED/42954401"
+    },
+    "doi:10.1016/j.ijbiomac.2026.155287": {
+      "date": "2026-11-23",
+      "title": "Corrigendum to \"Injectable pH-responsive Bletilla striata polysaccharide-sodium alginate hydrogel promoting peripheral nerve regeneration\" [Int. J. Biol. Macromol. 375 (2026) 153353].",
+      "url": "https://europepmc.org/article/MED/43073108"
+    },
+    "doi:10.1039/d6mh01942k": {
+      "date": "2026-11-23",
+      "title": "Salt-triggered self-rotation of a radially channeled core-skin hydrogel enables sustained solar desalination.",
+      "url": "https://europepmc.org/article/MED/43076788"
     }
   },
   "issues": [
-    "2026-11-16"
+    "2026-11-16",
+    "2026-11-23"
   ],
   "opportunities": {},
   "titles": {
@@ -47,6 +93,15 @@
     "a near infrared fluorescent genetically encoded calcium ion biosensor with a direct response": "2026-11-16",
     "electro responsive biomaterials as mechanobiological regulators of infection and immunity in aging tissues": "2026-11-16",
     "integrated electrohydrodynamic direct writing and electrospray for hydroxyapatite modified poly caprolactone microfiber scaffolds": "2026-11-16",
-    "from burden to breakthrough a roadmap to disentangle fatigue in spinal muscular atrophy": "2026-11-16"
+    "from burden to breakthrough a roadmap to disentangle fatigue in spinal muscular atrophy": "2026-11-16",
+    "fabrication and characterization of hybrid scaffolds based on alginate aloe vera and polycaprolactone via 3d printing and electrospinning for bone tissue regeneration": "2026-11-23",
+    "paper based hydrogel biosensor integrated with carbon dots for portable detection of microrna 21 using a fluorescent diffusion area as the readout": "2026-11-23",
+    "exploration of photoclickable polysaccharide gelatin hydrogels for vascular self assembly in three dimensional bioprinted constructs": "2026-11-23",
+    "biosensor x a coverage aware evidence integration and benchmarking framework for transcription factor prioritization in microbial biosensor engineering": "2026-11-23",
+    "multiscale design of strong and tough gelatin hydrogels for biomedical applications": "2026-11-23",
+    "electrospun scaffolds for msc derived secretome delivery": "2026-11-23",
+    "stem cell delivery hydrogels with shear thinning injectability promote bone healing in distraction osteogenesis": "2026-11-23",
+    "corrigendum to injectable ph responsive bletilla striata polysaccharide sodium alginate hydrogel promoting peripheral nerve regeneration int j biol macromol 375 2026 153353": "2026-11-23",
+    "salt triggered self rotation of a radially channeled core skin hydrogel enables sustained solar desalination": "2026-11-23"
   }
 }
