@@ -1,0 +1,38 @@
+{
+  "2026-12-01": [
+    {
+      "pmid": "42999030",
+      "published": "2026-11-07",
+      "topic": "Biomaterials",
+      "headline": "Bone and cartilage wafers hold their properties on the shelf",
+      "summary": "Freeze-dried wafers made from human tissue retained their measured properties after three months at room temperature. Once hydrated, they supported stromal cells in laboratory culture.",
+      "journal": "Advanced Healthcare Materials"
+    },
+    {
+      "pmid": "42987434",
+      "published": "2026-11-18",
+      "topic": "Biofabrication",
+      "headline": "Printing branched structures inside a hydrogel",
+      "summary": "A research team used light-based printing and moulding to build branched structures in a chitosan–albumin gel. Lab tests tracked cell viability over two weeks.",
+      "journal": "Biofabrication"
+    }
+  ],
+  "2026-12-02": [
+    {
+      "pmid": "43075161",
+      "published": "2026-11-09",
+      "topic": "Heart tissue",
+      "headline": "What changes when a heart cell spends a day in a droplet?",
+      "summary": "Heart cells derived from human stem cells showed changes in energy-related gene activity after 24 hours in gel droplets. The researchers compared them with cells in flat culture.",
+      "journal": "Frontiers in Bioengineering and Biotechnology"
+    },
+    {
+      "pmid": "42906582",
+      "published": "2026-11-06",
+      "topic": "Bioink screening",
+      "headline": "Using image analysis to choose a bioink for repair",
+      "summary": "Researchers printed gradients of bioink formulations and compared how cells responded. A selected formulation also showed a stronger early repair response in a rat model of bone loss.",
+      "journal": "Biofabrication"
+    }
+  ]
+}

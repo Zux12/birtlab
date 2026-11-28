@@ -41,15 +41,6 @@ radial-gradient(circle at 75% 85%,rgba(92,197,191,.08),transparent 18%)}
 .launchline{margin-top:32px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
 .text-btn{border:0;background:none;padding:0;font-weight:900;cursor:pointer;font-size:14px;display:inline-flex;gap:10px;align-items:center}
 .text-btn:after{content:"→";transition:.2s}.text-btn:hover:after{transform:translateX(5px)}
-.hero-visual{position:relative;height:520px}
-.ring{position:absolute;border:1px solid rgba(11,119,113,.22);border-radius:50%;inset:12%;animation:spin 24s linear infinite}
-.ring.r2{inset:24%;border-style:dashed;animation-direction:reverse;animation-duration:18s}
-.ring.r3{inset:36%;animation-duration:13s}
-.nucleus{position:absolute;left:50%;top:50%;width:180px;height:180px;transform:translate(-50%,-50%);border-radius:57% 43% 52% 48%;background:linear-gradient(135deg,rgba(11,119,113,.82),rgba(119,89,166,.72));filter:blur(.2px);animation:morph 7s ease-in-out infinite, drift 6s ease-in-out infinite}
-.cell-dot{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--aqua);box-shadow:0 0 0 8px rgba(92,197,191,.11),0 0 30px rgba(92,197,191,.35)}
-.cd1{left:22%;top:25%;animation:orbit1 8s ease-in-out infinite}.cd2{right:17%;top:31%;animation:orbit2 9s ease-in-out infinite}.cd3{left:31%;bottom:15%;animation:orbit3 7s ease-in-out infinite}.cd4{right:25%;bottom:22%;animation:orbit1 10s ease-in-out infinite reverse}
-.axis-label{position:absolute;font-size:10px;letter-spacing:.13em;color:var(--muted);font-weight:900}
-.al1{left:0;top:12%}.al2{right:0;top:46%}.al3{left:8%;bottom:6%}
 .hero-index{position:absolute;right:0;bottom:0;font-size:12px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.15em}
 
 .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
@@ -164,17 +155,17 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .scoreline{font-size:clamp(100px,15vw,170px);line-height:.8;letter-spacing:-.08em;font-weight:900}
 .scoreline small{font-size:13px;letter-spacing:.1em;color:var(--muted)}
 
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes morph{0%,100%{border-radius:57% 43% 52% 48%}50%{border-radius:40% 60% 45% 55%}}@keyframes drift{50%{transform:translate(-50%,-53%) rotate(8deg)}}@keyframes orbit1{50%{transform:translate(30px,-18px)}}@keyframes orbit2{50%{transform:translate(-35px,22px)}}@keyframes orbit3{50%{transform:translate(18px,25px)}}@keyframes marquee{to{transform:translateX(-50%)}}@keyframes draw{to{stroke-dashoffset:0}}@keyframes viewin{from{opacity:0;transform:scale(.995)}to{opacity:1;transform:none}}@keyframes nozzle{0%{left:25%}25%{left:72%}50%{left:38%}75%{left:65%}100%{left:25%}}
+@keyframes marquee{to{transform:translateX(-50%)}}@keyframes draw{to{stroke-dashoffset:0}}@keyframes viewin{from{opacity:0;transform:scale(.995)}to{opacity:1;transform:none}}@keyframes nozzle{0%{left:25%}25%{left:72%}50%{left:38%}75%{left:65%}100%{left:25%}}
 
 @media(max-width:900px){
   .center-nav{display:none}.topbar-inner{grid-template-columns:1fr auto}
-  .hero-grid{grid-template-columns:1fr}.hero-visual{height:430px}
+  .hero-grid{grid-template-columns:1fr}
   .section-top,.app-title{grid-template-columns:1fr}.research-row{grid-template-columns:60px 1fr}.research-row p,.research-row .tag{grid-column:2}
   .tools-layout,.analytics,.app-grid{grid-template-columns:1fr}.tool-line:nth-child(odd){border-right:0;padding-right:0}.tool-line:nth-child(even){padding-left:0}
   .vision-track{grid-template-columns:1fr 1fr}.vision-step:nth-child(2n){border-right:0}
 }
 @media(max-width:600px){
-  .hero{padding-top:60px}.hero-copy{grid-template-columns:1fr}.hero-visual{height:350px}
+  .hero{padding-top:60px}.hero-copy{grid-template-columns:1fr}
   .section{padding:75px 0}.research-row{grid-template-columns:40px 1fr}.research-row h3{font-size:24px}
   .flow-shell{min-height:650px}.flow-line{left:50%;right:auto;top:0;bottom:0;width:1px;height:auto}
   .flow-point{left:50%!important}.fp1{top:10%}.fp2{top:28%}.fp3{top:46%}.fp4{top:64%}.fp5{top:82%}
@@ -271,16 +262,33 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
 .member-invite-note{font-size:11px;color:var(--teal);font-weight:800;letter-spacing:.1em;margin-top:15px}
 @media(max-width:760px){.member-invite-inner{grid-template-columns:1fr;gap:24px}.member-join{justify-self:start;white-space:normal}}
 
-/* Living Cell V3 — self-contained 3D visual; original rings, particles and layout retained */
-.hero-visual{isolation:isolate}
-.hero-cell-webgl{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}
-.hero-cell-webgl canvas{display:block;width:100%;height:100%;background:transparent}
-.hero-visual .ring{z-index:1}
-.hero-visual .cell-dot{z-index:3}
-.hero-visual .axis-label{z-index:4}
-.hero-visual .nucleus{z-index:2;transition:opacity .5s ease}
-.hero-visual.cell-3d-ready .nucleus{opacity:0;animation:none}
-@media(prefers-reduced-motion:reduce){.hero-visual .nucleus{animation:none}}
+/* Homepage news */
+.home-news{min-width:0;border-top:3px solid var(--teal);padding-top:12px;scroll-margin-top:90px}
+.news-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.news-heading h2{margin:0;font-size:clamp(28px,2.9vw,39px);line-height:1.05;letter-spacing:-.055em}
+.news-edition,.news-meta{font-size:.8125rem;line-height:1.5;color:#4d6264}
+.news-photo{display:block;width:100%;height:auto;aspect-ratio:2.95/1;object-fit:cover;background:#dcebe8}
+.news-lead{padding-bottom:16px}
+.news-lead h3{font-size:clamp(23px,2.15vw,32px);line-height:1.12;letter-spacing:-.035em;margin:12px 0 5px}
+.news-lead p,.news-row p{margin:6px 0;font-size:1rem;line-height:1.45}
+.news-link{display:inline-block;font-size:.94rem;font-weight:700;color:var(--teal);padding:5px 0}
+.home-news a:hover,.home-news summary:hover .news-title{text-decoration:underline;text-underline-offset:3px}
+.home-news :is(a,summary):focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.news-row{border-top:1px solid var(--line)}
+.news-row summary,.news-compact-link{padding:12px 26px 12px 0;position:relative;display:block;cursor:pointer;list-style:none}
+.news-row summary::-webkit-details-marker{display:none}
+.news-row summary::after,.news-compact-link::after{position:absolute;right:2px;top:50%;transform:translateY(-50%);color:var(--teal);font-weight:600}
+.news-row summary::after{content:"+";font-size:1.2rem}
+.news-row details[open] summary::after{content:"−"}
+.news-compact-link::after{content:"→"}
+.news-label{display:block;color:var(--teal);font-size:.76rem;text-transform:uppercase;letter-spacing:.095em;font-weight:800;line-height:1.3}
+.news-title{display:block;margin-top:4px;color:var(--ink);font-size:1.05rem;line-height:1.3;font-weight:700}
+.news-detail{padding:0 0 11px}
+.news-detail p{margin-top:0}
+.news-lead .news-label{margin-top:10px}
+@media(max-width:900px){.home-news{width:100%}.news-photo{max-height:245px}}
+@media(max-width:600px){.hero-grid{gap:36px}.news-photo{aspect-ratio:2.6/1}.news-heading{margin-bottom:12px}}
+
 
 /* Research Leadership V2 — editorial portrait; all other sections unchanged */
 .leadership-section .leadership-profile{grid-template-columns:minmax(240px,360px) minmax(0,1fr);gap:clamp(30px,5vw,82px);padding:clamp(28px,4vw,55px) 0;align-items:center}
@@ -417,11 +425,14 @@ footer{padding:25px 0 60px;font-size:11px;color:var(--muted);display:flex;justif
       <div class="hero-copy reveal"><b>Our mission</b><p>Advancing bioprinting, biomaterials, tissue engineering and regenerative technologies through interdisciplinary research, technology development and scientific collaboration.</p></div>
       <div class="launchline reveal"><a class="text-btn hero-discovery-link" href="discovery-lab.html">Discover Research Ideas</a><a class="text-btn" href="#research">Explore Research</a><a class="text-btn" href="#leadership">Meet Our Leadership</a><button class="text-btn" data-open="sim">Digital Lab Demo</button></div>
     </div>
-    <div class="hero-visual reveal">
-      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="nucleus"></div><div class="hero-cell-webgl" id="livingCellV3" aria-hidden="true"></div>
-      <div class="cell-dot cd1"></div><div class="cell-dot cd2"></div><div class="cell-dot cd3"></div><div class="cell-dot cd4"></div>
-      <div class="axis-label al1">CELL × MATERIAL</div><div class="axis-label al2">PRINT × REGENERATE</div><div class="axis-label al3">DATA × TRANSLATION</div>
-    </div>
+    <aside class="home-news" id="news" aria-labelledby="news-heading">
+      <div class="news-heading"><h2 id="news-heading">BIRT Lab News</h2><time class="news-edition" id="news-edition" datetime="2026-11-28">28 Nov 2026</time></div>
+      <div id="news-stories">
+        <div class="news-lead"><a href="icirm2027.html" aria-label="View the BIRT Lab conference"><img class="news-photo" src="assets/img/research-watch-kl.webp" width="659" height="223" alt="Illustrated Kuala Lumpur skyline"></a><h3><a href="icirm2027.html">BIRT Lab Conference 2027</a></h3><p class="news-meta">ICIRM 2027 · September 2027 · Registration opening soon</p><a class="news-link" href="icirm2027.html">View conference →</a></div>
+        <div class="news-row"><details><summary><span class="news-label">Research Watch · Bioprinting</span><span class="news-title">Can a printed ear keep its shape?</span></summary><div class="news-detail"><p>Researchers printed an ear-shaped scaffold from alginate and nanocellulose. It held its contours, while the early cell tests left long-term viability an open question.</p><div class="news-meta">International Journal of Biological Macromolecules · 25 Nov 2026</div><a class="news-link" href="https://pubmed.ncbi.nlm.nih.gov/43085517/">Read the paper →</a></div></details></div>
+        <div class="news-row"><details><summary><span class="news-label">Research Watch · Vascular imaging</span><span class="news-title">Spotting three stages of blood vessel growth on a chip</span></summary><div class="news-detail"><p>An image classifier identified three stages of vessel development on a chip. The team used those stages to time gene-expression measurements.</p><div class="news-meta">Small · 26 Nov 2026</div><a class="news-link" href="https://pubmed.ncbi.nlm.nih.gov/43097054/">Read the paper →</a></div></details></div>
+      </div>
+    </aside>
   </div>
   <div class="hero-index">01 / RESEARCH & INNOVATION</div>
 </section>
@@ -755,137 +766,7 @@ if ('IntersectionObserver' in window) {
   $('#collabForm').addEventListener('submit',e=>{e.preventDefault();$('#collabResult').style.display='block'});
 })();
 </script>
-<script type="module">
-/* Living Cell V3: conceptual generic mammalian cell with a front-facing membrane cutaway.
-   Rendered biological anatomy is educational illustration, not microscopy. */
-const host=document.getElementById('livingCellV3');
-const hero=host?.closest('.hero-visual');
-if(host&&hero){
-  try{
-    const THREE=await import('https://esm.sh/three@0.160.1');
-    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-    const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'low-power'});
-    renderer.setClearColor(0xffffff,0);
-    renderer.outputColorSpace=THREE.SRGBColorSpace;
-    renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=1.18;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));
-    host.appendChild(renderer.domElement);
-    const scene=new THREE.Scene();
-    const camera=new THREE.PerspectiveCamera(32,1,.1,100);
-    camera.position.set(0,0,13.2);
-    const cell=new THREE.Group();scene.add(cell);
-    scene.add(new THREE.HemisphereLight(0xe7ffff,0x8c709d,2.3));
-    const key=new THREE.DirectionalLight(0xffffff,3.1);key.position.set(-4,6,8);scene.add(key);
-    const rim=new THREE.DirectionalLight(0x5de4d3,2.4);rim.position.set(4,-1,-5);scene.add(rim);
-    const fill=new THREE.DirectionalLight(0xbba9e8,1.2);fill.position.set(4,3,7);scene.add(fill);
-    const mat=(color,opts={})=>new THREE.MeshPhysicalMaterial({color,roughness:.34,metalness:0,clearcoat:.65,clearcoatRoughness:.18,...opts});
-    const membraneMat=mat(0x58c8b9,{transparent:true,opacity:.43,side:THREE.DoubleSide,depthWrite:false,roughness:.2,clearcoat:1});
-    const edgeMat=mat(0x078f85,{roughness:.24,side:THREE.DoubleSide,clearcoat:1});
-    const cytMat=mat(0x8bdfd0,{transparent:true,opacity:.13,depthWrite:false,side:THREE.DoubleSide});
-    const nuclearMat=mat(0x75509e,{roughness:.32,clearcoat:.8});
-    const envelopeMat=mat(0xb5a1da,{transparent:true,opacity:.35,depthWrite:false,side:THREE.DoubleSide});
-    const nucleolusMat=mat(0x4d2e72,{roughness:.38});
-    const mitoMat=mat(0xdb9a8d,{roughness:.31});
-    const foldMat=new THREE.MeshStandardMaterial({color:0x97506d,roughness:.55});
-    const vesicleMats=[mat(0xb1d5e5,{transparent:true,opacity:.82}),mat(0xc6a8db,{transparent:true,opacity:.83}),mat(0x6dc5af,{transparent:true,opacity:.8})];
-    const mesh=(geometry,material,parent=cell)=>{const o=new THREE.Mesh(geometry,material);parent.add(o);return o};
-    // Intact rear hemisphere and side shell, with a circular aperture facing +Z.
-    // The opening is constructed geometrically; no opaque disc hides the nucleus.
-    const radius=2.03;
-    const sphere=new THREE.SphereGeometry(radius,96,64);
-    const pos=sphere.getAttribute('position');const idx=sphere.index;
-    const triangles=[];
-    const aperture=Math.cos(.73); // opening centred toward the viewer
-    for(let i=0;i<idx.count;i+=3){
-      const ids=[idx.getX(i),idx.getX(i+1),idx.getX(i+2)];
-      const z=ids.reduce((v,j)=>v+pos.getZ(j),0)/(3*radius);
-      if(z<aperture)triangles.push(...ids);
-    }
-    sphere.setIndex(triangles);sphere.computeVertexNormals();
-    const shell=mesh(sphere,membraneMat);
-    // The thin toroidal lip follows the rim of the opening.
-    const lipRadius=radius*Math.sin(.73);
-    const lip=mesh(new THREE.TorusGeometry(lipRadius,.055,12,112),edgeMat);
-    lip.position.z=radius*Math.cos(.73);
-    // Subtle interior volume; kept behind the nucleus and the open aperture.
-    const cyt=mesh(new THREE.SphereGeometry(1.86,48,32),cytMat);
-    cyt.scale.set(1,.96,.96);
-    const nucleus=mesh(new THREE.IcosahedronGeometry(.83,5),nuclearMat);
-    nucleus.position.set(-.16,.04,.34);nucleus.scale.set(1.08,.88,.92);
-    const envelope=mesh(new THREE.SphereGeometry(.91,48,32),envelopeMat);
-    envelope.position.copy(nucleus.position);envelope.scale.copy(nucleus.scale);
-    const nucleolus=mesh(new THREE.SphereGeometry(.24,24,16),nucleolusMat);
-    nucleolus.position.set(.06,-.08,1.05);
-    // Mitochondria have visible folded cristae, not just featureless spheres.
-    const mito=[];
-    const mitoPositions=[[-1.08,.79,.68],[1.04,.52,.74],[-.95,-.91,.65],[1.08,-.78,.48],[.13,1.28,.26]];
-    for(let i=0;i<mitoPositions.length;i++){
-      const g=new THREE.Group();cell.add(g);g.position.set(...mitoPositions[i]);
-      g.rotation.set(.2*i,.36*i,(i%2?-.5:.55));
-      const body=mesh(new THREE.SphereGeometry(.36,22,16),mitoMat,g);body.scale.set(1.42,.56,.6);
-      for(let k=-2;k<=2;k++){
-        const curve=new THREE.CatmullRomCurve3([
-          new THREE.Vector3(k*.105,-.13,.18),new THREE.Vector3(k*.105+.06,.02,.23),new THREE.Vector3(k*.105-.035,.13,.18)
-        ]);
-        mesh(new THREE.TubeGeometry(curve,10,.018,5,false),foldMat,g);
-      }
-      mito.push(g);
-    }
-    // Curved endoplasmic-reticulum strands arranged around the nuclear envelope.
-    const erMat=mat(0x74b7bf,{transparent:true,opacity:.83,roughness:.45});
-    for(let j=0;j<7;j++){
-      const angle=j*.83;
-      const points=[];
-      for(let k=0;k<=32;k++){
-        const t=k/32,theta=angle+t*1.65;
-        const rr=1.07+.085*Math.sin(t*17+j);
-        points.push(new THREE.Vector3(-.13+rr*Math.cos(theta),.04+rr*Math.sin(theta),.32+.23*Math.sin(t*Math.PI)+.05*j));
-      }
-      const curve=new THREE.CatmullRomCurve3(points);
-      mesh(new THREE.TubeGeometry(curve,45,.032,6,false),erMat);
-    }
-    const vesicles=[];
-    for(let i=0;i<19;i++){
-      const angle=i*2.399963,rr=.98+.56*((i*7%11)/11),z=.35+.58*Math.sin(i*2.3);
-      const o=mesh(new THREE.SphereGeometry(.065+(i%4)*.025,14,10),vesicleMats[i%3]);
-      o.position.set(rr*Math.cos(angle),rr*Math.sin(angle),z);
-      o.userData.base=o.position.clone();o.userData.phase=i*1.37;vesicles.push(o);
-    }
-    // A fine outer membrane edge gives the shell a softly illuminated silhouette.
-    const outline=mesh(new THREE.SphereGeometry(2.045,48,32),mat(0x70c9bf,{transparent:true,opacity:.075,depthWrite:false,side:THREE.BackSide}));
-    let width=0,height=0,visible=true,raf=0,last=0;
-    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(tick)},{threshold:.05});
-    observer.observe(hero);
-    function resize(){const r=host.getBoundingClientRect();const w=Math.round(r.width),h=Math.round(r.height);if(!w||!h||w===width&&h===height)return;width=w;height=h;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
-    const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(host);resize();
-    let pointerX=0,pointerY=0;
-    hero.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=hero.getBoundingClientRect();pointerX=((e.clientX-r.left)/r.width-.5)*2;pointerY=((e.clientY-r.top)/r.height-.5)*2},{passive:true});
-    hero.addEventListener('pointerleave',()=>{pointerX=0;pointerY=0});
-    function tick(t){raf=0;if(!visible||document.hidden)return;
-      resize();
-      const sec=t*.001;
-      if(!reduce.matches){
-        const pulse=1+.018*Math.sin(sec*.85);
-        shell.scale.set(pulse,1+.015*Math.sin(sec*.85+.8),pulse);
-        outline.scale.copy(shell.scale);lip.scale.setScalar(pulse);
-        cell.rotation.y+=((.08*Math.sin(sec*.17)+pointerX*.085)-cell.rotation.y)*.018;
-        cell.rotation.x+=((-.06+pointerY*.075+.04*Math.cos(sec*.21))-cell.rotation.x)*.018;
-        nucleus.rotation.y=sec*.075;nucleus.rotation.z=.05*Math.sin(sec*.35);
-        mito.forEach((g,i)=>{g.position.y=mitoPositions[i][1]+.035*Math.sin(sec*.6+i);g.rotation.y+=.0007});
-        vesicles.forEach(o=>{o.position.copy(o.userData.base);o.position.x+=.026*Math.sin(sec*.75+o.userData.phase);o.position.y+=.026*Math.cos(sec*.62+o.userData.phase)});
-      }
-      renderer.render(scene,camera);
-      raf=requestAnimationFrame(tick);
-    }
-    document.addEventListener('visibilitychange',()=>{if(!document.hidden&&visible&&!raf)raf=requestAnimationFrame(tick)});
-    reduce.addEventListener?.('change',()=>{if(!raf&&visible)raf=requestAnimationFrame(tick)});
-    renderer.render(scene,camera);
-    hero.classList.add('cell-3d-ready');
-    raf=requestAnimationFrame(tick);
-  }catch(err){console.warn('Living Cell V3 unavailable; retaining original animation.',err);}
-}
-</script>
+<script type="module" src="research-watch/panel.js"></script>
 
 <script>/* People We Serve V2 */
 (()=>{
