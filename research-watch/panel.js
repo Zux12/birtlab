@@ -1,3 +1,5 @@
+import {chooseVisual, imageById, imagePath, conferenceSlot} from './visuals.mjs';
+
 // The conference switches every three Malaysian calendar days from launch.
 const launch = Date.UTC(2026, 10, 28);
 const dayMs = 86400000;
@@ -24,37 +26,80 @@ function link(className, text, href) {
   return node;
 }
 
-function compactConference() {
+function conferenceCard(art, featured) {
+  if (featured) {
+    const lead = conference.cloneNode(true);
+    const image = lead.querySelector('img');
+    image.src = art.src;
+    image.alt = art.alt;
+    image.classList.add('news-conference-photo');
+    return lead;
+  }
   const row = element('div', 'news-row');
   const action = link('news-compact-link', '', conferenceUrl);
-  action.append(element('span', 'news-label', 'Conference · September 2027'),
+  const image = element('img', 'news-thumb');
+  image.src = art.src;
+  image.alt = '';
+  const copy = element('span', 'news-row-copy');
+  copy.append(element('span', 'news-label', 'Conference · September 2027'),
     element('span', 'news-title', conferenceTitle + ' · Registration opening soon'));
+  action.append(image, copy);
   row.append(action);
   return row;
+}
+
+function imageFor(story, featured) {
+  const libraryImage = imageById.get(story.image) || chooseVisual(story);
+  const figure = story.figure;
+  // Only the locally stored, credited figure for this PMID may override the illustration.
+  const hasFigure = figure && figure.alt && figure.credit && figure.license &&
+    /^https:\/\//.test(figure.source || '') && /^https:\/\/creativecommons\.org\//.test(figure.licenseUrl || '');
+  const image = element('img', featured ? 'news-photo' : 'news-thumb');
+  const visual = element(featured ? 'figure' : 'span', featured ? 'news-figure' : 'news-thumb-wrap');
+  const caption = element(featured ? 'figcaption' : 'span', 'news-image-caption');
+  const credit = element('div', 'news-image-credit');
+  const illustration = () => {
+    image.src = imagePath(libraryImage.id, !featured);
+    image.alt = 'Illustration: ' + libraryImage.alt;
+    image.classList.remove('news-study-figure');
+    caption.textContent = 'Illustration';
+    credit.replaceChildren();
+    credit.hidden = true;
+  };
+  if (hasFigure) {
+    image.addEventListener('error', illustration, {once:true});
+    image.src = 'research-watch/figures/' + story.pmid + '.webp';
+    image.alt = figure.alt;
+    image.classList.add('news-study-figure');
+    caption.textContent = 'Study figure';
+    credit.append(link('', figure.credit, figure.source), ' · ', link('', figure.license, figure.licenseUrl));
+  } else illustration();
+  visual.append(image, caption);
+  return {visual, credit};
 }
 
 function researchStory(story, featured) {
   const url = 'https://pubmed.ncbi.nlm.nih.gov/' + story.pmid + '/';
   const label = element('span', 'news-label', 'Research Watch · ' + story.topic);
+  const {visual, credit} = imageFor(story, featured);
   const body = element('div', 'news-detail');
   body.append(element('p', '', story.summary),
     element('div', 'news-meta', story.journal + ' · ' + formatDate.format(Date.parse(story.published))),
-    link('news-link', 'Read the paper →', url));
+    link('news-link', 'Read the paper →', url), credit);
 
   if (featured) {
     const lead = element('article', 'news-lead');
-    const photo = element('img', 'news-photo');
-    photo.src = 'assets/img/people-2.webp';
-    photo.alt = 'Illustration of a researcher examining a sample under a microscope';
     const title = element('h3');
     title.append(link('', story.headline, url));
-    lead.append(photo, label, title, body);
+    lead.append(visual, label, title, body);
     return lead;
   }
   const row = element('div', 'news-row');
   const details = element('details');
   const summary = element('summary');
-  summary.append(label, element('span', 'news-title', story.headline));
+  const copy = element('span', 'news-row-copy');
+  copy.append(label, element('span', 'news-title', story.headline));
+  summary.append(visual, copy);
   details.append(summary, body);
   row.append(details);
   return row;
@@ -86,7 +131,7 @@ async function refresh() {
   const localTime = Date.now() + clockOffset;
   const today = new Date(localTime).toISOString().slice(0, 10);
   const day = Date.parse(today);
-  const conferenceLeads = Math.floor((day - launch) / dayMs / 3) % 2 === 0;
+  const slot = conferenceSlot(day, launch, dayMs);
   let retry = true;
   try {
     // A delayed edition or an unavailable source leaves the last dated pair on screen.
@@ -98,10 +143,10 @@ async function refresh() {
     if (currentRequest !== request || !selection) return;
     const {edition, pair} = selection;
     retry = edition !== today;
-    const key = [edition, ...pair.map(p => p.pmid), conferenceLeads].join('/');
+    const key = [edition, ...pair.map(p => p.pmid + '/' + p.image + '/' + (p.figure?.source || '')), slot.featured, slot.art.src].join('/');
     if (displayed === key) return;
-    const lead = researchStory(pair[0], !conferenceLeads);
-    stories.replaceChildren(...(conferenceLeads ? [conference.cloneNode(true), lead] : [lead, compactConference()]),
+    const lead = researchStory(pair[0], !slot.featured);
+    stories.replaceChildren(...(slot.featured ? [conferenceCard(slot.art, true), lead] : [lead, conferenceCard(slot.art, false)]),
       researchStory(pair[1], false));
     stamp.dateTime = edition;
     stamp.textContent = formatDate.format(Date.parse(edition));

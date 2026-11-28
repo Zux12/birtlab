@@ -6,7 +6,8 @@
       "topic": "Bioprinting",
       "headline": "Can a printed ear keep its shape?",
       "summary": "Researchers printed an ear-shaped scaffold from alginate and nanocellulose. It held its contours, while the early cell tests left long-term viability an open question.",
-      "journal": "International Journal of Biological Macromolecules"
+      "journal": "International Journal of Biological Macromolecules",
+      "image": "ear-scaffold"
     },
     {
       "pmid": "43097054",
@@ -14,7 +15,8 @@
       "topic": "Vascular imaging",
       "headline": "Spotting three stages of blood vessel growth on a chip",
       "summary": "An image classifier identified three stages of vessel development on a chip. The team used those stages to time gene-expression measurements.",
-      "journal": "Small"
+      "journal": "Small",
+      "image": "vascular-network"
     }
   ],
   "2026-11-29": [
@@ -24,7 +26,15 @@
       "topic": "Skin models",
       "headline": "Watching skin cells build an epidermis on a chip",
       "summary": "Live imaging on StrataChip captured human skin cells dividing and moving as layers formed. Researchers paired those observations with single-cell gene measurements.",
-      "journal": "npj Biomedical Innovations"
+      "journal": "npj Biomedical Innovations",
+      "image": "skin-layers",
+      "figure": {
+        "alt": "Day-seven microscopy cross-section of the layered epidermis in StrataChip",
+        "credit": "Fig. 2a, day 7 (cropped) · © Amakor et al. 2026",
+        "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13759492/#Fig2",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+      }
     },
     {
       "pmid": "43062796",
@@ -32,7 +42,8 @@
       "topic": "Bioinks",
       "headline": "A silk bioink gives bone-forming cells a firmer foothold",
       "summary": "A silk-and-albumin formulation held its printed shape and helped rabbit marrow cells attach in laboratory tests. The authors also measured early markers of bone formation.",
-      "journal": "Tissue Engineering and Regenerative Medicine"
+      "journal": "Tissue Engineering and Regenerative Medicine",
+      "image": "printed-layers"
     }
   ],
   "2026-11-30": [
@@ -42,7 +53,8 @@
       "topic": "Engineered vessels",
       "headline": "A lab-grown arteriole that can change its diameter",
       "summary": "A human vessel model roughly 200 micrometres wide matured under flow and changed its diameter in response to biochemical and metabolic cues.",
-      "journal": "Biofabrication"
+      "journal": "Biofabrication",
+      "image": "chip-flow"
     },
     {
       "pmid": "42975659",
@@ -50,7 +62,8 @@
       "topic": "Bone repair",
       "headline": "How hydrogels could keep cell signals at a bone injury",
       "summary": "A review examines hydrogels that hold and release signalling vesicles near a bone defect. It identifies dose consistency and long-term safety as open questions.",
-      "journal": "Journal of Materials Chemistry B"
+      "journal": "Journal of Materials Chemistry B",
+      "image": "porous-bone"
     }
   ]
 }
